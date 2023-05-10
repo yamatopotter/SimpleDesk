@@ -1,0 +1,21 @@
+package simpledesk.app.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Entity
+@Data
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Equipment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long idEquipment;
+    String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_idSector")
+    Sector sector;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_idEquipmentType")
+    EquipmentType equipmentType;
+}
