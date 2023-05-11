@@ -38,7 +38,7 @@ export const AddTicket = () => {
 
   return (
     <div className="flex flex-col flex-1 gap-5">
-      <h1 className="text-2xl">Abrir chamado</h1>
+      <h1 className="text-xl">Abrir chamado</h1>
 
       <form className="flex flex-col gap-8">
         <div className="flex flex-col">
