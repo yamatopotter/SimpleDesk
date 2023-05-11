@@ -1,22 +1,26 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { Login } from './routes/Login'
-import { Home } from './pages/Home'
-import { Header } from './components/Header/Header';
-import { Footer } from './components/Footer/Footer';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Login } from "./routes/Login";
+import { Home } from "./pages/Home";
+import { Header } from "./components/Header/Header";
+import { Footer } from "./components/Footer/Footer";
+import { CreateTicket } from "./routes/CreateTicket";
 
 function App() {
   return (
-    <div className="h-screen flex flex-col">
+    <div className="flex flex-col h-screen overflow-hidden">
       <Header />
-      <BrowserRouter>
-        <Routes>
-          <Route path="" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-        </Routes>
-      </BrowserRouter>
+      <main className="flex-1 overflow-y-scroll p-4">
+        <BrowserRouter>
+          <Routes>
+            <Route path="" element={<Login />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/ticket/new" element={<CreateTicket />} />
+          </Routes>
+        </BrowserRouter>
+      </main>
       <Footer />
     </div>
   );
 }
 
-export default App
+export default App;
