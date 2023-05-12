@@ -8,7 +8,9 @@ import { ListSectors } from "./routes/ListSectors";
 import { CreateTicket } from "./routes/CreateTicket";
 import { CreateSector } from "./routes/CreateSector";
 import { CreateStatus } from "./routes/CreateStatus";
+import { CreateEquipment } from "./routes/CreateEquipment";
 import { TicketDetail } from "./routes/TicketDetail";
+import { CreateEquipmentType } from "./routes/CreateEquipmentType";
 
 function App() {
   return (
@@ -25,6 +27,11 @@ function App() {
             <Route path="/sector/new" element={<CreateSector />} />
             <Route path="/sector" element={<ListSectors />} />
             <Route path="/status/new" element={<CreateStatus />} />
+            <Route path="/equipment/new" element={<CreateEquipment />} />
+            <Route
+              path="/equipment_type/new"
+              element={<CreateEquipmentType />}
+            />
           </Routes>
         </BrowserRouter>
       </main>
