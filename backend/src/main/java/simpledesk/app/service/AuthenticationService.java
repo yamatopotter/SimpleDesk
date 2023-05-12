@@ -2,6 +2,8 @@ package simpledesk.app.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +28,7 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) throws Exception {
         var email = request.getEmail();
-
+        if(repository.findByEmail(email).isPresent()) throw new Exception("E-mail já cadastrado");
         var user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())

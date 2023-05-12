@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import simpledesk.app.auth.AuthenticationRequest;
 import simpledesk.app.auth.AuthenticationResponse;
 import simpledesk.app.auth.RegisterRequest;
+import simpledesk.app.repository.IUserRepository;
 import simpledesk.app.service.AuthenticationService;
 
 @RestController
@@ -15,17 +16,18 @@ import simpledesk.app.service.AuthenticationService;
 @RequestMapping("/authentication")
 @RequiredArgsConstructor
 public class AuthenticationController {
+    private final IUserRepository repository;
     @Autowired
     private AuthenticationService service;
 
-    @GetMapping
-    public String HelloWorld() {
-        return "Helo World";
-    }
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) throws Exception {
-        return new ResponseEntity<>(service.register(request), HttpStatus.CREATED);
+        if (repository.findByEmail(request.getEmail()).isPresent()){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } else {
+            return new ResponseEntity<>(service.register(request), HttpStatus.CREATED);
+        }
     }
 
 

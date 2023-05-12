@@ -3,11 +3,13 @@ package simpledesk.app.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import simpledesk.app.DTO.UserDTO;
 import simpledesk.app.DTO.UserUpdateDTO;
+import simpledesk.app.repository.IUserRepository;
 import simpledesk.app.service.UserService;
 
 import java.util.List;
@@ -19,7 +21,8 @@ import java.util.Optional;
 @PreAuthorize("hasRole('ADMIN') or hasRole('USER')") // Retirando a permissão de USER futuramente.
 public class UserController {
     final static Logger log = Logger.getLogger(String.valueOf(UserController.class));
-
+    @Autowired
+    private  IUserRepository repository;
     @Autowired
     private UserService userService;
 
@@ -62,6 +65,7 @@ public class UserController {
             }
         } catch (Exception e){
             log.error("Não foi possível editar o usuario de ID: "+ user.id());
+
             return ResponseEntity.badRequest().build();
         }
         return null;

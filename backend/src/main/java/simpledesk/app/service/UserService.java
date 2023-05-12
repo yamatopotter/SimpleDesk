@@ -3,6 +3,7 @@ package simpledesk.app.service;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import simpledesk.app.DTO.UserDTO;
@@ -14,6 +15,7 @@ import simpledesk.app.entity.User;
 import simpledesk.app.repository.IUserRepository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -23,7 +25,6 @@ public class UserService{
 
     private final UserDTOMapper userDTOMapper;
     private final IUserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
 
 
@@ -57,7 +58,11 @@ public class UserService{
 
     public Optional<UserDTO>updateUser(UserUpdateDTO user){
 
-        if(user != null){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
+        String idUser = (String) principal;
+        User userEntity = userRepository.findByEmail(idUser).get();
+
+        if (user != null && userRepository.findByEmail(user.email()).isEmpty() || Objects.equals(userEntity.getEmail(), user.email())) {
             User userToUpdate = new User(
                     user.id(),
                     user.name(),
