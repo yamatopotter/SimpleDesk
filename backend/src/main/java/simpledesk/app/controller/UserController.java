@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import simpledesk.app.DTO.UserDTO;
 import simpledesk.app.entity.User;
 import simpledesk.app.service.UserService;
 
@@ -22,9 +23,9 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> buscarTodosUsuarios() {
+    public ResponseEntity<List<UserDTO>> buscarTodosUsuarios() {
         log.info("Realizando a busca de todos os usuários");
-        List<User> list = userService.findAll();
+        List<UserDTO> list = userService.findAll();
         return ResponseEntity.ok().body(list);
     }
 
