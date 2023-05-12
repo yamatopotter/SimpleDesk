@@ -5,6 +5,7 @@ import { ListTickets } from "./routes/ListTickets";
 import { Header } from "./components/Header/Header";
 import { Footer } from "./components/Footer/Footer";
 import { CreateTicket } from "./routes/CreateTicket";
+import { TicketDetail } from "./routes/TicketDetail";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/ticket/new" element={<CreateTicket />} />
             <Route path="/ticket" element={<ListTickets />} />
+            <Route path="/ticket/:id" element={<TicketDetail />} />
           </Routes>
         </BrowserRouter>
       </main>
