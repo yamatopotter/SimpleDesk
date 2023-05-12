@@ -3,7 +3,7 @@ import { CommonButton } from "../../components/CommonButton/CommonButton"
 
 export const ViewTickets = () => {
     return (
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 w-full">
         <h1 className="text-xl">Lista de chamados</h1>
 
         <ul>

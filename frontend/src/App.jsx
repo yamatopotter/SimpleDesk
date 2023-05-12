@@ -19,6 +19,8 @@ import { ListEquipments } from "./routes/ListEquipments";
 import { ListEquipmentsType } from "./routes/ListEquipmentsType";
 import { DetailUser } from "./routes/DetailUser";
 import { DetailEquipmentType } from "./routes/DetailEquipmentType";
+import { ListStatuses } from "./routes/ListStatuses";
+import { DetailStatus } from "./routes/DetailStatus";
 
 function App() {
   return (
@@ -39,6 +41,8 @@ function App() {
             <Route path="/sector/new" element={<CreateSector />} />
             <Route path="/sector" element={<ListSectors />} />
             <Route path="/status/new" element={<CreateStatus />} />
+            <Route path="/status/:id" element={<DetailStatus />} />
+            <Route path="/statuses" element={<ListStatuses />} />
             <Route path="/equipment/new" element={<CreateEquipment />} />
             <Route path="/equipment/:id" element={<DetailEquipment />} />
             <Route path="/equipments" element={<ListEquipments />} />
@@ -46,7 +50,10 @@ function App() {
             <Route path="/user/:id" element={<DetailUser />} />
             <Route path="/user/new" element={<CreateUser />} />
             <Route path="/equipments_type" element={<ListEquipmentsType />} />
-            <Route path="/equipment_type/:id" element={<DetailEquipmentType />} />
+            <Route
+              path="/equipment_type/:id"
+              element={<DetailEquipmentType />}
+            />
             <Route
               path="/equipment_type/new"
               element={<CreateEquipmentType />}

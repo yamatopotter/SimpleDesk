@@ -1,6 +1,6 @@
 export const ViewTicket = () => {
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5 w-full">
       <h1 className="text-lg">Ticket #0000</h1>
 
       <ul className="flex flex-col gap-3">
