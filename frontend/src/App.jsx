@@ -9,6 +9,7 @@ import { CreateTicket } from "./routes/CreateTicket";
 import { CreateSector } from "./routes/CreateSector";
 import { CreateStatus } from "./routes/CreateStatus";
 import { CreateEquipment } from "./routes/CreateEquipment";
+import { CreateUser } from "./routes/CreateUser";
 import { TicketDetail } from "./routes/TicketDetail";
 import { CreateEquipmentType } from "./routes/CreateEquipmentType";
 
@@ -28,6 +29,7 @@ function App() {
             <Route path="/sector" element={<ListSectors />} />
             <Route path="/status/new" element={<CreateStatus />} />
             <Route path="/equipment/new" element={<CreateEquipment />} />
+            <Route path="/user/new" element={<CreateUser />} />
             <Route
               path="/equipment_type/new"
               element={<CreateEquipmentType />}
