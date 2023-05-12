@@ -9,7 +9,7 @@ CREATE TABLE user (
 );
 
 CREATE TABLE equipmenttype (
-    idEquipementType BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    idEquipmentType BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(20) NOT NULL
 );
 
@@ -27,11 +27,11 @@ CREATE TABLE equipment (
     idEquipment BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(30),
     fk_idSector BIGINT,
-    fk_idEquimentType BIGINT,
+    fk_idEquipmentType BIGINT,
     FOREIGN KEY (fk_idSector)
         REFERENCES sector (idSector),
-    FOREIGN KEY (fk_idEquipementType)
-        REFERENCES equipmenttype (idEquipementType)
+    FOREIGN KEY (fk_idEquipmentType)
+        REFERENCES equipmenttype (idEquipmentType)
 );
 
 CREATE TABLE ticket (
@@ -72,4 +72,4 @@ insert into status (name) values ("Retirado para oficina");
 insert into status (name) values ("Reparo concluido");
 insert into status (name) values ("Atendimento finalizado");
 
-insert into setor (name) values ("Geral");
+insert into sector (name) values ("Geral");
