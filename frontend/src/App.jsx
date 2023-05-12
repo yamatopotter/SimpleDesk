@@ -1,9 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Login } from "./routes/Login";
 import { Home } from "./pages/Home";
-import { ListTickets } from "./routes/ListTickets";
 import { Header } from "./components/Header/Header";
 import { Footer } from "./components/Footer/Footer";
+import { ListTickets } from "./routes/ListTickets";
+import { ListSectors } from "./routes/ListSectors";
 import { CreateTicket } from "./routes/CreateTicket";
 import { CreateSector } from "./routes/CreateSector";
 import { TicketDetail } from "./routes/TicketDetail";
@@ -21,6 +22,7 @@ function App() {
             <Route path="/ticket" element={<ListTickets />} />
             <Route path="/ticket/:id" element={<TicketDetail />} />
             <Route path="/sector/new" element={<CreateSector />} />
+            <Route path="/sector" element={<ListSectors />} />
           </Routes>
         </BrowserRouter>
       </main>
