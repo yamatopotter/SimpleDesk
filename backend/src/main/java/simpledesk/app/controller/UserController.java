@@ -1,6 +1,13 @@
 package simpledesk.app.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +25,7 @@ import java.util.Optional;
 @RestController
 @CrossOrigin(origins = "*") // Liberando o controlador dos CORS
 @RequestMapping(value = "/user")
-@PreAuthorize("hasRole('ADMIN') or hasRole('USER')") // Retirando a permissão de USER futuramente.
+@Tag(description = "Usuários da aplicação", name="Usuário")
 public class UserController {
     final static Logger log = Logger.getLogger(String.valueOf(UserController.class));
     @Autowired
@@ -26,6 +33,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Operation(summary = "Buscar todos os usuários")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))
+    })
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
         try {
@@ -37,7 +50,12 @@ public class UserController {
         }
     }
 
-
+    @Operation(summary = "Buscar usuário pelo ID")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))
+    })
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<Optional<UserDTO>> findById(@PathVariable Long id) throws Exception {
         try {
@@ -52,6 +70,12 @@ public class UserController {
         return null;
     }
 
+    @Operation(summary = "Atualizar usuário")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))
+    })
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PutMapping
     public ResponseEntity<Optional<UserDTO>> updateUser(@RequestBody UserUpdateDTO user){
 
@@ -70,7 +94,12 @@ public class UserController {
         }
         return null;
     }
-
+    @Operation(summary = "Deletar usuário")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))
+    })
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<UserDTO>> harDeleteUser(@PathVariable Long id){
         try {
