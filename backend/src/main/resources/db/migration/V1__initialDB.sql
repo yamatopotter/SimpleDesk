@@ -1,5 +1,5 @@
 CREATE TABLE user (
-    idUser BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id_user BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL,
     email VARCHAR(150) NOT NULL,
     password VARCHAR(64) NOT NULL,
@@ -39,11 +39,11 @@ CREATE TABLE ticket (
     title VARCHAR(50) NOT NULL,
     description TEXT,
     urlPhoto VARCHAR(150),
-    fk_idUser BIGINT,
+    fk_id_user BIGINT,
     fk_idEquipment BIGINT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (fk_idUser)
-        REFERENCES user (idUser),
+    FOREIGN KEY (fk_id_user)
+        REFERENCES user (id_user),
     FOREIGN KEY (fk_idEquipment)
         REFERENCES equipment (idEquipment)
 );
