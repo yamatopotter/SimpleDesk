@@ -1,5 +1,5 @@
 import { ViewTicket } from "../pages/Read/ViewTicket";
 
-export const TicketDetail = () => {
+export const DetailTicket = () => {
   return <ViewTicket />;
 };

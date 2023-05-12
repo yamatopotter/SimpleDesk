@@ -5,13 +5,20 @@ import { Header } from "./components/Header/Header";
 import { Footer } from "./components/Footer/Footer";
 import { ListTickets } from "./routes/ListTickets";
 import { ListSectors } from "./routes/ListSectors";
+import { ListUsers } from "./routes/ListUsers";
 import { CreateTicket } from "./routes/CreateTicket";
 import { CreateSector } from "./routes/CreateSector";
 import { CreateStatus } from "./routes/CreateStatus";
 import { CreateEquipment } from "./routes/CreateEquipment";
 import { CreateUser } from "./routes/CreateUser";
-import { TicketDetail } from "./routes/TicketDetail";
+import { DetailTicket } from "./routes/DetailTicket";
+import { DetailEquipment } from "./routes/DetailEquipment";
 import { CreateEquipmentType } from "./routes/CreateEquipmentType";
+import { CreateTicketHistory } from "./routes/CreateTicketHistory";
+import { ListEquipments } from "./routes/ListEquipments";
+import { ListEquipmentsType } from "./routes/ListEquipmentsType";
+import { DetailUser } from "./routes/DetailUser";
+import { DetailEquipmentType } from "./routes/DetailEquipmentType";
 
 function App() {
   return (
@@ -24,12 +31,22 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/ticket/new" element={<CreateTicket />} />
             <Route path="/ticket" element={<ListTickets />} />
-            <Route path="/ticket/:id" element={<TicketDetail />} />
+            <Route path="/ticket/:id" element={<DetailTicket />} />
+            <Route
+              path="/ticket/ticketHistory/:id"
+              element={<CreateTicketHistory />}
+            />
             <Route path="/sector/new" element={<CreateSector />} />
             <Route path="/sector" element={<ListSectors />} />
             <Route path="/status/new" element={<CreateStatus />} />
             <Route path="/equipment/new" element={<CreateEquipment />} />
+            <Route path="/equipment/:id" element={<DetailEquipment />} />
+            <Route path="/equipments" element={<ListEquipments />} />
+            <Route path="/users" element={<ListUsers />} />
+            <Route path="/user/:id" element={<DetailUser />} />
             <Route path="/user/new" element={<CreateUser />} />
+            <Route path="/equipments_type" element={<ListEquipmentsType />} />
+            <Route path="/equipment_type/:id" element={<DetailEquipmentType />} />
             <Route
               path="/equipment_type/new"
               element={<CreateEquipmentType />}
