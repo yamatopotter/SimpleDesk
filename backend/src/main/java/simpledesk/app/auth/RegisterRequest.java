@@ -11,7 +11,6 @@ import simpledesk.app.entity.Role;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRequest {
-
     private String name;
     private String email;
     private String password;

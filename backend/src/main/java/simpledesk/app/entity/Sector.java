@@ -13,6 +13,6 @@ import lombok.Data;
 public class Sector {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idSector;
+    Long id;
     String name;
 }

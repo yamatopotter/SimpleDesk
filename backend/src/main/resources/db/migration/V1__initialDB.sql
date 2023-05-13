@@ -1,5 +1,5 @@
 CREATE TABLE user (
-    id_user BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL,
     email VARCHAR(150) NOT NULL,
     password VARCHAR(64) NOT NULL,
@@ -9,56 +9,56 @@ CREATE TABLE user (
 );
 
 CREATE TABLE equipmenttype (
-    idEquipmentType BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE sector (
-    idSector BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE status (
-    idStatus BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE equipment (
-    idEquipment BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(30),
     fk_idSector BIGINT,
     fk_idEquipmentType BIGINT,
     FOREIGN KEY (fk_idSector)
-        REFERENCES sector (idSector),
+        REFERENCES sector(id),
     FOREIGN KEY (fk_idEquipmentType)
-        REFERENCES equipmenttype (idEquipmentType)
+        REFERENCES equipmenttype(id)
 );
 
 CREATE TABLE ticket (
-    idTicket BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     title VARCHAR(50) NOT NULL,
     description TEXT,
     urlPhoto VARCHAR(150),
-    fk_id_user BIGINT,
+    fk_idUser BIGINT,
     fk_idEquipment BIGINT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (fk_id_user)
-        REFERENCES user (id_user),
+    FOREIGN KEY (fk_idUser)
+        REFERENCES user(id),
     FOREIGN KEY (fk_idEquipment)
-        REFERENCES equipment (idEquipment)
+        REFERENCES equipment(id)
 );
 
 CREATE TABLE tickethistory (
-    idTicketHistory BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     description VARCHAR(150) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     urlimage VARCHAR(150),
     fk_idTicket BIGINT NOT NULL,
     fk_idStatus BIGINT NOT NULL,
     FOREIGN KEY (fk_idTicket)
-        REFERENCES ticket (idTicket),
+        REFERENCES ticket(id),
     FOREIGN KEY (fk_idStatus)
-        REFERENCES status (idStatus)
+        REFERENCES status(id)
 );
 
 insert into equipmenttype (name) values ("Computador");

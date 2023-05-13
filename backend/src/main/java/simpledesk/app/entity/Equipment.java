@@ -10,7 +10,7 @@ import lombok.Data;
 public class Equipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idEquipment;
+    Long id;
     String name;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_idSector")

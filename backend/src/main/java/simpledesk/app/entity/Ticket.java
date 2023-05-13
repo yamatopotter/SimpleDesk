@@ -13,7 +13,7 @@ public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idTicket;
+    Long id;
     String title;
     String description;
     String urlPhoto;

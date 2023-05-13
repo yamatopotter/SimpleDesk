@@ -14,6 +14,6 @@ public class EquipmentType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idEquipmentType;
+    Long id;
     String name;
 }

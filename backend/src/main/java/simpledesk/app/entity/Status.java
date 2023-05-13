@@ -13,6 +13,6 @@ import lombok.Data;
 public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idStatus;
+    Long id;
     String name;
 }

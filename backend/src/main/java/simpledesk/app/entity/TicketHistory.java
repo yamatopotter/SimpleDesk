@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class TicketHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long idTicketHistory;
+    Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="fk_idTicket")
     Ticket ticket;
