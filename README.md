@@ -13,3 +13,5 @@ First of all, you'll need:
 - Frontend - Since we use react, Vercell is the way to go
 - Backend - We developed the backend with Springboot, so, railway.app has a free tier
 
+### Documentation
+- Diagram UML - https://drive.google.com/file/d/1wmtiI8FecAXDKXtU702Ve3rqzHUxZ-bF/view?usp=sharing
