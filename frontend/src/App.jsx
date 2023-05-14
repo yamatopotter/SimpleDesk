@@ -21,11 +21,14 @@ import { DetailUser } from "./routes/DetailUser";
 import { DetailEquipmentType } from "./routes/DetailEquipmentType";
 import { ListStatuses } from "./routes/ListStatuses";
 import { DetailStatus } from "./routes/DetailStatus";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <Header />
+      <ToastContainer />
       <main className="flex flex-1 overflow-y-scroll no-scrollbar p-4">
         <BrowserRouter>
           <Routes>
