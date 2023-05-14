@@ -35,3 +35,43 @@ export const authUser = async (data) => {
     });
   }
 };
+
+export const RegisterUser = async (data) => {
+  const newUser = {
+    name: data.name.trim(),
+    email: data.email.trim(),
+    password: data.password.trim(),
+    phone: data.phone.trim(),
+    role: "USER"
+  };
+
+  try {
+    const response = await api.post("/authentication/register", newUser);
+    if (response.status === 201) {
+      toast.success("Usuário registrado com sucesso", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  } catch (e){
+    toast.error(
+      "Falha ao adicionar o usuário, verifique se todas as informações foram preenchidas",
+      {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      }
+    );
+  }
+};

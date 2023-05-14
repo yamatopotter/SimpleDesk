@@ -52,6 +52,10 @@ export const LoginForm = () => {
             extra={{
               ...register("password", {
                 required: "A senha não pode ser vazia",
+                minLength: {
+                  value: 8,
+                  message: "A senha contém no mínimo 8 caracteres."
+                }
               }),
             }}
             className={errors?.password?.message ? "border-red-500" : ""}
