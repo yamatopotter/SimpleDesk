@@ -1,15 +1,13 @@
 package simpledesk.app.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import simpledesk.app.DTO.UserInfoDTO;
+import simpledesk.app.DTO.UserInfoDTOMapper;
 import simpledesk.app.auth.AuthenticationRequest;
 import simpledesk.app.auth.AuthenticationResponse;
 import simpledesk.app.auth.RegisterRequest;
@@ -18,10 +16,13 @@ import simpledesk.app.entity.Role;
 import simpledesk.app.entity.User;
 import simpledesk.app.repository.IUserRepository;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final IUserRepository repository;
+    private final UserInfoDTOMapper userInfoDTOMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -58,5 +59,15 @@ public class AuthenticationService {
                 .token(jwtToken)
                 .build();
     }
+
+    public Optional<UserInfoDTO> infoUser(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
+        String user = (String) principal;
+        User userEntity = repository.findByEmail(user).get();
+
+        return Optional.of(userInfoDTOMapper.apply(userEntity));
+    }
+
+
 
 }

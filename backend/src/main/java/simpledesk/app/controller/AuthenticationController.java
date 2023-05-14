@@ -6,15 +6,20 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import simpledesk.app.DTO.UserDTO;
+import simpledesk.app.DTO.UserInfoDTO;
 import simpledesk.app.auth.AuthenticationRequest;
 import simpledesk.app.auth.AuthenticationResponse;
 import simpledesk.app.auth.RegisterRequest;
 import simpledesk.app.repository.IUserRepository;
 import simpledesk.app.service.AuthenticationService;
+
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*") // Liberando o controlador dos CORS
@@ -22,6 +27,8 @@ import simpledesk.app.service.AuthenticationService;
 @Tag(description = "Registro e Login na aplicação", name = "Autenticação")
 @RequiredArgsConstructor
 public class AuthenticationController {
+
+    final static Logger log = Logger.getLogger(String.valueOf(AuthenticationController.class));
     private final IUserRepository repository;
     @Autowired
     private AuthenticationService service;
@@ -46,5 +53,16 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authentication(@RequestBody AuthenticationRequest request) throws Exception {
         return ResponseEntity.ok(service.authenticate(request));
+    }
+
+    @GetMapping
+    public ResponseEntity<Optional<UserInfoDTO>> infoUser(){
+        try {
+            log.info("Buscando os dados do usuário logado");
+            return ResponseEntity.ok(service.infoUser());
+        } catch (Exception e){
+            log.error("Não foi possível buscar os dados do usuário");
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
