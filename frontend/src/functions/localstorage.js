@@ -1,0 +1,3 @@
+const localStorageData = {
+  token: "token",
+};
