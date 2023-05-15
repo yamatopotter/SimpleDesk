@@ -42,16 +42,16 @@ public class TicketHistoryService {
         }
     }
 
-    public Optional<TicketHistoryDTO> addTicketHistory(TicketHistoryDTO ticket) {
+    public Optional<TicketHistoryDTO> addTicketHistory(TicketHistoryDTO ticketHistoryDTO) {
 
         Optional<Ticket> ticketToTicketHistory;
         Optional<Status> statusToTicketHistory;
 
-        statusToTicketHistory = statusRepository.findById(ticket.status().id());
-        ticketToTicketHistory = ticketRepository.findById(ticket.ticket().id());
+        statusToTicketHistory = statusRepository.findById(ticketHistoryDTO.status().id());
+        ticketToTicketHistory = ticketRepository.findById(ticketHistoryDTO.ticket().id());
 
 
-        if (ticket == null) {
+        if (ticketHistoryDTO == null) {
             return Optional.of(null);
         } else {
             TicketHistory ticketHistory = ticketHistoryRepository.saveAndFlush(
@@ -59,8 +59,8 @@ public class TicketHistoryService {
                             null,
                             ticketToTicketHistory.get(),
                             statusToTicketHistory.get(),
-                            ticket.description(),
-                            ticket.urlPhoto(),
+                            ticketHistoryDTO.description(),
+                            ticketHistoryDTO.urlPhoto(),
                             LocalDateTime.now()
                     )
             );
