@@ -30,6 +30,7 @@ public class SecurityConfiguration {
                         "/authentication/**",
                         "/user","/user/**",
                         "/sector","/sector/**",
+                        "/equipmentType","/equipmentType/**",
                         "/swagger-ui/**","/swagger-ui.html","/swagger-ui/**","/v3/api-docs/**")
                 .permitAll()
                 .anyRequest()
