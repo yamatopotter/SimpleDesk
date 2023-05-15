@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import { api } from "../service/api";
+import { setLocalstorageData } from "./localstorage";
 
 export const authUser = async (data) => {
   const loginData = {
@@ -21,6 +22,8 @@ export const authUser = async (data) => {
         progress: undefined,
         theme: "light",
       });
+
+      setLocalstorageData("token", response.data.token)
     }
   } catch {
     toast.error("Falha ao realizar login, verifique o usuário e senha", {

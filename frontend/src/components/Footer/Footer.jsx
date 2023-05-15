@@ -4,7 +4,7 @@ import { ButtonBottomNav } from "../ButtonBottomNav/ButtonBottomNav";
 export const Footer = () => {
     if(true){
         return (
-          <div className="flex w-full py-2 text-center items-center justify-evenly bg-violet-950">
+          <div className="flex w-full p-2 text-center items-center overflow-x-scroll justify-between bg-violet-950">
             <ButtonBottomNav
               active={true}
               icon={<House size={24} />}
