@@ -17,7 +17,7 @@ public class SectorService {
     private final SectorDTOMapper sectorDTOMapper;
     private final ISectorRepository sectorRepository;
 
-    public List<SectorDTO> findAll() throws Exception {
+    public List<SectorDTO> findAll() {
 
         Stream<SectorDTO> sector;
         sector = sectorRepository.findAll().stream().map(sectorDTOMapper);

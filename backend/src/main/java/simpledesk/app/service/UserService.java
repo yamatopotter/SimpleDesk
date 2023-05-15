@@ -26,7 +26,7 @@ public class UserService{
 
 
 
-    public List<UserDTO> findAll() throws Exception {
+    public List<UserDTO> findAll(){
 
         Stream<UserDTO> user;
         user = userRepository.findAll().stream().map(userDTOMapper);

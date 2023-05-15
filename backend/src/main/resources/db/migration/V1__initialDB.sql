@@ -8,7 +8,7 @@ CREATE TABLE user (
     created_at TIMESTAMP default CURRENT_TIMESTAMP
 );
 
-CREATE TABLE equipmenttype (
+CREATE TABLE equipment_type (
     id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(20) NOT NULL
 );
@@ -27,11 +27,11 @@ CREATE TABLE equipment (
     id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(30),
     fk_idSector BIGINT,
-    fk_idEquipmentType BIGINT,
+    fk_idEquipment_Type BIGINT,
     FOREIGN KEY (fk_idSector)
         REFERENCES sector(id),
-    FOREIGN KEY (fk_idEquipmentType)
-        REFERENCES equipmenttype(id)
+    FOREIGN KEY (fk_idEquipment_Type)
+        REFERENCES equipment_type(id)
 );
 
 CREATE TABLE ticket (
@@ -61,8 +61,8 @@ CREATE TABLE tickethistory (
         REFERENCES status(id)
 );
 
-insert into equipmenttype (name) values ("Computador");
-insert into equipmenttype (name) values ("Impressora");
+insert into equipment_type (name) values ("Computador");
+insert into equipment_type (name) values ("Impressora");
 
 insert into status (name) values ("Aguardando atendimento");
 insert into status (name) values ("Em deslocamento");
