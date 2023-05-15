@@ -21,9 +21,9 @@ public class EquipmentTypeService {
 
     public List<EquipmentTypeDTO> findAll(){
 
-        Stream<EquipmentTypeDTO> sector;
-        sector = equipmentTypeRepository.findAll().stream().map(equipmentTypeDTOMapper);
-        return sector.toList();
+        Stream<EquipmentTypeDTO> equipmentTypeDTO;
+        equipmentTypeDTO = equipmentTypeRepository.findAll().stream().map(equipmentTypeDTOMapper);
+        return equipmentTypeDTO.toList();
     }
 
     public Optional<EquipmentTypeDTO> findById(Long id) {
@@ -42,15 +42,12 @@ public class EquipmentTypeService {
         if (equipmentTypeDTO == null || equipmentTypeRepository.findByName(equipmentTypeDTO.name()).isPresent()) {
             return Optional.of(null);
         } else {
-            Optional<Sector> sectorEntity;
-
             EquipmentType equipmentType = equipmentTypeRepository.saveAndFlush(
                     new EquipmentType(
                             null,
                             equipmentTypeDTO.name()
                     )
             );
-
             return Optional.of(equipmentTypeDTOMapper.apply(equipmentType));
         }
     }
@@ -64,7 +61,7 @@ public class EquipmentTypeService {
     }
 
     public Optional<EquipmentTypeDTO>updateEquipmentType(EquipmentTypeDTO equipmentTypeDTO){
-        if (equipmentTypeDTO == null || equipmentTypeRepository.findByName(equipmentTypeDTO.name()).isPresent()) { // Não pode atualizar para um setor já existente
+        if (equipmentTypeDTO == null || equipmentTypeRepository.findByName(equipmentTypeDTO.name()).isPresent()) { // Não pode atualizar para um tipo de equipamento já existente
             return Optional.of(null);
 
         } else {
