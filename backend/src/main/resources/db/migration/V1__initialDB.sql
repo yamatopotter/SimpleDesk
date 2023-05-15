@@ -26,11 +26,11 @@ CREATE TABLE status (
 CREATE TABLE equipment (
     id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(30),
-    fk_idSector BIGINT,
-    fk_idEquipment_Type BIGINT,
-    FOREIGN KEY (fk_idSector)
+    fk_id_sector BIGINT,
+    fk_id_equipment_type BIGINT,
+    FOREIGN KEY (fk_id_sector)
         REFERENCES sector(id),
-    FOREIGN KEY (fk_idEquipment_Type)
+    FOREIGN KEY (fk_id_equipment_type)
         REFERENCES equipment_type(id)
 );
 
