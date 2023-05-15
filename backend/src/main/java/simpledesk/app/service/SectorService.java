@@ -41,7 +41,6 @@ public class SectorService {
         if (sector == null || sectorRepository.findByName(sector.name()).isPresent()) {
             return Optional.of(null);
         } else {
-            Optional<Sector> sectorEntity;
 
             Sector newSector = sectorRepository.saveAndFlush(
                     new Sector(
