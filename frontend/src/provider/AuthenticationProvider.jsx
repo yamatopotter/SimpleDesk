@@ -6,8 +6,8 @@ export const AuthenticationProvider = (props) => {
   const [userData, setUserData] = useState({});
 
   return (
-    <AuthenticationContext value={{ userData, setUserData }}>
+    <AuthenticationContext.Provider value={{ userData, setUserData }}>
       {props.children}
-    </AuthenticationContext>
+    </AuthenticationContext.Provider>
   );
 };
