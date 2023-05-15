@@ -48,7 +48,7 @@ CREATE TABLE ticket (
         REFERENCES equipment(id)
 );
 
-CREATE TABLE tickethistory (
+CREATE TABLE ticket_history (
     id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     description VARCHAR(150) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
