@@ -38,13 +38,13 @@ CREATE TABLE ticket (
     id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     title VARCHAR(50) NOT NULL,
     description TEXT,
-    urlPhoto VARCHAR(150),
-    fk_idUser BIGINT,
-    fk_idEquipment BIGINT,
+    url_photo VARCHAR(150),
+    fk_id_user BIGINT,
+    fk_id_equipment BIGINT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (fk_idUser)
+    FOREIGN KEY (fk_id_user)
         REFERENCES user(id),
-    FOREIGN KEY (fk_idEquipment)
+    FOREIGN KEY (fk_id_equipment)
         REFERENCES equipment(id)
 );
 
@@ -52,12 +52,12 @@ CREATE TABLE tickethistory (
     id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     description VARCHAR(150) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    urlimage VARCHAR(150),
-    fk_idTicket BIGINT NOT NULL,
-    fk_idStatus BIGINT NOT NULL,
-    FOREIGN KEY (fk_idTicket)
+    url_image VARCHAR(150),
+    fk_id_ticket BIGINT NOT NULL,
+    fk_id_status BIGINT NOT NULL,
+    FOREIGN KEY (fk_id_ticket)
         REFERENCES ticket(id),
-    FOREIGN KEY (fk_idStatus)
+    FOREIGN KEY (fk_id_status)
         REFERENCES status(id)
 );
 

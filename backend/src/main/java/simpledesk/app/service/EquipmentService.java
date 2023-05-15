@@ -1,15 +1,12 @@
 package simpledesk.app.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import simpledesk.app.DTO.equipment.EquipmentDTO;
 import simpledesk.app.DTO.equipment.EquipmentDTOMapper;
-import simpledesk.app.DTO.equipmentType.EquipmentTypeDTO;
 import simpledesk.app.entity.Equipment;
 import simpledesk.app.entity.EquipmentType;
 import simpledesk.app.entity.Sector;
-import simpledesk.app.entity.User;
 import simpledesk.app.repository.IEquipmentRepositoy;
 import simpledesk.app.repository.IEquipmentTypeRepository;
 import simpledesk.app.repository.ISectorRepository;
