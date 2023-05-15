@@ -1,4 +1,4 @@
-package simpledesk.app.DTO;
+package simpledesk.app.DTO.user;
 
 public record UserDTO(
         Long id,

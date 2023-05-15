@@ -1,4 +1,4 @@
-package simpledesk.app.DTO;
+package simpledesk.app.DTO.user;
 
 import org.springframework.stereotype.Service;
 import simpledesk.app.entity.User;
@@ -6,15 +6,14 @@ import simpledesk.app.entity.User;
 import java.util.function.Function;
 
 @Service
-public class UserInfoDTOMapper implements Function<User, UserInfoDTO> {
+public class UserDTOMapper implements Function<User, UserDTO> {
     @Override
-    public UserInfoDTO apply(User user) {
-        return new UserInfoDTO(
+    public UserDTO apply(User user) {
+        return new UserDTO(
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
-                user.getPhone(),
-                user.getRole()
+                user.getPhone()
         );
     }
 }

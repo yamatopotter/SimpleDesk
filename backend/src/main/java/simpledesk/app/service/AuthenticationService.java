@@ -6,8 +6,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import simpledesk.app.DTO.UserInfoDTO;
-import simpledesk.app.DTO.UserInfoDTOMapper;
+import simpledesk.app.DTO.user.UserInfoDTO;
+import simpledesk.app.DTO.user.UserInfoDTOMapper;
 import simpledesk.app.auth.AuthenticationRequest;
 import simpledesk.app.auth.AuthenticationResponse;
 import simpledesk.app.auth.RegisterRequest;
