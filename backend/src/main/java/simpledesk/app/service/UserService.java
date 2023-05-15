@@ -1,15 +1,12 @@
 package simpledesk.app.service;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import simpledesk.app.DTO.UserDTO;
-import simpledesk.app.DTO.UserDTOMapper;
-import simpledesk.app.DTO.UserUpdateDTO;
-import simpledesk.app.controller.UserController;
+import simpledesk.app.DTO.user.UserDTO;
+import simpledesk.app.DTO.user.UserDTOMapper;
+import simpledesk.app.DTO.user.UserUpdateDTO;
 import simpledesk.app.entity.Role;
 import simpledesk.app.entity.User;
 import simpledesk.app.repository.IUserRepository;

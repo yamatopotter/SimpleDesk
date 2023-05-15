@@ -7,15 +7,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import simpledesk.app.DTO.UserDTO;
-import simpledesk.app.DTO.UserUpdateDTO;
+import simpledesk.app.DTO.user.UserDTO;
+import simpledesk.app.DTO.user.UserUpdateDTO;
 import simpledesk.app.repository.IUserRepository;
 import simpledesk.app.service.UserService;
 
@@ -28,8 +26,6 @@ import java.util.Optional;
 @Tag(description = "Usuários da aplicação", name="Usuário")
 public class UserController {
     final static Logger log = Logger.getLogger(String.valueOf(UserController.class));
-    @Autowired
-    private  IUserRepository repository;
     @Autowired
     private UserService userService;
 
