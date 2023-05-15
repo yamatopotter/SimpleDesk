@@ -1,11 +1,16 @@
 package simpledesk.app.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import simpledesk.app.DTO.sector.SectorDTO;
+import simpledesk.app.DTO.user.UserDTO;
 import simpledesk.app.service.SectorService;
 
 import java.util.List;
@@ -24,6 +29,10 @@ public class SectorController {
     @Autowired
     private SectorService sectorService;
 
+    @Operation(summary = "Buscar todos os setores")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
+    })
     @GetMapping
     public ResponseEntity<List<SectorDTO>> findAll() {
         try {
@@ -35,6 +44,11 @@ public class SectorController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @Operation(summary = "Buscar setor pelo ID")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
+    })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<SectorDTO>> findById(@PathVariable Long id) {
         try {
@@ -49,6 +63,10 @@ public class SectorController {
         return null;
     }
 
+    @Operation(summary = "Criar setor pelo")
+    @ApiResponse(responseCode = "201", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
+    })
     @PostMapping
     public ResponseEntity addSector(@RequestBody SectorDTO sector) {
         try {
@@ -64,6 +82,10 @@ public class SectorController {
         return null;
     }
 
+    @Operation(summary = "Atualizar setor")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
+    })
     @PutMapping
     public ResponseEntity<Optional<SectorDTO>> updateSector(@RequestBody SectorDTO sector) {
         try {
@@ -78,7 +100,10 @@ public class SectorController {
         }
         return null;
     }
-
+    @Operation(summary = "Deletar setor")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<SectorDTO>> hardDeleteSector(@PathVariable Long id) {
         try {

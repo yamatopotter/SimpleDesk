@@ -54,6 +54,10 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.authenticate(request));
     }
 
+    @Operation(summary = "Verificar que está logado no sistema")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = UserInfoDTO.class))
+    })
     @GetMapping
     public ResponseEntity<Optional<UserInfoDTO>> infoUser(){
         try {
