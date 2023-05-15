@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import simpledesk.app.DTO.sector.SectorDTO;
-import simpledesk.app.DTO.user.UserDTO;
 import simpledesk.app.service.SectorService;
 
 import java.util.List;
@@ -63,7 +62,7 @@ public class SectorController {
         return null;
     }
 
-    @Operation(summary = "Criar setor pelo")
+    @Operation(summary = "Criar setor")
     @ApiResponse(responseCode = "201", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
     })
