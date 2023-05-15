@@ -1,5 +1,9 @@
 package simpledesk.app.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +27,10 @@ public class EquipmentTypeController {
     @Autowired
     private EquipmentTypeService equipmentTypeService;
 
-
+    @Operation(summary = "Buscar todos os tipos de equipamentos")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
+    })
     @GetMapping
     public ResponseEntity<List<EquipmentTypeDTO>> findAll() {
         try {
@@ -36,6 +43,10 @@ public class EquipmentTypeController {
         }
     }
 
+    @Operation(summary = "Buscar tipo de equipamento pelo ID")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
+    })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<EquipmentTypeDTO>> findById(@PathVariable Long id) {
         try {
@@ -50,6 +61,10 @@ public class EquipmentTypeController {
         return null;
     }
 
+    @Operation(summary = "Criar um tipo de equipamento")
+    @ApiResponse(responseCode = "201", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
+    })
     @PostMapping
     public ResponseEntity addEquipmentType(@RequestBody EquipmentTypeDTO equipmentType) {
         try {
@@ -65,6 +80,10 @@ public class EquipmentTypeController {
         return null;
     }
 
+    @Operation(summary = "Editar um tipo de equipamento")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
+    })
     @PutMapping
     public ResponseEntity<Optional<EquipmentTypeDTO>> updateEquipmentType(@RequestBody EquipmentTypeDTO equipmentType) {
         try {
@@ -80,6 +99,10 @@ public class EquipmentTypeController {
         return null;
     }
 
+    @Operation(summary = "Deletar tipo de equipamento")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<EquipmentTypeDTO>> hardDeleteEquipmentType(@PathVariable Long id) {
         try {

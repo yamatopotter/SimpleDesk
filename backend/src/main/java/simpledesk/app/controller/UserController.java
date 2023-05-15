@@ -14,7 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import simpledesk.app.DTO.user.UserDTO;
 import simpledesk.app.DTO.user.UserUpdateDTO;
-import simpledesk.app.repository.IUserRepository;
 import simpledesk.app.service.UserService;
 
 import java.util.List;
