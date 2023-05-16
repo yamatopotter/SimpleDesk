@@ -80,9 +80,11 @@ public class TicketHistoryService {
 
         Optional<Ticket> ticketToTicketHistory;
         Optional<Status> statusToTicketHistory;
+        Optional<TicketHistory> ticketHistoryAtual;
 
         statusToTicketHistory = statusRepository.findById(ticket.status().id());
         ticketToTicketHistory = ticketRepository.findById(ticket.ticket().id());
+        ticketHistoryAtual = ticketHistoryRepository.findById(ticket.id());
 
 
         if (ticket == null) {
@@ -95,7 +97,7 @@ public class TicketHistoryService {
                             statusToTicketHistory.get(),
                             ticket.description(),
                             ticket.urlPhoto(),
-                            ticket.created_at()
+                            ticketHistoryAtual.get().getCreated_at()
                     )
             );
             return Optional.of(ticketHistoryDTOMapper.apply(ticketHistoryRepository.saveAndFlush(ticketHistory)));

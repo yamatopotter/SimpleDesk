@@ -25,6 +25,7 @@ public class TicketHistory {
     String description;
     String urlPhoto;
     @Temporal(TemporalType.TIMESTAMP)
-    LocalDateTime created_at;
+    LocalDateTime created_at = LocalDateTime.now();
+
 
 }

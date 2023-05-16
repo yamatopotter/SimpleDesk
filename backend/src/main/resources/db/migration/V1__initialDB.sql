@@ -52,7 +52,7 @@ CREATE TABLE ticket_history (
     id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     description VARCHAR(150) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    url_image VARCHAR(150),
+    url_photo VARCHAR(150),
     fk_id_ticket BIGINT NOT NULL,
     fk_id_status BIGINT NOT NULL,
     FOREIGN KEY (fk_id_ticket)

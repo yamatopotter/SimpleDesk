@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import simpledesk.app.DTO.ticket.TicketDTO;
-import simpledesk.app.DTO.ticket.TicketUpdateDTO;
 import simpledesk.app.DTO.ticketHistory.TicketHistoryDTO;
 import simpledesk.app.DTO.ticketHistory.TicketHistoryUpdateDTO;
 import simpledesk.app.service.TicketHistoryService;
