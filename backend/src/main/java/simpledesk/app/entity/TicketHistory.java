@@ -2,10 +2,13 @@ package simpledesk.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -22,6 +25,7 @@ public class TicketHistory {
     String description;
     String urlPhoto;
     @Temporal(TemporalType.TIMESTAMP)
-    LocalDateTime created_at;
+    LocalDateTime created_at = LocalDateTime.now();
+
 
 }

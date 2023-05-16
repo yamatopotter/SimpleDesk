@@ -88,8 +88,10 @@ public class TicketService {
         Optional<User> userEntity = Optional.of(userRepository.findByEmail(idUser).get());
 
         Optional<Equipment> equipmentToEquipment;
+        Optional<Ticket> ticketAtual;
 
         equipmentToEquipment = equipmentRepositoy.findById(ticketDTO.equipment().id());
+        ticketAtual = ticketRepository.findById(ticketDTO.id());
 
 
         if (ticketDTO == null || userEntity.get().getId() != ticketDTO.user().id()) { // Se o ID do user logado for diferente do ID do usuário que abriu o ticket, retorne nulo
@@ -103,7 +105,7 @@ public class TicketService {
                             ticketDTO.urlPhoto(),
                             userEntity.get(),
                             equipmentToEquipment.get(),
-                            ticketDTO.created_at()
+                            ticketAtual.get().getCreated_at()
                     )
             );
             return Optional.of(ticketDTOMapper.apply(ticketRepository.saveAndFlush(ticket)));

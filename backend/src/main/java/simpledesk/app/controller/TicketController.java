@@ -85,7 +85,7 @@ public class TicketController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
     @PutMapping
-    public ResponseEntity<Optional<TicketDTO>> updateEquipmentType(@RequestBody TicketUpdateDTO ticketDTO) {
+    public ResponseEntity<Optional<TicketDTO>> updateTicket(@RequestBody TicketUpdateDTO ticketDTO) {
         try {
             log.info("Editando o ticket de ID: " + ticketDTO.id());
             if (ticketDTO != null) {
@@ -104,7 +104,7 @@ public class TicketController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Optional<TicketDTO>> hardDeleteEquipmentType(@PathVariable Long id) {
+    public ResponseEntity<Optional<TicketDTO>> hardDeleteTicket(@PathVariable Long id) {
         try {
             log.info("Deletando o ticket de ID: " + id);
             if (ticketService.findById(id).isPresent() && ticketService.hardDeleteTicket(id)) return ResponseEntity.noContent().build();
