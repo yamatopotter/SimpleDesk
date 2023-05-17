@@ -32,7 +32,7 @@ export const addEquipementType = async (data) => {
     const request = await api.post(`${baseUrl}`, newSector);
 
     if (request.status === 201) {
-      toast.success("Setor adicionado com sucesso", {
+      toast.success("Tipo de equipamento adicionado com sucesso", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -80,12 +80,12 @@ export const getEquipmentType = async (id) => {
   }
 };
 
-export const deleteSector = async (id) => {
+export const deleteEquipmentType = async (id) => {
   try {
     const request = await api.delete(`${baseUrl}/${id}`);
 
     if (request.status === 200) {
-      toast.success("Setor excluído com sucesso", {
+      toast.success("Tipo de equipamento excluído com sucesso", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -99,7 +99,7 @@ export const deleteSector = async (id) => {
     }
   } catch {
     toast.error(
-      "Não é possivel excluir porque há informações vinculadas a esse setor",
+      "Não é possivel excluir porque há informações vinculadas a esse tipo de equipamento",
       {
         position: "top-right",
         autoClose: 5000,
@@ -125,7 +125,7 @@ export const updateEquipmentType = async (name, id) => {
     const request = await api.put(`${baseUrl}`, updateSectorData);
 
     if (request.status === 200) {
-      toast.success("Setor atualizado com sucesso", {
+      toast.success("Tipo de equipamento atualizado com sucesso", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
