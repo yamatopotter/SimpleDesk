@@ -25,6 +25,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthenticationProvider } from "./provider/AuthenticationProvider";
 import { UpdateSector } from "./routes/UpdateSector";
+import { UpdateEquipmentType } from "./routes/UpdateEquipmentType";
 
 function App() {
   return (
@@ -65,6 +66,7 @@ function App() {
                 path="/equipment_type/new"
                 element={<CreateEquipmentType />}
               />
+              <Route path="/equipment_type/update/:id" element={<UpdateEquipmentType />} />
             </Routes>
           </BrowserRouter>
         </main>

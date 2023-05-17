@@ -6,6 +6,7 @@ import {
   deleteEquipmentType,
   getEquipmentsType,
 } from "../../functions/equipmentTypeManagement";
+import { toast } from "react-toastify";
 
 export const ViewEquipmentsType = () => {
   const [listEquipmentType, setListEquipmentsType] = useState([]);
@@ -16,7 +17,31 @@ export const ViewEquipmentsType = () => {
       (item) => item.id !== id
     );
     if (deleteEquipmentType(id)) {
+      toast.success("Tipo de equipamento excluído com sucesso", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       setListEquipmentsType(newListEquipmentType);
+    }else{
+      toast.error(
+        "Não é possivel excluir porque há informações vinculadas a esse tipo de equipamento",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        }
+      );
     }
   }
 

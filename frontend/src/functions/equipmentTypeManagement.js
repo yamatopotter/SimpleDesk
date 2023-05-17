@@ -85,32 +85,9 @@ export const deleteEquipmentType = async (id) => {
     const request = await api.delete(`${baseUrl}/${id}`);
 
     if (request.status === 200) {
-      toast.success("Tipo de equipamento excluído com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       return true;
     }
   } catch {
-    toast.error(
-      "Não é possivel excluir porque há informações vinculadas a esse tipo de equipamento",
-      {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      }
-    );
     return false;
   }
 };
