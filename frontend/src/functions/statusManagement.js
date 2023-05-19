@@ -1,8 +1,8 @@
 import { toast } from "react-toastify";
 import { api } from "../service/api";
-const baseUrl = "/equipmentType";
+const baseUrl = "/status";
 
-export const getEquipmentsType = async () => {
+export const getStatuses = async () => {
   try {
     const request = await api.get(`${baseUrl}`);
 
@@ -23,16 +23,16 @@ export const getEquipmentsType = async () => {
   }
 };
 
-export const addEquipementType = async (data) => {
-  const newEquipementType = {
+export const addStatus = async (data) => {
+  const newStatus = {
     name: data.name.trim(),
   };
 
   try {
-    const request = await api.post(`${baseUrl}`, newEquipementType);
+    const request = await api.post(`${baseUrl}`, newStatus);
 
     if (request.status === 201) {
-      toast.success("Tipo de equipamento adicionado com sucesso", {
+      toast.success("Status adicionado com sucesso", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -59,7 +59,7 @@ export const addEquipementType = async (data) => {
   }
 };
 
-export const getEquipmentType = async (id) => {
+export const getStatus = async (id) => {
   try {
     const request = await api.get(`${baseUrl}/${id}`);
 
@@ -80,7 +80,7 @@ export const getEquipmentType = async (id) => {
   }
 };
 
-export const deleteEquipmentType = async (id) => {
+export const deleteStatus = async (id) => {
   try {
     const request = await api.delete(`${baseUrl}/${id}`);
 
@@ -92,17 +92,17 @@ export const deleteEquipmentType = async (id) => {
   }
 };
 
-export const updateEquipmentType = async (name, id) => {
-  const updateEquipmentTypeData = {
+export const updateStatus = async (name, id) => {
+  const updateStatusData = {
     id: id,
     name: name.trim(),
   };
 
   try {
-    const request = await api.put(`${baseUrl}`, updateEquipmentTypeData);
+    const request = await api.put(`${baseUrl}`, updateStatusData);
 
     if (request.status === 200) {
-      toast.success("Tipo de equipamento atualizado com sucesso", {
+      toast.success("Status atualizado com sucesso", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
