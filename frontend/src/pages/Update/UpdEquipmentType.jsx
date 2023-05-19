@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getSector, updateSector } from "../../functions/sectorManagement";
 import { useForm } from "react-hook-form";
 import { CommonInput } from "../../components/CommonInput/CommonInput";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
