@@ -26,6 +26,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AuthenticationProvider } from "./provider/AuthenticationProvider";
 import { UpdateSector } from "./routes/UpdateSector";
 import { UpdateStatus } from "./routes/UpdateStatus";
+import { UpdateEquipment } from "./routes/UpdateEquipment";
 import { UpdateEquipmentType } from "./routes/UpdateEquipmentType";
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
               <Route path="/statuses" element={<ListStatuses />} />
               <Route path="/equipment/new" element={<CreateEquipment />} />
               <Route path="/equipment/:id" element={<DetailEquipment />} />
+              <Route path="/equipment/update/:id" element={<UpdateEquipment />} />
               <Route path="/equipments" element={<ListEquipments />} />
               <Route path="/users" element={<ListUsers />} />
               <Route path="/user/:id" element={<DetailUser />} />

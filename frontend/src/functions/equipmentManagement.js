@@ -26,10 +26,10 @@ export const addEquipment = async (data) => {
   const newEquipment = {
     name: data.name.trim(),
     sector: {
-        id: data.idSector
+        id: parseInt(data.idSector)
     },
     equipment_type: {
-        id: data.idEquipmentType
+        id: parseInt(data.idEquipmentType)
     }
   };
 
@@ -97,20 +97,23 @@ export const deleteEquipment = async (id) => {
   }
 };
 
-export const updateEquipment = async (id, name, idSector, idEquipmentType) => {
+export const updateEquipment = async (id, data) => {
   const updateEquipmentData = {
-    id: id,
-    name: name.trim(),
+    id: parseInt(id),
+    name: data.name.trim(),
     sector: {
-      id: idSector,
+      id: parseInt(data.idSector),
     },
     equipment_type: {
-      id: idEquipmentType,
+      id: parseInt(data.idEquipmentType),
     },
   };
 
+  console.log(updateEquipmentData);
+
   try {
     const request = await api.put("/equipment", updateEquipmentData);
+    console.log(request.status);
 
     if (request.status === 200) {
       toast.success("Equipamento atualizado com sucesso", {
