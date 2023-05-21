@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Login } from "./routes/Login";
 import { Home } from "./pages/Home";
 import { Header } from "./components/Header/Header";
-import { Footer } from "./components/Footer/Footer";
+import { About } from "./routes/About";
 import { ListTickets } from "./routes/ListTickets";
 import { ListSectors } from "./routes/ListSectors";
 import { ListUsers } from "./routes/ListUsers";
@@ -33,14 +33,13 @@ function App() {
   return (
     <AuthenticationProvider>
       <div className="flex flex-col h-screen overflow-hidden">
-        <Header />
         <ToastContainer />
-        <main className="flex flex-1 overflow-y-scroll no-scrollbar p-4">
-          <BrowserRouter>
-            <Routes>
+        <BrowserRouter>
+          <Routes>
+            <Route path="" element={<Header />}>
               <Route path="" element={<Login />} />
               <Route path="/home" element={<Home />} />
-              <Route path="/ticket" element={<ListTickets />} />
+              <Route path="/tickets" element={<ListTickets />} />
               <Route path="/ticket/new" element={<CreateTicket />} />
               <Route path="/ticket/:id" element={<DetailTicket />} />
               <Route
@@ -56,7 +55,10 @@ function App() {
               <Route path="/statuses" element={<ListStatuses />} />
               <Route path="/equipment/new" element={<CreateEquipment />} />
               <Route path="/equipment/:id" element={<DetailEquipment />} />
-              <Route path="/equipment/update/:id" element={<UpdateEquipment />} />
+              <Route
+                path="/equipment/update/:id"
+                element={<UpdateEquipment />}
+              />
               <Route path="/equipments" element={<ListEquipments />} />
               <Route path="/users" element={<ListUsers />} />
               <Route path="/user/:id" element={<DetailUser />} />
@@ -70,11 +72,14 @@ function App() {
                 path="/equipment_type/new"
                 element={<CreateEquipmentType />}
               />
-              <Route path="/equipment_type/update/:id" element={<UpdateEquipmentType />} />
-            </Routes>
-          </BrowserRouter>
-        </main>
-        <Footer />
+              <Route
+                path="/equipment_type/update/:id"
+                element={<UpdateEquipmentType />}
+              />
+              <Route path="/about" element={<About />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
       </div>
     </AuthenticationProvider>
   );

@@ -2,6 +2,9 @@ import { useForm } from "react-hook-form";
 import { CommonButton } from "../CommonButton/CommonButton";
 import { CommonInput } from "../CommonInput/CommonInput";
 import { authUser } from "../../functions/auth";
+import { useNavigate } from "react-router-dom";
+import { AuthenticationContext } from "../../provider/AuthenticationProvider";
+import { useContext, useEffect } from "react";
 
 export const LoginForm = () => {
   const {
@@ -10,9 +13,21 @@ export const LoginForm = () => {
     formState: { errors },
   } = useForm();
 
+  const { getData, isAuthenticated } = useContext(AuthenticationContext);
+
+  const navigate = useNavigate();
+
   async function authenticateUser(data) {
-    authUser(data);
+    if (authUser(data, getData)) {
+      navigate("/home");
+    }
   }
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/home");
+    }
+  }, [isAuthenticated]);
 
   return (
     <div className="flex flex-col flex-1 justify-center items-center">
@@ -54,8 +69,8 @@ export const LoginForm = () => {
                 required: "A senha não pode ser vazia",
                 minLength: {
                   value: 8,
-                  message: "A senha contém no mínimo 8 caracteres."
-                }
+                  message: "A senha contém no mínimo 8 caracteres.",
+                },
               }),
             }}
             className={errors?.password?.message ? "border-red-500" : ""}
