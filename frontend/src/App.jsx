@@ -40,8 +40,8 @@ function App() {
             <Routes>
               <Route path="" element={<Login />} />
               <Route path="/home" element={<Home />} />
-              <Route path="/ticket/new" element={<CreateTicket />} />
               <Route path="/ticket" element={<ListTickets />} />
+              <Route path="/ticket/new" element={<CreateTicket />} />
               <Route path="/ticket/:id" element={<DetailTicket />} />
               <Route
                 path="/ticket/ticketHistory/:id"

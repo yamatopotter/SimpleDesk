@@ -23,18 +23,20 @@ export const getTickets = async () => {
   }
 };
 
-export const addTickets = async (data) => {
+export const addTicket = async (data, imgUrl, userId) => {
   const newTicket = {
     title: data.title.trim(),
-    description: data.description ? data.description.trim() : null,
-    urlPhoto: data.urlPhoto ? data.urlPhoto.trim() : null,
+    description: data.description ? data.description.trim() : '',
+    urlPhoto: imgUrl ? imgUrl.trim() : '',
     user: {
-      id: parseInt(data.idSector),
+      id: parseInt(userId),
     },
     equipment: {
-      id: parseInt(data.idEquipmentType),
+      id: parseInt(data.idEquipment),
     },
   };
+
+  console.log(data)
 
   try {
     const request = await api.post(`${baseUrl}`, newTicket);

@@ -3,31 +3,26 @@ import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { CommonInput } from "../../components/CommonInput/CommonInput";
 import { CommonTextarea } from "../../components/CommonTextarea/CommonTextarea";
 import Webcam from "react-webcam";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Select from "react-select";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { uploadPicture } from "../../service/cloudnaryService";
+import { addTicket } from "../../functions/ticketManagement";
 
-export const AddTicket = () => {
+export const AddTicket = ({ equipmentList }) => {
   const [takePicture, setTakePicture] = useState(false);
   const [picture, setPicture] = useState(null);
   const webcamRef = useRef(null);
-  const mockData = [
-    {
-      value: "teste0",
-      label: "teste0",
-    },
-    {
-      value: "teste1",
-      label: "teste1",
-    },
-    {
-      value: "teste2",
-      label: "teste2",
-    },
-    {
-      value: "teste3",
-      label: "teste3",
-    },
-  ];
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
+  const navigate = useNavigate();
 
   function savePicture(e) {
     e.preventDefault();
@@ -36,19 +31,72 @@ export const AddTicket = () => {
     setTakePicture(false);
   }
 
+  useEffect(()=>setValue("idEquipment", equipmentList[0].value), []);
+
+  const handleAddTicket = async (data) => {
+    try {
+      if(picture){
+        const imageData = await uploadPicture(picture);
+
+        if(imageData){
+          if (addTicket(data, imageData.url, 1)) {
+            // setTimeout(() => navigate("/tickets"), 1000);
+            console.log("criado com imagem");
+          }
+        }
+      }
+      else{
+        if (addTicket(data, null, 1)) {
+          // setTimeout(() => navigate("/tickets"), 1000);
+          console.log("criado sem imagem");
+        }
+      }
+    } catch (e) {
+      toast.error("Valide os dados inseridos.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col flex-1 gap-5 w-full">
       <h1 className="text-xl">Abrir chamado</h1>
 
-      <form className="flex flex-col gap-8">
+      <form
+        className="flex flex-col gap-8"
+        onSubmit={handleSubmit(handleAddTicket)}
+      >
         <div className="flex flex-col">
           <label htmlFor="ticketTitle">Título</label>
-          <CommonInput id="ticketTitle" name="ticketTitle" />
+          <CommonInput
+            id="ticketTitle"
+            name="ticketTitle"
+            extra={{
+              ...register("title", { required: "O setor não pode ser vazio" }),
+            }}
+          />
+          {errors?.title?.message && (
+            <p className="text-red-500 text-right text-sm">
+              {errors.title?.message}
+            </p>
+          )}
         </div>
 
         <div className="flex flex-col">
           <label htmlFor="ticketDescription">Descrição</label>
-          <CommonTextarea id="ticketDescription" name="ticketDescription" />
+          <CommonTextarea
+            id="ticketDescription"
+            extra={{
+              ...register("description",{}),
+            }}
+          />
         </div>
 
         <div className="flex flex-col gap-3">
@@ -87,7 +135,10 @@ export const AddTicket = () => {
             classNamePrefix="select"
             isSearchable={true}
             name="selectComputer"
-            options={mockData}
+            {...register("idEquipment")}
+            value={equipmentList[0]}
+            onChange={(option) => setValue("idEquipment", option?.value || "")}
+            options={equipmentList}
           />
         </div>
 
