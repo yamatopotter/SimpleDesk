@@ -1,6 +1,17 @@
+import { useEffect } from "react";
 import { ListItemBoxed } from "../components/ListItemBoxed/ListItemBoxed";
 
 export const Home = () => {
+  const [ticketData, setTicketData] = useState([]);
+  const [ticketHistory, setTicketHistory] = useState([]);
+
+  // ToDO
+  // useEffect(()=>{
+  //   async function getTicketData(){
+  //     setTicketData(await get
+  //   }
+  // })
+
   return (
     <div className="flex flex-col gap-10 w-full">
       <section id="openTickets" className="flex flex-col gap-2">

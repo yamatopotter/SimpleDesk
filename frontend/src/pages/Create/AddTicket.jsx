@@ -3,17 +3,19 @@ import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { CommonInput } from "../../components/CommonInput/CommonInput";
 import { CommonTextarea } from "../../components/CommonTextarea/CommonTextarea";
 import Webcam from "react-webcam";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { uploadPicture } from "../../service/cloudnaryService";
 import { addTicket } from "../../functions/ticketManagement";
+import { AuthenticationContext } from "../../provider/AuthenticationProvider";
 
 export const AddTicket = ({ equipmentList }) => {
   const [takePicture, setTakePicture] = useState(false);
   const [picture, setPicture] = useState(null);
+  const { userData } = useContext(AuthenticationContext);
   const webcamRef = useRef(null);
 
   const {
@@ -39,16 +41,15 @@ export const AddTicket = ({ equipmentList }) => {
         const imageData = await uploadPicture(picture);
 
         if(imageData){
-          if (addTicket(data, imageData.url, 1)) {
-            // setTimeout(() => navigate("/tickets"), 1000);
-            console.log("criado com imagem");
+          const userId = userData.id;
+          if (addTicket(data, imageData.url, userId)) {
+            setTimeout(() => navigate("/tickets"), 1000);
           }
         }
       }
       else{
         if (addTicket(data, null, 1)) {
-          // setTimeout(() => navigate("/tickets"), 1000);
-          console.log("criado sem imagem");
+          setTimeout(() => navigate("/tickets"), 1000);
         }
       }
     } catch (e) {

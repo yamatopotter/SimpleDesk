@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import { api } from "../service/api";
+import { getToken } from "./localstorage";
 const baseUrl = "/ticket";
 
 export const getTickets = async () => {
@@ -36,10 +37,12 @@ export const addTicket = async (data, imgUrl, userId) => {
     },
   };
 
-  console.log(data)
-
   try {
-    const request = await api.post(`${baseUrl}`, newTicket);
+    const request = await api.post(`${baseUrl}`, newTicket, {
+      headers:{
+        Authorization: 'Bearer ' + getToken()
+      }
+    });
 
     if (request.status === 201) {
       toast.success("Chamado criado com sucesso", {

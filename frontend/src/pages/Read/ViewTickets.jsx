@@ -14,7 +14,7 @@ export const ViewTickets = ({ticketsData}) => {
             return (
               <li className="py-3 flex flex-col gap-3">
                 <span className="font-bold">#{ticket.id}</span>
-                <h2>${ticket.title}</h2>
+                <h2>{ticket.title}</h2>
                 <p>Ultimo Status: aqui entra o status</p>
                 <CommonButton
                   id="ticketHistory"

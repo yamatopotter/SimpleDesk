@@ -1,8 +1,8 @@
 import { toast } from "react-toastify";
 import { api } from "../service/api";
-import { getToken, setToken } from "./localstorage";
+import { deleteToken, getToken, setToken } from "./localstorage";
 
-export const authUser = async (data) => {
+export const authUser = async (data, setIsAuthenticated, setUsetData) => {
   const loginData = {
     email: data.email.trim(),
     password: data.password.trim(),
@@ -24,11 +24,13 @@ export const authUser = async (data) => {
       });
 
       setToken(response.data.token);
-      await getData();
+      await getUserData(setIsAuthenticated, setUsetData);
 
       return true;
     }
-  } catch {
+
+  } catch (e){
+    console.log(e);
     toast.error("Falha ao realizar login, verifique o usuário e senha", {
       position: "top-right",
       autoClose: 5000,
@@ -56,9 +58,12 @@ export async function getUserData(setIsAuthenticated, setUserData) {
       setUserData(response.data);
       setIsAuthenticated(true);
     }
+
+    return true;
   } else {
     deleteToken();
     setIsAuthenticated(false);
+    return false;
   }
 }
 

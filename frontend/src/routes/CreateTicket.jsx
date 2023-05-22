@@ -26,7 +26,7 @@ export const CreateTicket = () => {
 
   return (
     <LoadingComponent isLoading={isLoading}>
-      <AddTicket equipmentList={equipmentList} />;
+      <AddTicket equipmentList={equipmentList} />
     </LoadingComponent>
   );
 };

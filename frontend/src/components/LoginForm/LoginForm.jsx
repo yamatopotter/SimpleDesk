@@ -13,12 +13,15 @@ export const LoginForm = () => {
     formState: { errors },
   } = useForm();
 
-  const { getData, isAuthenticated } = useContext(AuthenticationContext);
+  const { isAuthenticated, setUserData, setIsAuthenticated } = useContext(
+    AuthenticationContext
+  );
 
   const navigate = useNavigate();
 
   async function authenticateUser(data) {
-    if (authUser(data, getData)) {
+    const response = await authUser(data, setIsAuthenticated, setUserData);
+    if (response) {
       navigate("/home");
     }
   }
