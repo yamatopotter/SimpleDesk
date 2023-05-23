@@ -33,6 +33,7 @@ public class SecurityConfiguration {
                         "/equipmentType","/equipmentType/**",
                         "/equipment","/equipment/**",
                         "/status","/status/**",
+                        "/workflow","/workflow/**",
                         "/ticket","/ticket/**",
                         "/ticketHistory","/ticketHistory/**",
                         "/swagger-ui/**","/swagger-ui.html","/swagger-ui/**","/v3/api-docs/**")

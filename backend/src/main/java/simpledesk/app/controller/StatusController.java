@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import simpledesk.app.DTO.sector.SectorDTO;
 import simpledesk.app.DTO.status.StatusDTO;
 import simpledesk.app.service.StatusService;
+import simpledesk.app.service.WorkflowService;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +26,9 @@ public class StatusController {
     final static Logger log = Logger.getLogger(String.valueOf(StatusController.class));
     @Autowired
     private StatusService statusService;
+
+    @Autowired
+    private WorkflowService workflowService;
 
     @Operation(summary = "Buscar todos os status")
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
@@ -85,15 +88,15 @@ public class StatusController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = StatusDTO.class))
     })
     @PutMapping
-    public ResponseEntity<Optional<StatusDTO>> updateStatus(@RequestBody StatusDTO sector) {
+    public ResponseEntity<Optional<StatusDTO>> updateStatus(@RequestBody StatusDTO status) {
         try {
-            log.info("Editando o status de ID: " + sector.id());
-            if (sector != null) {
-                Optional<StatusDTO> statusUpdate = statusService.updateStatus(sector);
+            log.info("Editando o status de ID: " + status.id());
+            if (status != null) {
+                Optional<StatusDTO> statusUpdate = statusService.updateStatus(status);
                 if (statusUpdate.isPresent()) return ResponseEntity.ok(statusUpdate);
             }
         } catch (Exception e) {
-            log.error("Não foi possível editar o status de ID: " + sector.id());
+            log.error("Não foi possível editar o status de ID: " + status.id());
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         return null;

@@ -18,9 +18,17 @@ CREATE TABLE sector (
     name VARCHAR(30) NOT NULL
 );
 
+CREATE TABLE workflow (
+    id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE status (
     id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    name VARCHAR(30) NOT NULL
+    name VARCHAR(30) NOT NULL,
+    fk_id_workflow BIGINT,
+    FOREIGN KEY (fk_id_workflow)
+        REFERENCES workflow(id)
 );
 
 CREATE TABLE equipment (
@@ -64,12 +72,17 @@ CREATE TABLE ticket_history (
 insert into equipment_type (name) values ("Computador");
 insert into equipment_type (name) values ("Impressora");
 
-insert into status (name) values ("Aguardando atendimento");
-insert into status (name) values ("Em deslocamento");
-insert into status (name) values ("Em atendimento");
-insert into status (name) values ("Aguardando peça");
-insert into status (name) values ("Retirado para oficina");
-insert into status (name) values ("Reparo concluido");
-insert into status (name) values ("Atendimento finalizado");
+insert into workflow (name) values("Pendente");
+insert into workflow (name) values("Fazendo");
+insert into workflow (name) values("Feito");
+
+insert into status (name, fk_id_workflow) values ("Aguardando atendimento", 1);
+insert into status (name, fk_id_workflow) values ("Em deslocamento", 1);
+insert into status (name, fk_id_workflow) values ("Em atendimento", 2);
+insert into status (name, fk_id_workflow) values ("Aguardando peça", 2);
+insert into status (name, fk_id_workflow) values ("Retirado para oficina", 2);
+insert into status (name, fk_id_workflow) values ("Reparo concluido", 3);
+insert into status (name, fk_id_workflow) values ("Atendimento finalizado", 3);
 
 insert into sector (name) values ("Geral");
+
