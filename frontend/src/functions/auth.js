@@ -28,8 +28,7 @@ export const authUser = async (data, setIsAuthenticated, setUsetData) => {
 
       return true;
     }
-
-  } catch (e){
+  } catch (e) {
     console.log(e);
     toast.error("Falha ao realizar login, verifique o usuário e senha", {
       position: "top-right",
@@ -50,16 +49,22 @@ export async function getUserData(setIsAuthenticated, setUserData) {
   const userToken = getToken();
 
   if (userToken) {
-    const response = await api.get("/authentication", {
-      headers: { Authorization: `Bearer ${userToken}` },
-    });
+    try {
+      const response = await api.get("/authentication", {
+        headers: { Authorization: `Bearer ${userToken}` },
+      });
 
-    if (response.status === 200) {
-      setUserData(response.data);
-      setIsAuthenticated(true);
+      if (response.status === 200) {
+        setUserData(response.data);
+        setIsAuthenticated(true);
+      }
+
+      return true;
+    } catch {
+      deleteToken();
+      setIsAuthenticated(false);
+      return false;
     }
-
-    return true;
   } else {
     deleteToken();
     setIsAuthenticated(false);

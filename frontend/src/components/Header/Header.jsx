@@ -15,25 +15,38 @@ export const Header = () => {
   const location = useLocation();
 
   async function getData() {
-    const response = await getUserData(setIsAuthenticated, setUserData);
-    if (!response) {
-      if (!isAuthenticated && location.pathname !== "/") {
-        toast.error("Você precisa estar autenticado para usar o sistema.", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+    try {
+      const response = await getUserData(setIsAuthenticated, setUserData);
+      // User is not authenticated
+      if (response === false) {
+        // User is not authenticated and trying to access a protected route
+        if (isAuthenticated === false && location.pathname !== "/") {
+          toast.error("Você precisa estar autenticado para usar o sistema.", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          navigate("/");
+          setIsLoading(false);
+          return false;
+        }
         navigate("/");
+        setIsLoading(false);
+        return false;
       }
+
+      // User is authenticated
       setIsLoading(false);
-    }
-    else{
+      return true;
+    } catch {
+      // Error on trying
       setIsLoading(false);
+      return false;
     }
   }
 
