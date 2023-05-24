@@ -27,8 +27,8 @@ export const getTickets = async () => {
 export const addTicket = async (data, imgUrl, userId) => {
   const newTicket = {
     title: data.title.trim(),
-    description: data.description ? data.description.trim() : '',
-    urlPhoto: imgUrl ? imgUrl.trim() : '',
+    description: data.description ? data.description.trim() : "",
+    urlPhoto: imgUrl ? imgUrl.trim() : "",
     user: {
       id: parseInt(userId),
     },
@@ -39,23 +39,59 @@ export const addTicket = async (data, imgUrl, userId) => {
 
   try {
     const request = await api.post(`${baseUrl}`, newTicket, {
-      headers:{
-        Authorization: 'Bearer ' + getToken()
-      }
+      headers: {
+        Authorization: "Bearer " + getToken(),
+      },
     });
 
     if (request.status === 201) {
-      toast.success("Chamado criado com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      return true;
+      const newTicket = request.data;
+      const newTicketHistory = {
+        description: "Abertura do ticket pelo usuário",
+        ticket: newTicket,
+        urlPhoto: null,
+        status: {
+          id: 1,
+        },
+      };
+
+      try {
+        const requestTicketHistory = await api.post(
+          "/ticketHistory",
+          newTicketHistory,
+          {
+            headers: {
+              Authorization: "Bearer " + getToken(),
+            },
+          }
+        );
+
+        if (requestTicketHistory.status === 201) {
+          toast.success("Chamado criado com sucesso", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          return true;
+        }
+      } catch {
+        toast.warn("Chamado criado com sucesso mas sem histórico", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        return true;
+      }
     }
   } catch {
     toast.error("Valide os dados inseridos.", {
