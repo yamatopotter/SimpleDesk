@@ -111,3 +111,11 @@ export const RegisterUser = async (data) => {
     );
   }
 };
+
+export const logoutUser = (setIsAuthenticated, setUserData) => {
+  setIsAuthenticated(false);
+  setUserData({});
+  deleteToken();
+
+  return true;
+}
