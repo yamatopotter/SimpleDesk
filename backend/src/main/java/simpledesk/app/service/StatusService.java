@@ -2,12 +2,12 @@ package simpledesk.app.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import simpledesk.app.DTO.sector.SectorDTO;
 import simpledesk.app.DTO.status.StatusDTO;
 import simpledesk.app.DTO.status.StatusDTOMapper;
-import simpledesk.app.entity.Sector;
 import simpledesk.app.entity.Status;
+import simpledesk.app.entity.Workflow;
 import simpledesk.app.repository.IStatusRepository;
+import simpledesk.app.repository.IWorkflowRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +19,7 @@ public class StatusService {
 
     private final StatusDTOMapper statusDTOMapper;
     private final IStatusRepository statusRepository;
+    private final IWorkflowRepository workflowRepository;
 
     public List<StatusDTO> findAll() {
 
@@ -40,6 +41,10 @@ public class StatusService {
 
     public Optional<StatusDTO> addStatus(StatusDTO status) {
 
+        Optional<Workflow> workflowToStatus;
+
+        workflowToStatus = workflowRepository.findById(status.workflow().id());
+
         if (status == null || statusRepository.findByName(status.name()).isPresent()) {
             return Optional.of(null);
         } else {
@@ -47,7 +52,8 @@ public class StatusService {
            Status statusEntity = statusRepository.saveAndFlush(
                     new Status(
                             null,
-                            status.name()
+                            status.name(),
+                            workflowToStatus.get()
                     )
             );
 
@@ -64,13 +70,21 @@ public class StatusService {
     }
 
     public Optional<StatusDTO>updateStatus(StatusDTO status){
+
+        Optional<Workflow> workflowToStatus;
+
+        workflowToStatus = workflowRepository.findById(status.workflow().id());
+
         if (status == null || statusRepository.findByName(status.name()).isPresent()) { // Não pode atualizar para um status já existente
             return Optional.of(null);
 
         } else {
-            Status statusUpdate = new Status(
-                    status.id(),
-                    status.name()
+            Status statusUpdate = statusRepository.saveAndFlush(
+              new Status(
+                      status.id(),
+                      status.name(),
+                      workflowToStatus.get()
+              )
             );
             return Optional.of(statusDTOMapper.apply(statusRepository.saveAndFlush(statusUpdate)));
         }
