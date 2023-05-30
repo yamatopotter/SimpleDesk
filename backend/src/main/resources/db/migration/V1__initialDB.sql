@@ -81,7 +81,7 @@ insert into status (name, fk_id_workflow) values ("Em deslocamento", 1);
 insert into status (name, fk_id_workflow) values ("Em atendimento", 2);
 insert into status (name, fk_id_workflow) values ("Aguardando peça", 2);
 insert into status (name, fk_id_workflow) values ("Retirado para oficina", 2);
-insert into status (name, fk_id_workflow) values ("Reparo concluido", 3);
+insert into status (name, fk_id_workflow) values ("Reparo concluido", 2);
 insert into status (name, fk_id_workflow) values ("Atendimento finalizado", 3);
 
 insert into sector (name) values ("Geral");

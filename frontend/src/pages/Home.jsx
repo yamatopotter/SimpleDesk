@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { ListItemBoxed } from "../components/ListItemBoxed/ListItemBoxed";
+import { getTickets } from "../functions/ticketManagement";
 
 export const Home = () => {
   const [ticketData, setTicketData] = useState([]);
-  const [ticketHistory, setTicketHistory] = useState([]);
 
   // ToDO
-  // useEffect(()=>{
-  //   async function getTicketData(){
-  //     setTicketData(await get
-  //   }
-  // })
+  useEffect(() => {
+    async function getTicketData() {
+      setTicketData(await getTickets());
+    }
+
+    getTicketData();
+  });
 
   return (
     <div className="flex flex-col gap-10 w-full">

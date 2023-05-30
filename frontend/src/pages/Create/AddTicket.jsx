@@ -80,7 +80,7 @@ export const AddTicket = ({ equipmentList }) => {
             id="ticketTitle"
             name="ticketTitle"
             extra={{
-              ...register("title", { required: "O setor não pode ser vazio" }),
+              ...register("title", { required: "O chamado deve conter um título" }),
             }}
           />
           {errors?.title?.message && (
@@ -95,7 +95,7 @@ export const AddTicket = ({ equipmentList }) => {
           <CommonTextarea
             id="ticketDescription"
             extra={{
-              ...register("description",{}),
+              ...register("description"),
             }}
           />
         </div>
@@ -136,11 +136,17 @@ export const AddTicket = ({ equipmentList }) => {
             classNamePrefix="select"
             isSearchable={true}
             name="selectComputer"
-            {...register("idEquipment")}
-            value={equipmentList[0]}
+            {...register("idEquipment", {
+              required: "É obrigatório a escolha do equipamento",
+            })}
             onChange={(option) => setValue("idEquipment", option?.value || "")}
             options={equipmentList}
           />
+          {errors?.idEquipment?.message && (
+            <p className="text-red-500 text-right text-sm">
+              {errors.idEquipment?.message}
+            </p>
+          )}
         </div>
 
         <CommonButton
