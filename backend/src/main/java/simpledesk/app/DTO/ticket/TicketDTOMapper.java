@@ -13,13 +13,10 @@ import java.util.function.Function;
 public class TicketDTOMapper implements Function<Ticket, TicketDTO> {
     @Autowired
     UserDTOMapper userDTOMapper;
-
     @Autowired
     EquipmentDTOMapper equipmentDTOMapper;
-
     @Autowired
     StatusDTOMapper statusDTOMapper;
-
 
     @Override
     public TicketDTO apply(Ticket ticket) {

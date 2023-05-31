@@ -4,16 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import simpledesk.app.DTO.status.StatusDTOMapper;
 import simpledesk.app.DTO.ticket.TicketDTOMapper;
+import simpledesk.app.DTO.user.UserDTOMapper;
 import simpledesk.app.entity.TicketHistory;
 
 import java.util.function.Function;
 
 @Service
 public class TicketHistoryDTOMapper implements Function<TicketHistory, TicketHistoryDTO> {
+    @Autowired
+    UserDTOMapper userDTOMapper;
 
     @Autowired
     TicketDTOMapper ticketDTOMapper;
-
     @Autowired
     StatusDTOMapper statusDTOMapper;
 
@@ -24,6 +26,7 @@ public class TicketHistoryDTOMapper implements Function<TicketHistory, TicketHis
                     ticketHistory.getId(),
                     ticketHistory.getDescription(),
                     ticketHistory.getUrlPhoto(),
+                    userDTOMapper.apply(ticketHistory.getUser()),
                     ticketDTOMapper.apply(ticketHistory.getTicket()),
                     statusDTOMapper.apply(ticketHistory.getStatus())
             );
@@ -32,6 +35,7 @@ public class TicketHistoryDTOMapper implements Function<TicketHistory, TicketHis
                     ticketHistory.getId(),
                     ticketHistory.getDescription(),
                     ticketHistory.getUrlPhoto(),
+                    null,
                     null,
                     null
             );

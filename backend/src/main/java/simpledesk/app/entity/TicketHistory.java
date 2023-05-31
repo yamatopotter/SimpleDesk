@@ -17,6 +17,9 @@ public class TicketHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_idUser")
+    User user;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="fk_idTicket")
     Ticket ticket;
     @ManyToOne(fetch = FetchType.LAZY)
