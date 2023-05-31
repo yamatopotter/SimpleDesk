@@ -76,6 +76,13 @@ CREATE TABLE ticket_history (
 );
 
 
+CREATE TRIGGER trg_before_insert_user
+BEFORE INSERT ON simple_desk.user
+FOR EACH ROW
+BEGIN
+    SET NEW.created_at = NOW();
+END;
+
 CREATE TRIGGER trg_before_insert_ticket
 BEFORE INSERT ON simple_desk.ticket
 FOR EACH ROW

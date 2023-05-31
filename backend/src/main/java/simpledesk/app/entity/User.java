@@ -33,9 +33,6 @@ public class User implements UserDetails {
     String phone;
     @Enumerated(EnumType.STRING)
     Role role;
-    @Temporal(TemporalType.TIMESTAMP)
-    LocalDateTime created_at;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_".concat(role.name())));
