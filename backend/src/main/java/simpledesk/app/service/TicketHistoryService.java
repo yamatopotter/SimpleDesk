@@ -5,14 +5,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import simpledesk.app.DTO.ticketHistory.TicketHistoryDTO;
 import simpledesk.app.DTO.ticketHistory.TicketHistoryDTOMapper;
-import simpledesk.app.DTO.ticketHistory.TicketHistoryUpdateDTO;
 import simpledesk.app.entity.*;
 import simpledesk.app.repository.IStatusRepository;
 import simpledesk.app.repository.ITicketHistoryRepository;
 import simpledesk.app.repository.ITicketRepository;
 import simpledesk.app.repository.IUserRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -68,8 +66,7 @@ public class TicketHistoryService {
                             ticketToTicketHistory.get(),
                             statusToTicketHistory.get(),
                             ticketHistoryDTO.description(),
-                            ticketHistoryDTO.urlPhoto(),
-                            LocalDateTime.now()
+                            ticketHistoryDTO.urlPhoto()
                     )
             );
             return Optional.of(ticketHistoryDTOMapper.apply(ticketHistory));
@@ -84,7 +81,7 @@ public class TicketHistoryService {
         return false;
     }
 
-    public Optional<TicketHistoryDTO> updateTicketHistory(TicketHistoryUpdateDTO ticket) {
+    public Optional<TicketHistoryDTO> updateTicketHistory(TicketHistoryDTO ticket) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
         String idUser = (String) principal;
@@ -92,11 +89,9 @@ public class TicketHistoryService {
 
         Optional<Ticket> ticketToTicketHistory;
         Optional<Status> statusToTicketHistory;
-        Optional<TicketHistory> ticketHistoryAtual;
 
         statusToTicketHistory = statusRepository.findById(ticket.status().id());
         ticketToTicketHistory = ticketRepository.findById(ticket.ticket().id());
-        ticketHistoryAtual = ticketHistoryRepository.findById(ticket.id());
 
 
         if (ticket == null) {
@@ -109,8 +104,7 @@ public class TicketHistoryService {
                             ticketToTicketHistory.get(),
                             statusToTicketHistory.get(),
                             ticket.description(),
-                            ticket.urlPhoto(),
-                            ticketHistoryAtual.get().getCreated_at()
+                            ticket.urlPhoto()
                     )
             );
             return Optional.of(ticketHistoryDTOMapper.apply(ticketHistoryRepository.saveAndFlush(ticketHistory)));

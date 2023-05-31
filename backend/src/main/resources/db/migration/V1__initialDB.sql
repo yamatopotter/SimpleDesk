@@ -5,7 +5,7 @@ CREATE TABLE user (
     password VARCHAR(64) NOT NULL,
     phone VARCHAR(20) NOT NULL,
     role ENUM('USER', 'ADMIN') NOT NULL,
-    created_at TIMESTAMP default CURRENT_TIMESTAMP
+    created_at DATETIME
 );
 
 CREATE TABLE equipment_type (
@@ -62,7 +62,7 @@ CREATE TABLE ticket (
 CREATE TABLE ticket_history (
     id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     description VARCHAR(150) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at DATETIME,
     url_photo VARCHAR(150),
     fk_id_user BIGINT NOT NULL,
     fk_id_ticket BIGINT NOT NULL,
@@ -90,6 +90,12 @@ BEGIN
     SET NEW.created_at = NOW();
 END;
 
+CREATE TRIGGER trg_before_insert_ticket_history
+BEFORE INSERT ON simple_desk.ticket_history
+FOR EACH ROW
+BEGIN
+    SET NEW.created_at = NOW();
+END;
 
 insert into equipment_type (name) values ("Computador");
 insert into equipment_type (name) values ("Impressora");

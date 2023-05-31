@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -27,8 +26,6 @@ public class TicketHistory {
     Status status;
     String description;
     String urlPhoto;
-    @Temporal(TemporalType.TIMESTAMP)
-    LocalDateTime created_at = LocalDateTime.now();
 
 
 }
