@@ -64,8 +64,11 @@ CREATE TABLE ticket_history (
     description VARCHAR(150) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     url_photo VARCHAR(150),
+    fk_id_user BIGINT NOT NULL,
     fk_id_ticket BIGINT NOT NULL,
     fk_id_status BIGINT NOT NULL,
+    FOREIGN KEY (fk_id_user)
+            REFERENCES user(id),
     FOREIGN KEY (fk_id_ticket)
         REFERENCES ticket(id),
     FOREIGN KEY (fk_id_status)
