@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import simpledesk.app.DTO.ticketHistory.TicketHistoryDTO;
-import simpledesk.app.DTO.ticketHistory.TicketHistoryUpdateDTO;
 import simpledesk.app.service.TicketHistoryService;
 
 import java.util.List;
@@ -83,10 +82,10 @@ public class TicketHistoryController {
 
     @Operation(summary = "Editar um ticketHistory")
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryUpdateDTO.class))
+            @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
     })
     @PutMapping
-    public ResponseEntity<Optional<TicketHistoryDTO>> updateTicketHistory(@RequestBody TicketHistoryUpdateDTO ticketDTO) {
+    public ResponseEntity<Optional<TicketHistoryDTO>> updateTicketHistory(@RequestBody TicketHistoryDTO ticketDTO) {
         try {
             log.info("Editando o ticketHistory de ID: " + ticketDTO.id());
             if (ticketDTO != null) {
