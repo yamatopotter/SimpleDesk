@@ -30,7 +30,5 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_idStatus")
     Status status;
-    @Temporal(TemporalType.TIMESTAMP)
-    LocalDateTime created_at;
 
 }
