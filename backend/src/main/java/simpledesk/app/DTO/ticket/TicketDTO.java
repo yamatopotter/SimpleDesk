@@ -1,6 +1,7 @@
 package simpledesk.app.DTO.ticket;
 
 import simpledesk.app.DTO.equipment.EquipmentDTO;
+import simpledesk.app.DTO.status.StatusDTO;
 import simpledesk.app.DTO.user.UserDTO;
 
 public record TicketDTO(
@@ -9,6 +10,7 @@ public record TicketDTO(
         String description,
         String urlPhoto,
         UserDTO user,
-        EquipmentDTO equipment
+        EquipmentDTO equipment,
+        StatusDTO status
 ) {
 }

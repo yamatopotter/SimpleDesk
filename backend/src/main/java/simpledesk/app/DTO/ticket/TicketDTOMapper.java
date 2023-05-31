@@ -3,6 +3,7 @@ package simpledesk.app.DTO.ticket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import simpledesk.app.DTO.equipment.EquipmentDTOMapper;
+import simpledesk.app.DTO.status.StatusDTOMapper;
 import simpledesk.app.DTO.user.UserDTOMapper;
 import simpledesk.app.entity.Ticket;
 
@@ -16,6 +17,9 @@ public class TicketDTOMapper implements Function<Ticket, TicketDTO> {
     @Autowired
     EquipmentDTOMapper equipmentDTOMapper;
 
+    @Autowired
+    StatusDTOMapper statusDTOMapper;
+
 
     @Override
     public TicketDTO apply(Ticket ticket) {
@@ -26,7 +30,8 @@ public class TicketDTOMapper implements Function<Ticket, TicketDTO> {
                    ticket.getDescription(),
                    ticket.getUrlPhoto(),
                    userDTOMapper.apply(ticket.getUser()),
-                   equipmentDTOMapper.apply(ticket.getEquipment())
+                   equipmentDTOMapper.apply(ticket.getEquipment()),
+                   statusDTOMapper.apply(ticket.getStatus())
            );
        } catch (Exception e) {
            return new TicketDTO(
@@ -34,6 +39,7 @@ public class TicketDTOMapper implements Function<Ticket, TicketDTO> {
                    ticket.getTitle(),
                    ticket.getDescription(),
                    ticket.getUrlPhoto(),
+                   null,
                    null,
                    null
            );
