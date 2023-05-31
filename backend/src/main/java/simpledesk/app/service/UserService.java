@@ -66,8 +66,7 @@ public class UserService{
                     user.email(),
                     user.password(),
                     user.phone(),
-                    user.role(),
-                    null
+                    user.role()
             );
             userToUpdate.setPassword(passwordEncoder.encode(userToUpdate.getPassword()));
             userToUpdate.setRole(Role.USER);
