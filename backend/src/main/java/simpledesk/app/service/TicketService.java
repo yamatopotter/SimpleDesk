@@ -3,17 +3,14 @@ package simpledesk.app.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import simpledesk.app.DTO.equipment.EquipmentDTO;
 import simpledesk.app.DTO.ticket.TicketDTO;
 import simpledesk.app.DTO.ticket.TicketDTOMapper;
-import simpledesk.app.DTO.ticket.TicketUpdateDTO;
 import simpledesk.app.entity.*;
 import simpledesk.app.repository.IEquipmentRepositoy;
 import simpledesk.app.repository.IStatusRepository;
 import simpledesk.app.repository.ITicketRepository;
 import simpledesk.app.repository.IUserRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -70,8 +67,7 @@ public class TicketService {
                             ticketDTO.urlPhoto(),
                             userEntity.get(),
                             equipmentToTicket.get(),
-                            statusToTicket.get(),
-                            LocalDateTime.now()
+                            statusToTicket.get()
                     )
             );
             return Optional.of(ticketDTOMapper.apply(ticket));
@@ -86,7 +82,7 @@ public class TicketService {
         return false;
     }
 
-    public Optional<TicketDTO> updateTicket(TicketUpdateDTO ticketDTO) {
+    public Optional<TicketDTO> updateTicket(TicketDTO ticketDTO) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
         String idUser = (String) principal;
@@ -94,14 +90,12 @@ public class TicketService {
 
         Optional<Equipment> equipmentToTicket;
         Optional<Status> statusToTicket;
-        Optional<Ticket> ticketAtual;
 
         equipmentToTicket = equipmentRepositoy.findById(ticketDTO.equipment().id());
         statusToTicket = statusRepository.findById(ticketDTO.status().id());
-        ticketAtual = ticketRepository.findById(ticketDTO.id());
 
 
-        if (ticketDTO == null || userEntity.get().getId() != ticketDTO.user().id()) { // Se o ID do user logado for diferente do ID do usuário que abriu o ticket, retorne nulo
+        if (ticketDTO == null) {
             return Optional.of(null);
         } else {
             Ticket ticket = ticketRepository.saveAndFlush(
@@ -112,8 +106,7 @@ public class TicketService {
                             ticketDTO.urlPhoto(),
                             userEntity.get(),
                             equipmentToTicket.get(),
-                            statusToTicket.get(),
-                            ticketAtual.get().getCreated_at()
+                            statusToTicket.get()
                     )
             );
             return Optional.of(ticketDTOMapper.apply(ticketRepository.saveAndFlush(ticket)));

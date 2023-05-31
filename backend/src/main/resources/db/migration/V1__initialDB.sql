@@ -50,7 +50,7 @@ CREATE TABLE ticket (
     fk_id_user BIGINT,
     fk_id_equipment BIGINT,
     fk_id_status BIGINT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at DATETIME,
     FOREIGN KEY (fk_id_user)
         REFERENCES user(id),
     FOREIGN KEY (fk_id_equipment)
@@ -74,6 +74,15 @@ CREATE TABLE ticket_history (
     FOREIGN KEY (fk_id_status)
         REFERENCES status(id)
 );
+
+
+CREATE TRIGGER trg_before_insert_ticket
+BEFORE INSERT ON simple_desk.ticket
+FOR EACH ROW
+BEGIN
+    SET NEW.created_at = NOW();
+END;
+
 
 insert into equipment_type (name) values ("Computador");
 insert into equipment_type (name) values ("Impressora");
