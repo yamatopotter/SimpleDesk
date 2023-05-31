@@ -9,6 +9,7 @@ import simpledesk.app.DTO.ticket.TicketDTOMapper;
 import simpledesk.app.DTO.ticket.TicketUpdateDTO;
 import simpledesk.app.entity.*;
 import simpledesk.app.repository.IEquipmentRepositoy;
+import simpledesk.app.repository.IStatusRepository;
 import simpledesk.app.repository.ITicketRepository;
 import simpledesk.app.repository.IUserRepository;
 
@@ -25,6 +26,7 @@ public class TicketService {
     private final TicketDTOMapper ticketDTOMapper;
     private final IEquipmentRepositoy equipmentRepositoy;
     private final IUserRepository userRepository;
+    private final IStatusRepository statusRepository;
 
     public List<TicketDTO> findAll(){
 
@@ -50,9 +52,11 @@ public class TicketService {
         String idUser = (String) principal;
         Optional<User> userEntity = Optional.of(userRepository.findByEmail(idUser).get());
 
-        Optional<Equipment> equipmentToEquipment;
+        Optional<Equipment> equipmentToTicket;
+        Optional<Status> statusToTicket;
 
-        equipmentToEquipment = equipmentRepositoy.findById(ticketDTO.equipment().id());
+        equipmentToTicket = equipmentRepositoy.findById(ticketDTO.equipment().id());
+        statusToTicket = statusRepository.findById(ticketDTO.status().id());
 
 
         if (ticketDTO == null) {
@@ -65,7 +69,8 @@ public class TicketService {
                             ticketDTO.description(),
                             ticketDTO.urlPhoto(),
                             userEntity.get(),
-                            equipmentToEquipment.get(),
+                            equipmentToTicket.get(),
+                            statusToTicket.get(),
                             LocalDateTime.now()
                     )
             );
@@ -87,10 +92,12 @@ public class TicketService {
         String idUser = (String) principal;
         Optional<User> userEntity = Optional.of(userRepository.findByEmail(idUser).get());
 
-        Optional<Equipment> equipmentToEquipment;
+        Optional<Equipment> equipmentToTicket;
+        Optional<Status> statusToTicket;
         Optional<Ticket> ticketAtual;
 
-        equipmentToEquipment = equipmentRepositoy.findById(ticketDTO.equipment().id());
+        equipmentToTicket = equipmentRepositoy.findById(ticketDTO.equipment().id());
+        statusToTicket = statusRepository.findById(ticketDTO.status().id());
         ticketAtual = ticketRepository.findById(ticketDTO.id());
 
 
@@ -104,7 +111,8 @@ public class TicketService {
                             ticketDTO.description(),
                             ticketDTO.urlPhoto(),
                             userEntity.get(),
-                            equipmentToEquipment.get(),
+                            equipmentToTicket.get(),
+                            statusToTicket.get(),
                             ticketAtual.get().getCreated_at()
                     )
             );

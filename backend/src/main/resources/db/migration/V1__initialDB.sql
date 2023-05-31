@@ -49,11 +49,14 @@ CREATE TABLE ticket (
     url_photo VARCHAR(150),
     fk_id_user BIGINT,
     fk_id_equipment BIGINT,
+    fk_id_status BIGINT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (fk_id_user)
         REFERENCES user(id),
     FOREIGN KEY (fk_id_equipment)
-        REFERENCES equipment(id)
+        REFERENCES equipment(id),
+    FOREIGN KEY (fk_id_status)
+            REFERENCES status(id)
 );
 
 CREATE TABLE ticket_history (
