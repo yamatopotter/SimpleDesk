@@ -11,6 +11,7 @@ import simpledesk.app.repository.IStatusRepository;
 import simpledesk.app.repository.ITicketRepository;
 import simpledesk.app.repository.IUserRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -30,6 +31,12 @@ public class TicketService {
         Stream<TicketDTO> ticket;
         ticket = ticketRepository.findAll().stream().map(ticketDTOMapper);
         return ticket.toList();
+    }
+
+    public List<TicketDTO> getTicketsByEquipmentTypeName(String equipmentTypeName) {
+        List<TicketDTO> ticket;
+        ticket = ticketRepository.findByEquipmentTypeName("%" + equipmentTypeName + "%").stream().map(ticketDTOMapper).toList();
+        return ticket;
     }
 
     public Optional<TicketDTO> findById(Long id) {

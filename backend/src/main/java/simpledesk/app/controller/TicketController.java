@@ -41,6 +41,22 @@ public class TicketController {
         }
     }
 
+    @Operation(summary = "Buscar todos os tickets por tipo de equipamento")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
+    })
+    @GetMapping("/type/{equipmentTypeName}")
+    public ResponseEntity<List<TicketDTO>> getTicketsByEquipmentTypeName(@PathVariable String equipmentTypeName) {
+
+       log.info("Buscando todos os tickets por tipo de equipamento por: " + equipmentTypeName);
+       if (ticketService.getTicketsByEquipmentTypeName(equipmentTypeName).isEmpty()){
+           return ResponseEntity.notFound().build();
+       } else {
+           return ResponseEntity.ok().body(ticketService.getTicketsByEquipmentTypeName(equipmentTypeName));
+       }
+
+    }
+
     @Operation(summary = "Buscar ticket pelo ID")
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
