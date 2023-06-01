@@ -75,6 +75,30 @@ CREATE TABLE ticket_history (
         REFERENCES status(id)
 );
 
+CREATE TRIGGER trg_before_update_ticket_history
+BEFORE UPDATE ON simple_desk.ticket_history
+FOR EACH ROW
+BEGIN
+	IF NEW.fk_id_ticket = (SELECT id FROM ticket WHERE id = NEW.fk_id_ticket)
+THEN
+		UPDATE simple_desk.ticket
+		SET ticket.fk_id_status = NEW.fk_id_status
+		WHERE ticket.id = NEW.fk_id_ticket;
+    END IF;
+END;
+
+CREATE TRIGGER trg_before_insert_ticket_history
+BEFORE INSERT ON simple_desk.ticket_history
+FOR EACH ROW
+BEGIN
+	IF NEW.fk_id_ticket = (SELECT id FROM ticket WHERE id = NEW.fk_id_ticket)
+THEN
+		UPDATE simple_desk.ticket
+		SET ticket.fk_id_status = NEW.fk_id_status
+		WHERE ticket.id = NEW.fk_id_ticket;
+    END IF;
+    SET NEW.created_at = NOW();
+END;
 
 CREATE TRIGGER trg_before_insert_user
 BEFORE INSERT ON simple_desk.user
@@ -85,13 +109,6 @@ END;
 
 CREATE TRIGGER trg_before_insert_ticket
 BEFORE INSERT ON simple_desk.ticket
-FOR EACH ROW
-BEGIN
-    SET NEW.created_at = NOW();
-END;
-
-CREATE TRIGGER trg_before_insert_ticket_history
-BEFORE INSERT ON simple_desk.ticket_history
 FOR EACH ROW
 BEGIN
     SET NEW.created_at = NOW();
