@@ -5,7 +5,7 @@ import { AuthenticationContext } from "../../provider/AuthenticationProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const Footer = () => {
-  const { isAuthenticated } = useContext(AuthenticationContext);
+  const { isAuthenticated, userData } = useContext(AuthenticationContext);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -33,12 +33,10 @@ export const Footer = () => {
           text="Abrir Chamado"
           onClick={() => navigate("/ticket/new")}
         />
-        <ButtonBottomNav
-          active={checkUrl(location.pathname, "tickets")}
-          icon={<MagnifyingGlass size={24} />}
-          text="Ver Chamados"
-          onClick={() => navigate("/tickets")}
-        />
+        {/* {(userData.role === "ADMIN")
+        
+
+        } */}
         <ButtonBottomNav
           active={location.pathname === "/about" ? true : false}
           icon={<Info size={24} />}

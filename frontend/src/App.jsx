@@ -39,7 +39,7 @@ function App() {
             <Route path="" element={<Header />}>
               <Route path="" element={<Login />} />
               <Route path="/home" element={<Home />} />
-              <Route path="/tickets" element={<ListTickets />} />
+              {/* <Route path="/tickets" element={<ListTickets />} /> */}
               <Route path="/ticket/new" element={<CreateTicket />} />
               <Route path="/ticket/:id" element={<DetailTicket />} />
               <Route
