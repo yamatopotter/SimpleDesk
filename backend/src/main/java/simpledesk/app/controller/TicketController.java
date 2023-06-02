@@ -9,8 +9,11 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import simpledesk.app.DTO.ticket.TicketDTO;
+import simpledesk.app.entity.User;
+import simpledesk.app.repository.IUserRepository;
 import simpledesk.app.service.TicketService;
 
 import java.util.List;
@@ -24,6 +27,8 @@ public class TicketController {
     final static Logger log = Logger.getLogger(String.valueOf(TicketController.class));
     @Autowired
     private TicketService ticketService;
+    @Autowired
+    private IUserRepository userRepository;
 
     @Operation(summary = "Buscar todos os tickets")
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
@@ -108,6 +113,11 @@ public class TicketController {
             return ResponseEntity.badRequest().build();
         }
         return null;
+    }
+
+    @PostMapping("/procedure")
+    public void  callProcedureNewTicket(@RequestBody TicketDTO ticketDTO) {
+       ticketService.callProcedureNewTicket(ticketDTO);
     }
 
     @Operation(summary = "Editar um ticket")

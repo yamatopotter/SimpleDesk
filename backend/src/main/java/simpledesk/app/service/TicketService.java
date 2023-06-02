@@ -1,6 +1,7 @@
 package simpledesk.app.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import simpledesk.app.DTO.ticket.TicketDTO;
@@ -89,6 +90,28 @@ public class TicketService {
         }
     }
 
+    public void callProcedureNewTicket(TicketDTO ticketDTO) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
+        String idUser = (String) principal;
+        User userEntity = userRepository.findByEmail(idUser).get();
+
+        Optional<Equipment> equipmentToTicket;
+        Optional<Status> statusToTicket;
+
+        equipmentToTicket = equipmentRepositoy.findById(ticketDTO.equipment().id());
+        statusToTicket = statusRepository.findById(ticketDTO.status().id());
+
+        ticketRepository.callProcedureNewTicket(
+            ticketDTO.title(),
+            ticketDTO.description(),
+            ticketDTO.urlPhoto(),
+            userEntity.getId().longValue(),
+            equipmentToTicket.get().getId(),
+            statusToTicket.get().getId()
+        );
+    }
+
+
     public Boolean hardDeleteTicket(Long id) {
         if(ticketRepository.findById(id).isPresent()){
             ticketRepository.deleteById(id);
@@ -127,10 +150,6 @@ public class TicketService {
             return Optional.of(ticketDTOMapper.apply(ticketRepository.saveAndFlush(ticket)));
         }
     }
-
-
-
-
 }
 
 
