@@ -5,13 +5,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import simpledesk.app.DTO.ticket.TicketDTO;
 import simpledesk.app.DTO.ticket.TicketDTOMapper;
-import simpledesk.app.entity.*;
+import simpledesk.app.entity.Equipment;
+import simpledesk.app.entity.Status;
+import simpledesk.app.entity.Ticket;
+import simpledesk.app.entity.User;
 import simpledesk.app.repository.IEquipmentRepositoy;
 import simpledesk.app.repository.IStatusRepository;
 import simpledesk.app.repository.ITicketRepository;
 import simpledesk.app.repository.IUserRepository;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -36,6 +38,12 @@ public class TicketService {
     public List<TicketDTO> getTicketsByEquipmentTypeName(String equipmentTypeName) {
         List<TicketDTO> ticket;
         ticket = ticketRepository.findByEquipmentTypeName("%" + equipmentTypeName + "%").stream().map(ticketDTOMapper).toList();
+        return ticket;
+    }
+
+    public List<TicketDTO> getTicketsByWorkflow(String workflow) {
+        List<TicketDTO> ticket;
+        ticket = ticketRepository.findByWorkflow("%" + workflow + "%").stream().map(ticketDTOMapper).toList();
         return ticket;
     }
 
