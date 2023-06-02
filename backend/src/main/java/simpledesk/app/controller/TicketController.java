@@ -57,6 +57,22 @@ public class TicketController {
 
     }
 
+    @Operation(summary = "Buscar todos os tickets por workflow")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
+    })
+    @GetMapping("/workflow/{workflow}")
+    public ResponseEntity<List<TicketDTO>> getTicketsByWorkflow(@PathVariable String workflow) {
+
+        log.info("Buscando todos os tickets por workflow: " + workflow);
+        if (ticketService.getTicketsByWorkflow(workflow).isEmpty()){
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(ticketService.getTicketsByWorkflow(workflow));
+        }
+
+    }
+
     @Operation(summary = "Buscar ticket pelo ID")
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
