@@ -1,4 +1,4 @@
-import { House, Info, MagnifyingGlass, Siren } from "@phosphor-icons/react";
+import { House, Info, MagnifyingGlass, NotePencil, Siren } from "@phosphor-icons/react";
 import { ButtonBottomNav } from "../ButtonBottomNav/ButtonBottomNav";
 import { useContext } from "react";
 import { AuthenticationContext } from "../../provider/AuthenticationProvider";
@@ -33,6 +33,13 @@ export const Footer = () => {
           text="Abrir Chamado"
           onClick={() => navigate("/ticket/new")}
         />
+        <ButtonBottomNav
+          active={checkUrl(location.pathname, "ticket")}
+          icon={<NotePencil size={24} />}
+          text="Adicionar registro"
+          onClick={() => navigate("/ticket/new")}
+        />
+
         {/* {(userData.role === "ADMIN")
         
 

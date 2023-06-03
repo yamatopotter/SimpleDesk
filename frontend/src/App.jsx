@@ -1,9 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Login } from "./routes/Login";
-import { Home } from "./pages/Home";
+import { Home } from "./routes/Home";
 import { Header } from "./components/Header/Header";
 import { About } from "./routes/About";
-import { ListTickets } from "./routes/ListTickets";
 import { ListSectors } from "./routes/ListSectors";
 import { ListUsers } from "./routes/ListUsers";
 import { CreateTicket } from "./routes/CreateTicket";

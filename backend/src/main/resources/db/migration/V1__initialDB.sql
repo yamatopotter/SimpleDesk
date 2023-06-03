@@ -112,7 +112,6 @@ FOR EACH ROW
 BEGIN
     INSERT INTO simple_desk.ticket_history (description, url_photo, fk_id_user, fk_id_ticket, fk_id_status)
     VALUES (NEW.description, NEW.url_photo, NEW.fk_id_user, NEW.id, NEW.fk_id_status);
-
 END;
 
 CREATE TRIGGER trg_before_insert_ticket
@@ -125,9 +124,9 @@ END;
 insert into equipment_type (name) values ("Computador");
 insert into equipment_type (name) values ("Impressora");
 
-insert into workflow (name) values("Pendente");
-insert into workflow (name) values("Fazendo");
-insert into workflow (name) values("Feito");
+insert into workflow (name) values("todo");
+insert into workflow (name) values("doing");
+insert into workflow (name) values("done");
 
 insert into status (name, fk_id_workflow) values ("Aguardando atendimento", 1);
 insert into status (name, fk_id_workflow) values ("Em deslocamento", 1);

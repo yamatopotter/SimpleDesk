@@ -1,22 +1,29 @@
-import { Home } from "../pages/Home";
+import { useEffect, useState } from "react";
+import { getTicketsByWorkflow } from "../functions/ticketManagement";
+import { ViewTickets } from "../pages/Read/ViewTickets";
+import { LoadingComponent } from "../components/LoadingComponent/LoadingComponent";
 
 export const Home = () => {
-    const [listTickets, setListTickets] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+  const [listTicketsToDo, setListTicketsToDo] = useState([]);
+  const [listTicketsDoing, setListTicketsDoing] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
+  useEffect(() => {
     async function getStatusesList() {
-        const data = await getTickets();
-        setListTickets(data);
-        setIsLoading(false);
+      const todo = await getTicketsByWorkflow("todo");
+      const doing = await getTicketsByWorkflow("doing");
+      setListTicketsToDo(todo);
+      setListTicketsDoing(doing);
+
+      setIsLoading(false);
     }
 
     getStatusesList();
-    }, []);
+  }, []);
 
-    return (
+  return (
     <LoadingComponent isLoading={isLoading}>
-        <Home ticketsData={listTickets} />
+      <ViewTickets todo={listTicketsToDo} doing={listTicketsDoing} />
     </LoadingComponent>
-    );
-}
+  );
+};

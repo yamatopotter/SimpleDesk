@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { LoadingComponent } from "../components/LoadingComponent/LoadingComponent";
 import { getTickets } from "../functions/ticketManagement";
-import { ViewTickets } from "../pages/Read/ViewTickets";
+import { ViewTickets } from "../pages/Read/ViewTicketsOld";
 
 export const ListTickets = () => {
   const [listTickets, setListTickets] = useState([]);

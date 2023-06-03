@@ -21,6 +21,31 @@ export const getTickets = async () => {
       progress: undefined,
       theme: "light",
     });
+    return false;
+  }
+};
+
+export const getTicketsByWorkflow = async (workflow) => {
+  try {
+    const request = await api.get(`${baseUrl}/workflow/${workflow}`);
+
+    if (request.status === 200) {
+      return request.data;
+    }
+  } catch (err) {
+    if (err.response.status !== 404) {
+      toast.error("Erro na comunicação com a API. Tente novamente.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    return [];
   }
 };
 
@@ -35,6 +60,9 @@ export const addTicket = async (data, imgUrl, userId) => {
     equipment: {
       id: parseInt(data.idEquipment),
     },
+    status: {
+      id: 1,
+    },
   };
 
   try {
@@ -45,53 +73,17 @@ export const addTicket = async (data, imgUrl, userId) => {
     });
 
     if (request.status === 201) {
-      const newTicket = request.data;
-      const newTicketHistory = {
-        description: "Abertura do ticket pelo usuário",
-        ticket: newTicket,
-        urlPhoto: null,
-        status: {
-          id: 1,
-        },
-      };
-
-      try {
-        const requestTicketHistory = await api.post(
-          "/ticketHistory",
-          newTicketHistory,
-          {
-            headers: {
-              Authorization: "Bearer " + getToken(),
-            },
-          }
-        );
-
-        if (requestTicketHistory.status === 201) {
-          toast.success("Chamado criado com sucesso", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          return true;
-        }
-      } catch {
-        toast.warn("Chamado criado com sucesso mas sem histórico", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        return true;
-      }
+      toast.success("Chamado criado com sucesso", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return true;
     }
   } catch {
     toast.error("Valide os dados inseridos.", {

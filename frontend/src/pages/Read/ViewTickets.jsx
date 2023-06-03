@@ -1,33 +1,44 @@
-import { Eye } from "@phosphor-icons/react"
-import { CommonButton } from "../../components/CommonButton/CommonButton"
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { ListItemBoxed } from "../../components/ListItemBoxed/ListItemBoxed";
 
-export const ViewTickets = ({ticketsData}) => {
-  const navigate = useNavigate();
-    return (
-      <div className="flex flex-col gap-5 w-full">
-        <h1 className="text-xl">Lista de chamados</h1>
+export const ViewTickets = ({ todo, doing }) => {
+  return (
+    <div className="flex flex-col gap-10 w-full">
+      <section id="openTickets" className="flex flex-col gap-2">
+        <h1 className="text-xl">Chamados em aberto</h1>
 
-        <ul>
-          {ticketsData.map((ticket) => {
+        <ul className="flex flex-col gap-4">
+          {todo.map((task) => (
+            <ListItemBoxed
+              title={`#${task.id} ${task.title}`}
+              description={`${task.status.name}`}
+              key={task.id}
+            />
+          ))}
+        </ul>
+      </section>
+
+      <section id="onGoingTickets" className="flex flex-col gap-2">
+        <h1 className="text-xl">Chamados em atendimento</h1>
+        <ul className="flex flex-col gap-4">
+          {doing.map((task) => {
             return (
-              <li className="py-3 flex flex-col gap-3">
-                <span className="font-bold">#{ticket.id}</span>
-                <h2>{ticket.title}</h2>
-                <p>Ultimo Status: aqui entra o status</p>
-                <CommonButton
-                  id="ticketHistory"
-                  name="ticketHistory"
-                  content="Ver chamado"
-                  icon={<Eye size={24} />}
-                  onClick={()=>navigate(`/ticket/${ticket.id}`)}
+              <>
+                <ListItemBoxed
+                  title={`#${task.id} ${task.title}`}
+                  description={`${task.status.name}`}
+                  started={true}
+                  key={task.id}
                 />
                 <hr></hr>
-              </li>
+              </>
             );
           })}
+
+          {doing.length == 0 && (
+            <p className="pt-3">Não há chamados em aberto</p>
+          )}
         </ul>
-      </div>
-    );
-}
+      </section>
+    </div>
+  );
+};
