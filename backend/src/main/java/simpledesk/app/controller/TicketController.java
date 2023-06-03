@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import simpledesk.app.DTO.equipmentType.EquipmentTypeDTO;
 import simpledesk.app.DTO.ticket.TicketDTO;
-import simpledesk.app.DTO.ticket.TicketUpdateDTO;
 import simpledesk.app.service.TicketService;
 
 import java.util.List;
@@ -41,6 +39,38 @@ public class TicketController {
             log.error("Não foi possível buscar todos os ticket's");
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @Operation(summary = "Buscar todos os tickets por tipo de equipamento")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
+    })
+    @GetMapping("/type/{equipmentTypeName}")
+    public ResponseEntity<List<TicketDTO>> getTicketsByEquipmentTypeName(@PathVariable String equipmentTypeName) {
+
+       log.info("Buscando todos os tickets por tipo de equipamento por: " + equipmentTypeName);
+       if (ticketService.getTicketsByEquipmentTypeName(equipmentTypeName).isEmpty()){
+           return ResponseEntity.notFound().build();
+       } else {
+           return ResponseEntity.ok().body(ticketService.getTicketsByEquipmentTypeName(equipmentTypeName));
+       }
+
+    }
+
+    @Operation(summary = "Buscar todos os tickets por workflow")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
+    })
+    @GetMapping("/workflow/{workflow}")
+    public ResponseEntity<List<TicketDTO>> getTicketsByWorkflow(@PathVariable String workflow) {
+
+        log.info("Buscando todos os tickets por workflow: " + workflow);
+        if (ticketService.getTicketsByWorkflow(workflow).isEmpty()){
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(ticketService.getTicketsByWorkflow(workflow));
+        }
+
     }
 
     @Operation(summary = "Buscar ticket pelo ID")
@@ -85,15 +115,15 @@ public class TicketController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
     @PutMapping
-    public ResponseEntity<Optional<TicketDTO>> updateTicket(@RequestBody TicketUpdateDTO ticketDTO) {
+    public ResponseEntity<Optional<TicketDTO>> updateTicket(@RequestBody TicketDTO ticket) {
         try {
-            log.info("Editando o ticket de ID: " + ticketDTO.id());
-            if (ticketDTO != null) {
-                Optional<TicketDTO> ticketUpdate = ticketService.updateTicket(ticketDTO);
+            log.info("Editando o ticket de ID: " + ticket.id());
+            if (ticket != null) {
+                Optional<TicketDTO> ticketUpdate = ticketService.updateTicket(ticket);
                 if (ticketUpdate.isPresent()) return ResponseEntity.ok(ticketUpdate);
             }
         } catch (Exception e) {
-            log.error("Não foi possível editar o ticket de ID: " + ticketDTO.id());
+            log.error("Não foi possível editar o ticket de ID: " + ticket.id());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return null;
