@@ -61,7 +61,7 @@ export const UpdEquipment = () => {
   async function handleUpdateEquipment(data) {
     console.log(data)
     if (updateEquipment(id, data)) {
-      setTimeout(() => navigate("/equipments"), 1000);
+      setTimeout(() => navigate("/equipment"), 1000);
     }
   }
 
