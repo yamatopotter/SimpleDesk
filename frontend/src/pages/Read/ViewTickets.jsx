@@ -14,6 +14,10 @@ export const ViewTickets = ({ todo, doing }) => {
               key={task.id}
             />
           ))}
+
+          {doing.length == 0 && (
+            <p className="pt-3">Não há chamados em aberto</p>
+          )}
         </ul>
       </section>
 
@@ -35,7 +39,7 @@ export const ViewTickets = ({ todo, doing }) => {
           })}
 
           {doing.length == 0 && (
-            <p className="pt-3">Não há chamados em aberto</p>
+            <p className="pt-3">Não há chamados em atendimento</p>
           )}
         </ul>
       </section>

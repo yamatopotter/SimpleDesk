@@ -38,7 +38,6 @@ function App() {
             <Route path="" element={<Header />}>
               <Route path="" element={<Login />} />
               <Route path="/home" element={<Home />} />
-              {/* <Route path="/tickets" element={<ListTickets />} /> */}
               <Route path="/ticket/new" element={<CreateTicket />} />
               <Route path="/ticket/:id" element={<DetailTicket />} />
               <Route
@@ -46,23 +45,23 @@ function App() {
                 element={<CreateTicketHistory />}
               />
               <Route path="/sector/new" element={<CreateSector />} />
-              <Route path="/sectors" element={<ListSectors />} />
+              <Route path="/sector" element={<ListSectors />} />
               <Route path="/sector/update/:id" element={<UpdateSector />} />
               <Route path="/status/new" element={<CreateStatus />} />
               <Route path="/status/:id" element={<DetailStatus />} />
               <Route path="/status/update/:id" element={<UpdateStatus />} />
-              <Route path="/statuses" element={<ListStatuses />} />
+              <Route path="/status" element={<ListStatuses />} />
               <Route path="/equipment/new" element={<CreateEquipment />} />
               <Route path="/equipment/:id" element={<DetailEquipment />} />
               <Route
                 path="/equipment/update/:id"
                 element={<UpdateEquipment />}
               />
-              <Route path="/equipments" element={<ListEquipments />} />
-              <Route path="/users" element={<ListUsers />} />
-              <Route path="/user/:id" element={<DetailUser />} />
+              <Route path="/equipment" element={<ListEquipments />} />
+              <Route path="/user" element={<ListUsers />} />
+              <Route path="/user/update/:id" element={<DetailUser />} />
               <Route path="/user/new" element={<CreateUser />} />
-              <Route path="/equipments_type" element={<ListEquipmentsType />} />
+              <Route path="/equipment_type" element={<ListEquipmentsType />} />
               <Route
                 path="/equipment_type/:id"
                 element={<DetailEquipmentType />}
