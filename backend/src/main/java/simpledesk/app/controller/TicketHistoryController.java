@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import simpledesk.app.DTO.ticketHistory.TicketHistoryDTO;
+import simpledesk.app.entity.Ticket;
 import simpledesk.app.service.TicketHistoryService;
+import simpledesk.app.service.TicketService;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +28,8 @@ public class TicketHistoryController {
 
     @Autowired
     private TicketHistoryService ticketHistoryService;
+    @Autowired
+    private TicketService ticketService;
 
     @Operation(summary = "Buscar todos os ticketsHistorys")
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
@@ -54,6 +58,26 @@ public class TicketHistoryController {
             Optional<TicketHistoryDTO> ticket = ticketHistoryService.findById(id);
 
             if (ticket.isPresent()) return ResponseEntity.ok(ticket);
+        } catch (Exception e) {
+            log.error("Não foi possível buscar o ticketHistory de ID: " + id);
+            return ResponseEntity.notFound().build();
+        }
+        return null;
+    }
+
+    @Operation(summary = "Buscar ticketHistory pelo ID do ticket")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
+    })
+    @GetMapping("ticket/{id}")
+    public ResponseEntity<Optional<List<TicketHistoryDTO>>> findByTicketId(@PathVariable Long id) {
+        try {
+            log.info("Buscando o ticket pelo ID");
+            Optional< Ticket> ticket = ticketService.findByEntityId(id);
+            log.info("Buscando o ticketHistory pelo ID do ticket: " + id);
+            Optional<List<TicketHistoryDTO>> ticketHistory = ticketHistoryService.fin(id);
+
+            if (ticketHistory.isPresent()) return ResponseEntity.ok(ticketHistory);
         } catch (Exception e) {
             log.error("Não foi possível buscar o ticketHistory de ID: " + id);
             return ResponseEntity.notFound().build();

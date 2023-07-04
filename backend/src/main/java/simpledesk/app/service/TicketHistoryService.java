@@ -43,6 +43,17 @@ public class TicketHistoryService {
         }
     }
 
+    public Optional<TicketHistoryDTO> findByTicket(Ticket ticket) {
+
+        Optional<List<TicketHistoryDTO>> ticketHistory;
+        ticketHistory = ticketHistoryRepository.findByTicket(ticket);
+        if (ticketHistory.isPresent()){
+            return ticketHistory;
+        } else {
+            return Optional.empty();
+        }
+    }
+
     public Optional<TicketHistoryDTO> addTicketHistory(TicketHistoryDTO ticketHistoryDTO) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getName();

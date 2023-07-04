@@ -58,6 +58,16 @@ public class TicketService {
         }
     }
 
+    public Optional<Ticket> findByEntityId(Long id){
+        Optional<Ticket> ticket;
+        ticket = ticketRepository.findById(id);
+        if (ticket.isPresent()){
+            return ticket;
+        } else {
+            return Optional.empty();
+        }
+    }
+
     public Optional<TicketDTO> addTicket(TicketDTO ticketDTO) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getName();

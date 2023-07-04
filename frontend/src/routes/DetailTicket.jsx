@@ -1,5 +1,36 @@
+import { useEffect, useState } from "react";
 import { ViewTicket } from "../pages/Read/ViewTicket";
+import { LoadingComponent } from "../components/LoadingComponent/LoadingComponent";
+import { getTicket } from "../functions/ticketManagement";
+import { useParams } from "react-router-dom";
 
 export const DetailTicket = () => {
-  return <ViewTicket />;
+  const [isLoading, setIsLoading] = useState(true);
+  const [ticketData, setTicketData] = useState({});
+  const [ticketHistory, setTicketHistory] = useState([]);
+  const { id } = useParams();
+
+  useEffect(() => {
+    async function loadData() {
+      try{
+        const ticket = await getTicket(id);
+        setTicketData(ticket);
+        setIsLoading(false);
+        console.log(ticket)
+      }
+      catch(e){
+        console.log(e);
+      }
+
+
+    }
+
+    loadData();
+  }, []);
+
+  return (
+    <LoadingComponent isLoading={isLoading}>
+      <ViewTicket ticketData={ticketData}/>
+    </LoadingComponent>
+  );
 };
