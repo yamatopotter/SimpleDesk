@@ -70,19 +70,18 @@ public class TicketHistoryController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
     })
     @GetMapping("ticket/{id}")
-    public ResponseEntity<Optional<List<TicketHistoryDTO>>> findByTicketId(@PathVariable Long id) {
+    public ResponseEntity<List<TicketHistoryDTO>> findByTicketId(@PathVariable Long id) {
         try {
             log.info("Buscando o ticket pelo ID");
-            Optional< Ticket> ticket = ticketService.findByEntityId(id);
+            Ticket ticket = ticketService.findByEntityId(id).get();
             log.info("Buscando o ticketHistory pelo ID do ticket: " + id);
-            Optional<List<TicketHistoryDTO>> ticketHistory = ticketHistoryService.fin(id);
+            List<TicketHistoryDTO> ticketHistory = ticketHistoryService.findByTicket(ticket);
 
-            if (ticketHistory.isPresent()) return ResponseEntity.ok(ticketHistory);
+            return ResponseEntity.ok(ticketHistory);
         } catch (Exception e) {
             log.error("Não foi possível buscar o ticketHistory de ID: " + id);
             return ResponseEntity.notFound().build();
         }
-        return null;
     }
 
     @Operation(summary = "Criar um ticketHistory")

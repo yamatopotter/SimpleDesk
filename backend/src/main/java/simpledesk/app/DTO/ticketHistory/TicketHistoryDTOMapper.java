@@ -26,6 +26,7 @@ public class TicketHistoryDTOMapper implements Function<TicketHistory, TicketHis
                     ticketHistory.getId(),
                     ticketHistory.getDescription(),
                     ticketHistory.getUrlPhoto(),
+                    ticketHistory.getCreated_at(),
                     userDTOMapper.apply(ticketHistory.getUser()),
                     ticketDTOMapper.apply(ticketHistory.getTicket()),
                     statusDTOMapper.apply(ticketHistory.getStatus())
@@ -35,6 +36,7 @@ public class TicketHistoryDTOMapper implements Function<TicketHistory, TicketHis
                     ticketHistory.getId(),
                     ticketHistory.getDescription(),
                     ticketHistory.getUrlPhoto(),
+                    ticketHistory.getCreated_at(),
                     null,
                     null,
                     null

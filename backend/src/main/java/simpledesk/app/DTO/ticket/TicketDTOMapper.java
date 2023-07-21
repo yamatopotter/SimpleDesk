@@ -26,6 +26,7 @@ public class TicketDTOMapper implements Function<Ticket, TicketDTO> {
                    ticket.getTitle(),
                    ticket.getDescription(),
                    ticket.getUrlPhoto(),
+                   ticket.getCreated_at(),
                    userDTOMapper.apply(ticket.getUser()),
                    equipmentDTOMapper.apply(ticket.getEquipment()),
                    statusDTOMapper.apply(ticket.getStatus())
@@ -36,6 +37,7 @@ public class TicketDTOMapper implements Function<Ticket, TicketDTO> {
                    ticket.getTitle(),
                    ticket.getDescription(),
                    ticket.getUrlPhoto(),
+                   ticket.getCreated_at(),
                    null,
                    null,
                    null
