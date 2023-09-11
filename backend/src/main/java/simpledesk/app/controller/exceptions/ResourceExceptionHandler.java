@@ -1,6 +1,6 @@
 package simpledesk.app.controller.exceptions;
 
-import com.posto.service.exceptions.*;
+import simpledesk.app.service.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
