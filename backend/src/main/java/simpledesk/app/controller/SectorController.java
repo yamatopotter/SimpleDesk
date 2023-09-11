@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +22,9 @@ import org.apache.log4j.Logger;
 @CrossOrigin(origins = "*")
 @RequestMapping("/sector")
 @Tag(description = "Setores da aplicação", name = "Setor")
+@Slf4j
 public class SectorController {
 
-    final static Logger log = Logger.getLogger(String.valueOf(SectorController.class));
 
     @Autowired
     private SectorService sectorService;
@@ -49,17 +50,12 @@ public class SectorController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<SectorDTO>> findById(@PathVariable Long id) {
-        try {
-            log.info("Buscando o setor pelo ID: " + id);
-            Optional<SectorDTO> setor = sectorService.findById(id);
+    public ResponseEntity<SectorDTO> findById(@PathVariable Long id) {
+        log.info("Buscando o setor pelo ID: " + id);
 
-            if (setor.isPresent()) return ResponseEntity.ok(setor);
-        } catch (Exception e) {
-            log.error("Não foi possível buscar o setor de ID: " + id);
-            return ResponseEntity.notFound().build();
-        }
-        return null;
+        Optional<SectorDTO> setor = sectorService.findById(id);
+        return setor.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+
     }
 
     @Operation(summary = "Criar setor")
@@ -67,18 +63,12 @@ public class SectorController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
     })
     @PostMapping
-    public ResponseEntity addSector(@RequestBody SectorDTO sector) {
-        try {
-            log.info("Adicionando um novo setor");
-            if (sector != null) {
-                Optional<SectorDTO> newSector = sectorService.addSector(sector);
-                if (newSector.isPresent()) return new ResponseEntity<>(newSector, HttpStatus.CREATED);
-            }
-        } catch (Exception e) {
-            log.error("Não foi possível adicionar o setor");
-            return ResponseEntity.badRequest().build();
-        }
-        return null;
+    public ResponseEntity<SectorDTO> addSector(@RequestBody SectorDTO sector) {
+        log.info("Adicionando um novo setor");
+
+        Optional<SectorDTO> newSector = sectorService.addSector(sector);
+        return newSector.map(sectorDTO -> ResponseEntity.status(HttpStatus.CREATED).body(sectorDTO))
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @Operation(summary = "Atualizar setor")
@@ -86,33 +76,24 @@ public class SectorController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
     })
     @PutMapping
-    public ResponseEntity<Optional<SectorDTO>> updateSector(@RequestBody SectorDTO sector) {
-        try {
-            log.info("Editando o setor de ID: " + sector.id());
-            if (sector != null) {
-                Optional<SectorDTO> sectorUpdate = sectorService.updateSector(sector);
-                if (sectorUpdate.isPresent()) return ResponseEntity.ok(sectorUpdate);
-            }
-        } catch (Exception e) {
-            log.error("Não foi possível editar o setor de ID: " + sector.id());
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        return null;
+    public ResponseEntity<SectorDTO> updateSector(@RequestBody SectorDTO sector) {
+        log.info("Editando o setor de ID: " + sector.id());
+
+        Optional<SectorDTO> sectorUpdate = sectorService.updateSector(sector);
+        return sectorUpdate.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.badRequest().build());
     }
+
     @Operation(summary = "Deletar setor")
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<SectorDTO>> hardDeleteSector(@PathVariable Long id) {
-        try {
-            log.info("Deletando o setor de ID: " + id);
-            if (sectorService.findById(id).isPresent() && sectorService.hardDeleteSector(id)) return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            log.error("Não foi possível deletar o setor de ID: " + id);
-            return ResponseEntity.notFound().build();
-        }
-        return null;
+        log.info("Deletando o setor de ID: " + id);
+
+        return sectorService.findById(id).isPresent() && sectorService.hardDeleteSector(id) ?
+                ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
 }
