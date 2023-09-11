@@ -13,6 +13,7 @@ import simpledesk.app.repository.IUserRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -43,6 +44,14 @@ public class TicketHistoryService {
         }
     }
 
+    public List<TicketHistoryDTO> findByTicket(Ticket ticket) {
+        List<TicketHistoryDTO> ticketHistory;
+        ticketHistory = ticketHistoryRepository.findByTicket(ticket).stream().map(ticketHistoryDTOMapper).collect(Collectors.toList());
+        System.out.println("Ticket History");
+        System.out.println(ticketHistory);
+        return ticketHistory;
+    }
+
     public Optional<TicketHistoryDTO> addTicketHistory(TicketHistoryDTO ticketHistoryDTO) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -66,7 +75,8 @@ public class TicketHistoryService {
                             ticketToTicketHistory.get(),
                             statusToTicketHistory.get(),
                             ticketHistoryDTO.description(),
-                            ticketHistoryDTO.urlPhoto()
+                            ticketHistoryDTO.urlPhoto(),
+                            null
                     )
             );
             return Optional.of(ticketHistoryDTOMapper.apply(ticketHistory));
@@ -104,7 +114,8 @@ public class TicketHistoryService {
                             ticketToTicketHistory.get(),
                             statusToTicketHistory.get(),
                             ticket.description(),
-                            ticket.urlPhoto()
+                            ticket.urlPhoto(),
+                            ticket.created_at()
                     )
             );
             return Optional.of(ticketHistoryDTOMapper.apply(ticketHistoryRepository.saveAndFlush(ticketHistory)));

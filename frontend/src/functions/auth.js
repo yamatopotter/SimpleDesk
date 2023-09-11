@@ -1,8 +1,8 @@
 import { toast } from "react-toastify";
 import { api } from "../service/api";
-import { setLocalstorageData } from "./localstorage";
+import { deleteToken, getToken, setToken } from "./localstorage";
 
-export const authUser = async (data) => {
+export const authUser = async (data, setIsAuthenticated, setUsetData) => {
   const loginData = {
     email: data.email.trim(),
     password: data.password.trim(),
@@ -23,9 +23,13 @@ export const authUser = async (data) => {
         theme: "light",
       });
 
-      setLocalstorageData("token", response.data.token)
+      setToken(response.data.token);
+      await getUserData(setIsAuthenticated, setUsetData);
+
+      return true;
     }
-  } catch {
+  } catch (e) {
+    console.log(e);
     toast.error("Falha ao realizar login, verifique o usuário e senha", {
       position: "top-right",
       autoClose: 5000,
@@ -36,8 +40,37 @@ export const authUser = async (data) => {
       progress: undefined,
       theme: "light",
     });
+
+    return false;
   }
 };
+
+export async function getUserData(setIsAuthenticated, setUserData) {
+  const userToken = getToken();
+
+  if (userToken) {
+    try {
+      const response = await api.get("/authentication", {
+        headers: { Authorization: `Bearer ${userToken}` },
+      });
+
+      if (response.status === 200) {
+        setUserData(response.data);
+        setIsAuthenticated(true);
+      }
+
+      return true;
+    } catch {
+      deleteToken();
+      setIsAuthenticated(false);
+      return false;
+    }
+  } else {
+    deleteToken();
+    setIsAuthenticated(false);
+    return false;
+  }
+}
 
 export const RegisterUser = async (data) => {
   const newUser = {
@@ -45,7 +78,7 @@ export const RegisterUser = async (data) => {
     email: data.email.trim(),
     password: data.password.trim(),
     phone: data.phone.trim(),
-    role: "USER"
+    role: "USER",
   };
 
   try {
@@ -62,7 +95,7 @@ export const RegisterUser = async (data) => {
         theme: "light",
       });
     }
-  } catch (e){
+  } catch (e) {
     toast.error(
       "Falha ao adicionar o usuário, verifique se todas as informações foram preenchidas",
       {
@@ -78,3 +111,11 @@ export const RegisterUser = async (data) => {
     );
   }
 };
+
+export const logoutUser = (setIsAuthenticated, setUserData) => {
+  setIsAuthenticated(false);
+  setUserData({});
+  deleteToken();
+
+  return true;
+}

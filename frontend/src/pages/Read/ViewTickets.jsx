@@ -1,61 +1,48 @@
-import { Eye } from "@phosphor-icons/react"
-import { CommonButton } from "../../components/CommonButton/CommonButton"
+import { ListItemBoxed } from "../../components/ListItemBoxed/ListItemBoxed";
 
-export const ViewTickets = () => {
-    return (
-      <div className="flex flex-col gap-5 w-full">
-        <h1 className="text-xl">Lista de chamados</h1>
+export const ViewTickets = ({ todo, doing }) => {
+  return (
+    <div className="flex flex-col gap-10 w-full">
+      <section id="openTickets" className="flex flex-col gap-2">
+        <h1 className="text-xl">Chamados em aberto</h1>
 
-        <ul>
-          <li className="py-3 flex flex-col gap-3">
-            <span className="font-bold">#0000</span>
-            <h2>Titulo do chamado</h2>
-            <p>Ultimo Status: aqui entra o status</p>
-            <CommonButton
-              id="ticketHistory"
-              name="ticketHistory"
-              content="Ver chamado"
-              icon={<Eye size={24} />}
+        <ul className="flex flex-col gap-4">
+          {todo.map((task) => (
+            <ListItemBoxed
+              title={`#${task.id} ${task.title}`}
+              description={`${task.status.name}`}
+              key={task.id}
             />
-          </li>
-          <hr></hr>
-          <li className="py-3 flex flex-col gap-3">
-            <span className="font-bold">#0000</span>
-            <h2>Titulo do chamado</h2>
-            <p>Ultimo Status: aqui entra o status</p>
-            <CommonButton
-              id="ticketHistory"
-              name="ticketHistory"
-              content="Ver chamado"
-              icon={<Eye size={24} />}
-            />
-          </li>
-          <hr></hr>
-          <li className="py-3 flex flex-col gap-3">
-            <span className="font-bold">#0000</span>
-            <h2>Titulo do chamado</h2>
-            <p>Ultimo Status: aqui entra o status</p>
-            <CommonButton
-              id="ticketHistory"
-              name="ticketHistory"
-              content="Ver chamado"
-              icon={<Eye size={24} />}
-            />
-          </li>
-          <hr></hr>
-          <li className="py-3 flex flex-col gap-3">
-            <span className="font-bold">#0000</span>
-            <h2>Titulo do chamado</h2>
-            <p>Ultimo Status: aqui entra o status</p>
-            <CommonButton
-              id="ticketHistory"
-              name="ticketHistory"
-              content="Ver chamado"
-              icon={<Eye size={24} />}
-            />
-          </li>
-          <hr></hr>
+          ))}
+
+          {doing.length == 0 && (
+            <p className="pt-3">Não há chamados em aberto</p>
+          )}
         </ul>
-      </div>
-    );
-}
+      </section>
+
+      <section id="onGoingTickets" className="flex flex-col gap-2">
+        <h1 className="text-xl">Chamados em atendimento</h1>
+        <ul className="flex flex-col gap-4">
+          {doing.map((task) => {
+            return (
+              <>
+                <ListItemBoxed
+                  title={`#${task.id} ${task.title}`}
+                  description={`${task.status.name}`}
+                  started={true}
+                  key={task.id}
+                />
+                <hr></hr>
+              </>
+            );
+          })}
+
+          {doing.length == 0 && (
+            <p className="pt-3">Não há chamados em atendimento</p>
+          )}
+        </ul>
+      </section>
+    </div>
+  );
+};

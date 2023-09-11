@@ -23,7 +23,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
             var user = User.builder()
                     .name("Administrador")
                     .email("administrador@simpledesk.com")
-                    .password(passwordEncoder.encode("admin"))
+                    .password(passwordEncoder.encode("simpledesk"))
                     .phone("(21)91234-5678")
                     .role(Role.ADMIN)
                     .build();

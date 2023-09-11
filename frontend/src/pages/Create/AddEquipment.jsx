@@ -48,7 +48,7 @@ export const AddEquipment = () => {
 
   async function handleAddEquipment(data) {
     if (addEquipment(data)) {
-      setTimeout(() => navigate("/equipments"), 1000);
+      setTimeout(() => navigate("/equipment"), 1000);
     }
   }
 
@@ -101,7 +101,7 @@ export const AddEquipment = () => {
               classNamePrefix="select"
               isSearchable={true}
               name="selectSector"
-              {...register("idSector")}
+              {...register("idSector", { required: "É obrigatório a escolha do setor"})}
               onChange={(option) => setValue("idSector", option?.value || "")}
               options={sectorData}
             />

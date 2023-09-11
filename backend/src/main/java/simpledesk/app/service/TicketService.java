@@ -58,6 +58,16 @@ public class TicketService {
         }
     }
 
+    public Optional<Ticket> findByEntityId(Long id){
+        Optional<Ticket> ticket;
+        ticket = ticketRepository.findById(id);
+        if (ticket.isPresent()){
+            return ticket;
+        } else {
+            return Optional.empty();
+        }
+    }
+
     public Optional<TicketDTO> addTicket(TicketDTO ticketDTO) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -82,7 +92,8 @@ public class TicketService {
                             ticketDTO.urlPhoto(),
                             userEntity.get(),
                             equipmentToTicket.get(),
-                            statusToTicket.get()
+                            statusToTicket.get(),
+                            null
                     )
             );
             return Optional.of(ticketDTOMapper.apply(ticket));
@@ -121,7 +132,8 @@ public class TicketService {
                             ticketDTO.urlPhoto(),
                             userEntity.get(),
                             equipmentToTicket.get(),
-                            statusToTicket.get()
+                            statusToTicket.get(),
+                            ticketDTO.created_at()
                     )
             );
             return Optional.of(ticketDTOMapper.apply(ticketRepository.saveAndFlush(ticket)));
