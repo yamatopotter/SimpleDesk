@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +20,9 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RequestMapping("/equipmentType")
 @Tag(description = "Tipo de equipamentos da aplicação", name = "Tipo de equipamento")
+@Slf4j
 public class EquipmentTypeController {
 
-    final static Logger log = Logger.getLogger(String.valueOf(EquipmentTypeController.class));
 
     @Autowired
     private EquipmentTypeService equipmentTypeService;
@@ -48,17 +48,11 @@ public class EquipmentTypeController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<EquipmentTypeDTO>> findById(@PathVariable Long id) {
-        try {
-            log.info("Buscando o tipo de equipamento pelo ID: " + id);
-            Optional<EquipmentTypeDTO> equipmentType = equipmentTypeService.findById(id);
+    public ResponseEntity<EquipmentTypeDTO> findById(@PathVariable Long id) {
+        log.info("Buscando o tipo de equipamento pelo ID: " + id);
 
-            if (equipmentType.isPresent()) return ResponseEntity.ok(equipmentType);
-        } catch (Exception e) {
-            log.error("Não foi possível buscar o tipo de equipamento de ID: " + id);
-            return ResponseEntity.notFound().build();
-        }
-        return null;
+        Optional<EquipmentTypeDTO> equipmentType = equipmentTypeService.findById(id);
+        return equipmentType.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Criar um tipo de equipamento")
@@ -66,18 +60,12 @@ public class EquipmentTypeController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
     })
     @PostMapping
-    public ResponseEntity addEquipmentType(@RequestBody EquipmentTypeDTO equipmentType) {
-        try {
-            log.info("Adicionando um novo tipo de equipamento");
-            if (equipmentType != null) {
-                Optional<EquipmentTypeDTO> newEquipmentType = equipmentTypeService.addEquipmentType(equipmentType);
-                if (newEquipmentType.isPresent()) return new ResponseEntity<>(newEquipmentType, HttpStatus.CREATED);
-            }
-        } catch (Exception e) {
-            log.error("Não foi possível adicionar o tipo de equipamento");
-            return ResponseEntity.badRequest().build();
-        }
-        return null;
+    public ResponseEntity<EquipmentTypeDTO> addEquipmentType(@RequestBody EquipmentTypeDTO equipmentType) {
+        log.info("Adicionando um novo tipo de equipamento");
+
+        Optional<EquipmentTypeDTO> newEquipmentType = equipmentTypeService.addEquipmentType(equipmentType);
+        return newEquipmentType.map(equipmentTypeDTO -> ResponseEntity.status(HttpStatus.CREATED).body(equipmentTypeDTO))
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @Operation(summary = "Editar um tipo de equipamento")
@@ -85,18 +73,12 @@ public class EquipmentTypeController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
     })
     @PutMapping
-    public ResponseEntity<Optional<EquipmentTypeDTO>> updateEquipmentType(@RequestBody EquipmentTypeDTO equipmentType) {
-        try {
-            log.info("Editando o tipo de equipamento de ID: " + equipmentType.id());
-            if (equipmentType != null) {
-                Optional<EquipmentTypeDTO> sectorUpdate = equipmentTypeService.updateEquipmentType(equipmentType);
-                if (sectorUpdate.isPresent()) return ResponseEntity.ok(sectorUpdate);
-            }
-        } catch (Exception e) {
-            log.error("Não foi possível editar o tipo de equipamento de ID: " + equipmentType.id());
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        return null;
+    public ResponseEntity<EquipmentTypeDTO> updateEquipmentType(@RequestBody EquipmentTypeDTO equipmentType) {
+        log.info("Editando o tipo de equipamento de ID: " + equipmentType.id());
+
+        Optional<EquipmentTypeDTO> equipmentTypeUpdate = equipmentTypeService.updateEquipmentType(equipmentType);
+        return equipmentTypeUpdate.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @Operation(summary = "Deletar tipo de equipamento")
@@ -105,14 +87,10 @@ public class EquipmentTypeController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<EquipmentTypeDTO>> hardDeleteEquipmentType(@PathVariable Long id) {
-        try {
-            log.info("Deletando o tipo de equipamento de ID: " + id);
-            if (equipmentTypeService.findById(id).isPresent() && equipmentTypeService.hardDeleteEquipmentType(id)) return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            log.error("Não foi possível deletar o tipo de equipamento de ID: " + id);
-            return ResponseEntity.notFound().build();
-        }
-        return null;
+        log.info("Deletando o tipo de equipamento de ID: " + id);
+
+        return equipmentTypeService.findById(id).isPresent() && equipmentTypeService.hardDeleteEquipmentType(id) ?
+                ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
 

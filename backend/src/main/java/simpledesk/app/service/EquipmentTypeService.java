@@ -33,7 +33,7 @@ public class EquipmentTypeService {
     public Optional<EquipmentTypeDTO> findById(Long id) {
         return Optional.of(repository.findById(id)
                 .map(mapper)
-                .orElseThrow(() -> new ObjectNotFoundException("Combustivel de ID: " + id + " não encontrado.")));
+                .orElseThrow(() -> new ObjectNotFoundException("Tipo de equipamento de ID: " + id + " não encontrado.")));
     }
 
     @Transactional
@@ -41,7 +41,7 @@ public class EquipmentTypeService {
         emptyAttribute(equipmentTypeDTO);
         findByName(equipmentTypeDTO);
 
-        EquipmentType newEquipmentType = new EquipmentType(null, equipmentTypeDTO.name());
+        EquipmentType newEquipmentType = repository.save(new EquipmentType(null, equipmentTypeDTO.name()));
         return Optional.of(mapper.apply(newEquipmentType));
     }
 
@@ -51,7 +51,7 @@ public class EquipmentTypeService {
         findByName(equipmentTypeDTO);
 
         EquipmentType newEquipmentType = new EquipmentType(equipmentTypeDTO.id(), equipmentTypeDTO.name());
-        return Optional.of(mapper.apply(newEquipmentType));
+        return Optional.of(mapper.apply(repository.save(newEquipmentType)));
     }
 
     @Transactional
@@ -67,7 +67,7 @@ public class EquipmentTypeService {
     public void findByName(EquipmentTypeDTO equipmentTypeDTO) {
         Optional<EquipmentType> equipmentType = repository.findByName(equipmentTypeDTO.name());
         if (equipmentType.isPresent() && !equipmentType.get().getId().equals(equipmentTypeDTO.id()))
-            throw new DataIntegratyViolationException("Equipamento já cadastrado.");
+            throw new DataIntegratyViolationException("Tipo de equipamento já cadastrado.");
     }
 
 
