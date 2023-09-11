@@ -2,75 +2,78 @@ package simpledesk.app.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import simpledesk.app.DTO.equipmentType.EquipmentTypeDTO;
 import simpledesk.app.DTO.equipmentType.EquipmentTypeDTOMapper;
 import simpledesk.app.entity.EquipmentType;
-import simpledesk.app.entity.Sector;
 import simpledesk.app.repository.IEquipmentTypeRepository;
+import simpledesk.app.service.exceptions.DataIntegratyViolationException;
+import simpledesk.app.service.exceptions.EmptyAttributeException;
+import simpledesk.app.service.exceptions.ObjectNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class EquipmentTypeService {
 
-    private final EquipmentTypeDTOMapper equipmentTypeDTOMapper;
-    private final IEquipmentTypeRepository equipmentTypeRepository;
+    private final EquipmentTypeDTOMapper mapper;
+    private final IEquipmentTypeRepository repository;
 
-    public List<EquipmentTypeDTO> findAll(){
-
-        Stream<EquipmentTypeDTO> equipmentTypeDTO;
-        equipmentTypeDTO = equipmentTypeRepository.findAll().stream().map(equipmentTypeDTOMapper);
-        return equipmentTypeDTO.toList();
+    @Transactional(readOnly = true)
+    public List<EquipmentTypeDTO> findAll() {
+        return repository.findAll().stream()
+                .map(mapper)
+                .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public Optional<EquipmentTypeDTO> findById(Long id) {
-
-        Optional<EquipmentTypeDTO> equipmentTypeDTO;
-        equipmentTypeDTO = equipmentTypeRepository.findById(id).map(equipmentTypeDTOMapper);
-        if (equipmentTypeDTO.isPresent()){
-            return equipmentTypeDTO;
-        } else {
-            return Optional.of(null);
-        }
+        return Optional.of(repository.findById(id)
+                .map(mapper)
+                .orElseThrow(() -> new ObjectNotFoundException("Combustivel de ID: " + id + " não encontrado.")));
     }
 
+    @Transactional
     public Optional<EquipmentTypeDTO> addEquipmentType(EquipmentTypeDTO equipmentTypeDTO) {
+        emptyAttribute(equipmentTypeDTO);
+        findByName(equipmentTypeDTO);
 
-        if (equipmentTypeDTO == null || equipmentTypeRepository.findByName(equipmentTypeDTO.name()).isPresent()) {
-            return Optional.of(null);
-        } else {
-            EquipmentType equipmentType = equipmentTypeRepository.saveAndFlush(
-                    new EquipmentType(
-                            null,
-                            equipmentTypeDTO.name()
-                    )
-            );
-            return Optional.of(equipmentTypeDTOMapper.apply(equipmentType));
-        }
+        EquipmentType newEquipmentType = new EquipmentType(null, equipmentTypeDTO.name());
+        return Optional.of(mapper.apply(newEquipmentType));
     }
 
+    @Transactional
+    public Optional<EquipmentTypeDTO> updateEquipmentType(EquipmentTypeDTO equipmentTypeDTO) {
+        emptyAttribute(equipmentTypeDTO);
+        findByName(equipmentTypeDTO);
+
+        EquipmentType newEquipmentType = new EquipmentType(equipmentTypeDTO.id(), equipmentTypeDTO.name());
+        return Optional.of(mapper.apply(newEquipmentType));
+    }
+
+    @Transactional
     public Boolean hardDeleteEquipmentType(Long id) {
-        if(equipmentTypeRepository.findById(id).isPresent()){
-            equipmentTypeRepository.deleteById(id);
+        if (repository.findById(id).isPresent()) {
+            repository.deleteById(id);
             return true;
         }
         return false;
     }
 
-    public Optional<EquipmentTypeDTO>updateEquipmentType(EquipmentTypeDTO equipmentTypeDTO){
-        if (equipmentTypeDTO == null || equipmentTypeRepository.findByName(equipmentTypeDTO.name()).isPresent()) { // Não pode atualizar para um tipo de equipamento já existente
-            return Optional.of(null);
+    @Transactional(readOnly = true)
+    public void findByName(EquipmentTypeDTO equipmentTypeDTO) {
+        Optional<EquipmentType> equipmentType = repository.findByName(equipmentTypeDTO.name());
+        if (equipmentType.isPresent() && !equipmentType.get().getId().equals(equipmentTypeDTO.id()))
+            throw new DataIntegratyViolationException("Equipamento já cadastrado.");
+    }
 
-        } else {
-            EquipmentType equipmentTypeUpdate = new EquipmentType(
-                    equipmentTypeDTO.id(),
-                    equipmentTypeDTO.name()
-            );
-            return Optional.of(equipmentTypeDTOMapper.apply(equipmentTypeRepository.saveAndFlush(equipmentTypeUpdate)));
-        }
+
+    public void emptyAttribute(EquipmentTypeDTO equipmentTypeDTO) {
+        if (equipmentTypeDTO.name().isEmpty())
+            throw new EmptyAttributeException("Todos os atríbutos são necessários");
     }
 
 
