@@ -42,13 +42,13 @@ export const AddTicket = ({ equipmentList }) => {
 
         if(imageData){
           const userId = userData.id;
-          if (addTicket(data, imageData.url, userId)) {
+          if (await addTicket(data, imageData.url, userId)) {
             setTimeout(() => navigate("/home"), 1000);
           }
         }
       }
       else{
-        if (addTicket(data, null, 1)) {
+        if (await addTicket(data, null, 1)) {
           setTimeout(() => navigate("/home"), 1000);
         }
       }

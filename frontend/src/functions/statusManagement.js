@@ -26,6 +26,7 @@ export const getStatuses = async () => {
 export const addStatus = async (data) => {
   const newStatus = {
     name: data.name.trim(),
+    workflow: {id: data.workflow},
   };
 
   try {
@@ -92,10 +93,11 @@ export const deleteStatus = async (id) => {
   }
 };
 
-export const updateStatus = async (name, id) => {
+export const updateStatus = async (data) => {
   const updateStatusData = {
-    id: id,
-    name: name.trim(),
+    id: data.id,
+    name: data.name.trim(),
+    workflow: { id: data.workflow },
   };
 
   try {
