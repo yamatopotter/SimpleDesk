@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +22,8 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RequestMapping("/ticketHistory")
 @Tag(description = "Histórico de ticket's da aplicação", name = "Ticket History")
+@Slf4j
 public class TicketHistoryController {
-
-    final static Logger log = Logger.getLogger(String.valueOf(TicketHistoryController.class));
 
     @Autowired
     private TicketHistoryService ticketHistoryService;
@@ -52,17 +51,11 @@ public class TicketHistoryController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<TicketHistoryDTO>> findById(@PathVariable Long id) {
-        try {
-            log.info("Buscando o ticketHistory pelo ID: " + id);
-            Optional<TicketHistoryDTO> ticket = ticketHistoryService.findById(id);
+    public ResponseEntity<TicketHistoryDTO> findById(@PathVariable Long id) {
+        log.info("Buscando o ticketHistory pelo ID: " + id);
 
-            if (ticket.isPresent()) return ResponseEntity.ok(ticket);
-        } catch (Exception e) {
-            log.error("Não foi possível buscar o ticketHistory de ID: " + id);
-            return ResponseEntity.notFound().build();
-        }
-        return null;
+        Optional<TicketHistoryDTO> ticket = ticketHistoryService.findById(id);
+        return ticket.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Buscar ticketHistory pelo ID do ticket")
@@ -72,11 +65,9 @@ public class TicketHistoryController {
     @GetMapping("ticket/{id}")
     public ResponseEntity<List<TicketHistoryDTO>> findByTicketId(@PathVariable Long id) {
         try {
-            log.info("Buscando o ticket pelo ID");
-            Ticket ticket = ticketService.findByEntityId(id).get();
             log.info("Buscando o ticketHistory pelo ID do ticket: " + id);
+            Ticket ticket = ticketService.findByEntityId(id).get();
             List<TicketHistoryDTO> ticketHistory = ticketHistoryService.findByTicket(ticket);
-
             return ResponseEntity.ok(ticketHistory);
         } catch (Exception e) {
             log.error("Não foi possível buscar o ticketHistory de ID: " + id);
@@ -89,18 +80,12 @@ public class TicketHistoryController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
     })
     @PostMapping
-    public ResponseEntity addTicketHistory(@RequestBody TicketHistoryDTO ticket) {
-        try {
-            log.info("Adicionando um novo ticketHistory");
-            if (ticket != null) {
-                Optional<TicketHistoryDTO> newTicketHistory = ticketHistoryService.addTicketHistory(ticket);
-                if (newTicketHistory.isPresent()) return new ResponseEntity<>(newTicketHistory, HttpStatus.CREATED);
-            }
-        } catch (Exception e) {
-            log.error("Não foi possível adicionar o ticketHistory");
-            return ResponseEntity.badRequest().build();
-        }
-        return null;
+    public ResponseEntity<TicketHistoryDTO> addTicketHistory(@RequestBody TicketHistoryDTO ticket) {
+        log.info("Adicionando um novo ticketHistory");
+
+        Optional<TicketHistoryDTO> newTicketHistory = ticketHistoryService.addTicketHistory(ticket);
+        return newTicketHistory.map(ticketHistoryDTO -> ResponseEntity.status(HttpStatus.CREATED).body(ticketHistoryDTO))
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @Operation(summary = "Editar um ticketHistory")
@@ -108,18 +93,12 @@ public class TicketHistoryController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
     })
     @PutMapping
-    public ResponseEntity<Optional<TicketHistoryDTO>> updateTicketHistory(@RequestBody TicketHistoryDTO ticketDTO) {
-        try {
-            log.info("Editando o ticketHistory de ID: " + ticketDTO.id());
-            if (ticketDTO != null) {
-                Optional<TicketHistoryDTO> ticketUpdate = ticketHistoryService.updateTicketHistory(ticketDTO);
-                if (ticketUpdate.isPresent()) return ResponseEntity.ok(ticketUpdate);
-            }
-        } catch (Exception e) {
-            log.error("Não foi possível editar o ticketHistory de ID: " + ticketDTO.id());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return null;
+    public ResponseEntity<TicketHistoryDTO> updateTicketHistory(@RequestBody TicketHistoryDTO ticketDTO) {
+        log.info("Editando o ticketHistory de ID: " + ticketDTO.id());
+
+        Optional<TicketHistoryDTO> ticketUpdate = ticketHistoryService.updateTicketHistory(ticketDTO);
+        return ticketUpdate.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @Operation(summary = "Deletar ticketHistory")
@@ -128,14 +107,9 @@ public class TicketHistoryController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<TicketHistoryDTO>> hardDeleteTicket(@PathVariable Long id) {
-        try {
-            log.info("Deletando o ticketHistory de ID: " + id);
-            if (ticketHistoryService.findById(id).isPresent() && ticketHistoryService.hardDeleteTicketHistory(id)) return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            log.error("Não foi possível deletar o ticketHistory de ID: " + id);
-            return ResponseEntity.notFound().build();
-        }
-        return null;
+        log.info("Deletando o ticketHistory de ID: " + id);
+        return ticketHistoryService.findById(id).isPresent() && ticketHistoryService.hardDeleteTicketHistory(id) ?
+                ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
 
