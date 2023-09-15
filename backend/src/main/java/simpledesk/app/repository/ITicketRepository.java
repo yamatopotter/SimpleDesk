@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import simpledesk.app.entity.Ticket;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ITicketRepository extends JpaRepository<Ticket, Long> {
@@ -15,4 +16,6 @@ public interface ITicketRepository extends JpaRepository<Ticket, Long> {
 
     @Query("SELECT t FROM Ticket t JOIN t.status s JOIN s.workflow wf WHERE wf.name like :workflow")
     List<Ticket> findByWorkflow(@Param("workflow") String workflow);
+
+    Optional<Ticket> findByTitle(String title);
 }
