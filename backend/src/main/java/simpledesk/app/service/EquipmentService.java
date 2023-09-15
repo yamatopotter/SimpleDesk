@@ -45,11 +45,14 @@ public class EquipmentService {
     public Optional<EquipmentDTO> addEquipment(EquipmentDTO equipmentDTO) {
         emptyAttribute(equipmentDTO);
 
-        Optional<Sector> sectorToEquipment = sectorRepository.findById(equipmentDTO.sector().id());
-        Optional<EquipmentType> equipmentTypeToEquipment = equipmentTypeRepository.findById(equipmentDTO.equipment_type().id());
+        Sector sectorToEquipment = sectorRepository.findById(equipmentDTO.sector().id())
+                .orElseThrow(() -> new ObjectNotFoundException("Setor de ID: " + equipmentDTO.sector().id() + " não foi encontrado."));
+
+        EquipmentType equipmentTypeToEquipment = equipmentTypeRepository.findById(equipmentDTO.equipment_type().id())
+                .orElseThrow(() -> new ObjectNotFoundException("Tipo de equipamento de ID: " + equipmentDTO.equipment_type().id() + " não foi encontrado."));
 
         Equipment newEquipment = repository.save(
-                new Equipment(null, equipmentDTO.name(), sectorToEquipment.get(), equipmentTypeToEquipment.get()));
+                new Equipment(null, equipmentDTO.name(), sectorToEquipment, equipmentTypeToEquipment));
         return Optional.of(mapper.apply(newEquipment));
     }
 
@@ -57,12 +60,15 @@ public class EquipmentService {
     public Optional<EquipmentDTO> updateEquipment(EquipmentDTO equipmentDTO) {
         emptyAttribute(equipmentDTO);
 
-        Optional<Sector> sectorToEquipment = sectorRepository.findById(equipmentDTO.sector().id());
-        Optional<EquipmentType> equipmentTypeToEquipment = equipmentTypeRepository.findById(equipmentDTO.equipment_type().id());
+        Sector sectorToEquipment = sectorRepository.findById(equipmentDTO.sector().id())
+                .orElseThrow(() -> new ObjectNotFoundException("Setor de ID: " + equipmentDTO.sector().id() + " não foi encontrado."));
+
+        EquipmentType equipmentTypeToEquipment = equipmentTypeRepository.findById(equipmentDTO.equipment_type().id())
+                .orElseThrow(() -> new ObjectNotFoundException("Tipo de equipamento de ID: " + equipmentDTO.equipment_type().id() + " não foi encontrado."));
 
         Equipment UpdateEquipment = repository.save(
-                new Equipment(equipmentDTO.id(), equipmentDTO.name(), sectorToEquipment.get(), equipmentTypeToEquipment.get()));
-        return Optional.of(mapper.apply(repository.save(UpdateEquipment)));
+                new Equipment(equipmentDTO.id(), equipmentDTO.name(), sectorToEquipment, equipmentTypeToEquipment));
+        return Optional.of(mapper.apply(UpdateEquipment));
     }
 
     @Transactional
@@ -75,7 +81,8 @@ public class EquipmentService {
     }
 
     public void emptyAttribute(EquipmentDTO equipmentDTO) {
-        if (equipmentDTO.name().isEmpty() || equipmentDTO.sector() == null || equipmentDTO.equipment_type() == null)
+        if (equipmentDTO.name().isEmpty() || equipmentDTO.sector() == null || equipmentDTO.sector().id() == null ||
+                equipmentDTO.equipment_type() == null || equipmentDTO.equipment_type().id() == null)
             throw new EmptyAttributeException("Todos os atríbutos são necessários");
     }
 
