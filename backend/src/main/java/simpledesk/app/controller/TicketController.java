@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +20,8 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RequestMapping("/ticket")
 @Tag(description = "Tickets da aplicação", name = "Ticket")
+@Slf4j
 public class TicketController {
-    final static Logger log = Logger.getLogger(String.valueOf(TicketController.class));
     @Autowired
     private TicketService ticketService;
 
@@ -47,14 +47,10 @@ public class TicketController {
     })
     @GetMapping("/type/{equipmentTypeName}")
     public ResponseEntity<List<TicketDTO>> getTicketsByEquipmentTypeName(@PathVariable String equipmentTypeName) {
+        log.info("Buscando todos os tickets por tipo de equipamento por: " + equipmentTypeName);
 
-       log.info("Buscando todos os tickets por tipo de equipamento por: " + equipmentTypeName);
-       if (ticketService.getTicketsByEquipmentTypeName(equipmentTypeName).isEmpty()){
-           return ResponseEntity.notFound().build();
-       } else {
-           return ResponseEntity.ok().body(ticketService.getTicketsByEquipmentTypeName(equipmentTypeName));
-       }
-
+        List<TicketDTO> tickets = ticketService.getTicketsByEquipmentTypeName(equipmentTypeName);
+        return tickets.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok().body(tickets);
     }
 
     @Operation(summary = "Buscar todos os tickets por workflow")
@@ -63,14 +59,10 @@ public class TicketController {
     })
     @GetMapping("/workflow/{workflow}")
     public ResponseEntity<List<TicketDTO>> getTicketsByWorkflow(@PathVariable String workflow) {
-
         log.info("Buscando todos os tickets por workflow: " + workflow);
-        if (ticketService.getTicketsByWorkflow(workflow).isEmpty()){
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok().body(ticketService.getTicketsByWorkflow(workflow));
-        }
 
+        List<TicketDTO> tickets = ticketService.getTicketsByWorkflow(workflow);
+        return tickets.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok().body(tickets);
     }
 
     @Operation(summary = "Buscar ticket pelo ID")
@@ -78,17 +70,11 @@ public class TicketController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<TicketDTO>> findById(@PathVariable Long id) {
-        try {
-            log.info("Buscando o ticket pelo ID: " + id);
-            Optional<TicketDTO> ticket = ticketService.findById(id);
+    public ResponseEntity<TicketDTO> findById(@PathVariable Long id) {
+        log.info("Buscando o ticket pelo ID: " + id);
 
-            if (ticket.isPresent()) return ResponseEntity.ok(ticket);
-        } catch (Exception e) {
-            log.error("Não foi possível buscar o ticket de ID: " + id);
-            return ResponseEntity.notFound().build();
-        }
-        return null;
+        Optional<TicketDTO> ticket = ticketService.findById(id);
+        return ticket.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Criar um ticket")
@@ -96,18 +82,12 @@ public class TicketController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
     @PostMapping
-    public ResponseEntity addTicket(@RequestBody TicketDTO ticket) {
-        try {
-            log.info("Adicionando um novo ticket");
-            if (ticket != null) {
-                Optional<TicketDTO> newTicket = ticketService.addTicket(ticket);
-                if (newTicket.isPresent()) return new ResponseEntity<>(newTicket, HttpStatus.CREATED);
-            }
-        } catch (Exception e) {
-            log.error("Não foi possível adicionar o ticket");
-            return ResponseEntity.badRequest().build();
-        }
-        return null;
+    public ResponseEntity<TicketDTO> addTicket(@RequestBody TicketDTO ticket) {
+        log.info("Adicionando um novo ticket");
+
+        Optional<TicketDTO> newTicket = ticketService.addTicket(ticket);
+        return newTicket.map(ticketDTO -> ResponseEntity.status(HttpStatus.CREATED).body(ticketDTO))
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @Operation(summary = "Editar um ticket")
@@ -115,18 +95,12 @@ public class TicketController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
     @PutMapping
-    public ResponseEntity<Optional<TicketDTO>> updateTicket(@RequestBody TicketDTO ticket) {
-        try {
-            log.info("Editando o ticket de ID: " + ticket.id());
-            if (ticket != null) {
-                Optional<TicketDTO> ticketUpdate = ticketService.updateTicket(ticket);
-                if (ticketUpdate.isPresent()) return ResponseEntity.ok(ticketUpdate);
-            }
-        } catch (Exception e) {
-            log.error("Não foi possível editar o ticket de ID: " + ticket.id());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return null;
+    public ResponseEntity<TicketDTO> updateTicket(@RequestBody TicketDTO ticket) {
+        log.info("Editando o ticket de ID: " + ticket.id());
+
+        Optional<TicketDTO> ticketUpdate = ticketService.updateTicket(ticket);
+        return ticketUpdate.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @Operation(summary = "Deletar ticket")
@@ -135,14 +109,10 @@ public class TicketController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<TicketDTO>> hardDeleteTicket(@PathVariable Long id) {
-        try {
-            log.info("Deletando o ticket de ID: " + id);
-            if (ticketService.findById(id).isPresent() && ticketService.hardDeleteTicket(id)) return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            log.error("Não foi possível deletar o ticket de ID: " + id);
-            return ResponseEntity.notFound().build();
-        }
-        return null;
+        log.info("Deletando o ticket de ID: " + id);
+
+        return ticketService.findById(id).isPresent() && ticketService.hardDeleteTicket(id) ?
+                ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
 
