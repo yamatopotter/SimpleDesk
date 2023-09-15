@@ -2,92 +2,87 @@ package simpledesk.app.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import simpledesk.app.DTO.status.StatusDTO;
 import simpledesk.app.DTO.status.StatusDTOMapper;
 import simpledesk.app.entity.Status;
 import simpledesk.app.entity.Workflow;
 import simpledesk.app.repository.IStatusRepository;
 import simpledesk.app.repository.IWorkflowRepository;
+import simpledesk.app.service.exceptions.DataIntegratyViolationException;
+import simpledesk.app.service.exceptions.EmptyAttributeException;
+import simpledesk.app.service.exceptions.ObjectNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class StatusService {
 
-    private final StatusDTOMapper statusDTOMapper;
-    private final IStatusRepository statusRepository;
+    private final StatusDTOMapper mapper;
+    private final IStatusRepository repository;
     private final IWorkflowRepository workflowRepository;
 
+    @Transactional(readOnly = true)
     public List<StatusDTO> findAll() {
-
-        Stream<StatusDTO> status;
-        status = statusRepository.findAll().stream().map(statusDTOMapper);
-        return status.toList();
+        return repository.findAll().stream().map(mapper).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public Optional<StatusDTO> findById(Long id) {
-
-        Optional<StatusDTO> status;
-        status = statusRepository.findById(id).map(statusDTOMapper);
-        if (status.isPresent()){
-            return status;
-        } else {
-            return Optional.of(null);
-        }
+        return Optional.of(repository.findById(id).map(mapper).
+                orElseThrow(() -> new ObjectNotFoundException("Status de ID: " + id + " não encontrado.")));
     }
 
+    @Transactional
     public Optional<StatusDTO> addStatus(StatusDTO status) {
+        emptyAttribute(status);
+        findByName(status);
 
-        Optional<Workflow> workflowToStatus;
+        Workflow workflowToStatus;
+        workflowToStatus = workflowRepository.findById(status.workflow().id())
+                .orElseThrow(() -> new ObjectNotFoundException("Workflow de ID: " + status.workflow().id() + " não foi encontrado."));
 
-        workflowToStatus = workflowRepository.findById(status.workflow().id());
-
-        if (status == null || statusRepository.findByName(status.name()).isPresent()) {
-            return Optional.of(null);
-        } else {
-
-           Status statusEntity = statusRepository.saveAndFlush(
-                    new Status(
-                            null,
-                            status.name(),
-                            workflowToStatus.get()
-                    )
-            );
-
-            return Optional.of(statusDTOMapper.apply(statusEntity));
-        }
+        Status statusEntity = repository.save(new Status(null, status.name(), workflowToStatus));
+        return Optional.of(mapper.apply(statusEntity));
     }
 
+    @Transactional
+    public Optional<StatusDTO> updateStatus(StatusDTO status) {
+        emptyAttribute(status);
+        findByName(status);
+
+        Workflow workflowToStatus;
+        workflowToStatus = workflowRepository.findById(status.workflow().id())
+                .orElseThrow(() -> new ObjectNotFoundException("Workflow de ID: " + status.workflow().id() + " não foi encontrado."));
+
+        Status statusUpdate = repository.save(new Status(status.id(), status.name(), workflowToStatus));
+        return Optional.of(mapper.apply(statusUpdate));
+    }
+
+    @Transactional
     public Boolean hardDeleteStatus(Long id) {
-        if(statusRepository.findById(id).isPresent()){
-            statusRepository.deleteById(id);
+        if (repository.findById(id).isPresent()) {
+            repository.deleteById(id);
             return true;
         }
         return false;
     }
 
-    public Optional<StatusDTO>updateStatus(StatusDTO status){
 
-        Optional<Workflow> workflowToStatus;
+    @Transactional(readOnly = true)
+    public void findByName(StatusDTO statusDTO) {
+        Optional<Status> status = repository.findByName(statusDTO.name());
+        if (status.isPresent() && !status.get().getId().equals(statusDTO.id()))
+            throw new DataIntegratyViolationException("Status já cadastrado.");
+    }
 
-        workflowToStatus = workflowRepository.findById(status.workflow().id());
 
-        if (status == null || statusRepository.findByName(status.name()).isPresent()) { // Não pode atualizar para um status já existente
-            return Optional.of(null);
-
-        } else {
-            Status statusUpdate = statusRepository.saveAndFlush(
-              new Status(
-                      status.id(),
-                      status.name(),
-                      workflowToStatus.get()
-              )
-            );
-            return Optional.of(statusDTOMapper.apply(statusRepository.saveAndFlush(statusUpdate)));
-        }
+    public void emptyAttribute(StatusDTO statusDTO) {
+        if (statusDTO.name().isEmpty() || statusDTO.workflow() == null || statusDTO.workflow().id() == null)
+            throw new EmptyAttributeException("Todos os atríbutos são necessários");
     }
 
 }

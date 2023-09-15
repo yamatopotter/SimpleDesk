@@ -5,14 +5,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import simpledesk.app.DTO.status.StatusDTO;
 import simpledesk.app.service.StatusService;
-import simpledesk.app.service.WorkflowService;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,14 +20,11 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RequestMapping("/status")
 @Tag(description = "Status da aplicação", name = "Status")
+@Slf4j
 public class StatusController {
 
-    final static Logger log = Logger.getLogger(String.valueOf(StatusController.class));
     @Autowired
     private StatusService statusService;
-
-    @Autowired
-    private WorkflowService workflowService;
 
     @Operation(summary = "Buscar todos os status")
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
@@ -51,17 +47,11 @@ public class StatusController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = StatusDTO.class))
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<StatusDTO>> findById(@PathVariable Long id) {
-        try {
-            log.info("Buscando o status pelo ID: " + id);
-            Optional<StatusDTO> status = statusService.findById(id);
+    public ResponseEntity<StatusDTO> findById(@PathVariable Long id) {
+        log.info("Buscando o status pelo ID: " + id);
 
-            if (status.isPresent()) return ResponseEntity.ok(status);
-        } catch (Exception e) {
-            log.error("Não foi possível buscar o status de ID: " + id);
-            return ResponseEntity.notFound().build();
-        }
-        return null;
+        Optional<StatusDTO> status = statusService.findById(id);
+        return status.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Criar status")
@@ -69,18 +59,12 @@ public class StatusController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = StatusDTO.class))
     })
     @PostMapping
-    public ResponseEntity addStatus(@RequestBody StatusDTO status) {
-        try {
-            log.info("Adicionando um novo status");
-            if (status != null) {
-                Optional<StatusDTO> newStatus = statusService.addStatus(status);
-                if (newStatus.isPresent()) return new ResponseEntity<>(newStatus, HttpStatus.CREATED);
-            }
-        } catch (Exception e) {
-            log.error("Não foi possível adicionar o status");
-            return ResponseEntity.badRequest().build();
-        }
-        return null;
+    public ResponseEntity<StatusDTO> addStatus(@RequestBody StatusDTO status) {
+        log.info("Adicionando um novo status");
+
+        Optional<StatusDTO> newStatus = statusService.addStatus(status);
+        return newStatus.map(statusDTO -> ResponseEntity.status(HttpStatus.CREATED).body(statusDTO))
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @Operation(summary = "Atualizar status")
@@ -88,18 +72,12 @@ public class StatusController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = StatusDTO.class))
     })
     @PutMapping
-    public ResponseEntity<Optional<StatusDTO>> updateStatus(@RequestBody StatusDTO status) {
-        try {
-            log.info("Editando o status de ID: " + status.id());
-            if (status != null) {
-                Optional<StatusDTO> statusUpdate = statusService.updateStatus(status);
-                if (statusUpdate.isPresent()) return ResponseEntity.ok(statusUpdate);
-            }
-        } catch (Exception e) {
-            log.error("Não foi possível editar o status de ID: " + status.id());
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        return null;
+    public ResponseEntity<StatusDTO> updateStatus(@RequestBody StatusDTO status) {
+        log.info("Editando o status de ID: " + status.id());
+
+        Optional<StatusDTO> statusUpdate = statusService.updateStatus(status);
+        return statusUpdate.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @Operation(summary = "Deletar status")
@@ -108,14 +86,9 @@ public class StatusController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<StatusDTO>> hardDeleteStatus(@PathVariable Long id) {
-        try {
-            log.info("Deletando o status de ID: " + id);
-            if (statusService.findById(id).isPresent() && statusService.hardDeleteStatus(id)) return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            log.error("Não foi possível deletar o status de ID: " + id);
-            return ResponseEntity.notFound().build();
-        }
-        return null;
+        log.info("Deletando o status de ID: " + id);
+        return statusService.findById(id).isPresent() && statusService.hardDeleteStatus(id) ?
+                ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
 
