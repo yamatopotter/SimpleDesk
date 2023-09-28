@@ -44,29 +44,9 @@ export const addStatus = async (data) => {
     });
 
     if (request.status === 201) {
-      toast.success("Status adicionado com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       return true;
     }
   } catch {
-    toast.error("Valide os dados inseridos.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
     return false;
   }
 };
@@ -106,7 +86,7 @@ export const deleteStatus = async (id) => {
       },
     });
 
-    console.log(request.status)
+    console.log(request.status);
 
     if (request.status === 200) {
       return true;
@@ -120,7 +100,7 @@ export const updateStatus = async (data) => {
   const updateStatusData = {
     id: data.id,
     name: data.name,
-    workflow: { id: data.workflow},
+    workflow: { id: data.workflow },
   };
 
   try {

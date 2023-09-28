@@ -16,16 +16,6 @@ export const UpdStatus = ({ status, workflow }) => {
     formState: { errors },
   } = useForm();
 
-  function transformToOptions(data) {
-    const newData = data.map((d) => {
-      return {
-        value: d.id,
-        label: d.id == 1 ? "A fazer" : d.id == 2 ? "Fazendo" : "Feito",
-      };
-    });
-    return newData;
-  }
-
   useEffect(() => {
     setValue("id", status.id);
     setValue("name", status.name);
@@ -121,7 +111,7 @@ export const UpdStatus = ({ status, workflow }) => {
                   : "Feito",
             }}
             onChange={(option) => setValue("workflow", option?.value || "")}
-            options={transformToOptions(workflow)}
+            options={workflow}
           />
         </div>
 

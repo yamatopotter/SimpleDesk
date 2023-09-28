@@ -5,10 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { addStatus } from "../../functions/statusManagement";
 import Select from "react-select";
-import { useEffect, useState } from "react";
-import { getWorkflow } from "../../functions/workflowManagement";
+import { toast } from "react-toastify";
 
-export const AddStatus = () => {
+export const AddStatus = ({workflow}) => {
   const {
     register,
     handleSubmit,
@@ -17,33 +16,34 @@ export const AddStatus = () => {
   } = useForm();
   const navigate = useNavigate();
 
-  const [workflow, setWorkflow] = useState({});
-
+  
   const handleAddStatus = async (data) => {
-    if (await addStatus(data)) {
+    const response = await addStatus(data)
+    if (response) {
+      toast.success("Status adicionado com sucesso", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       setTimeout(() => navigate("/status"), 1000);
+    }else{
+      toast.error("Valide os dados inseridos.", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
     }
   };
-
-  function transformToOptions(data) {
-    const newData = data.map((d) => {
-      return {
-        value: d.id,
-        label: d.id == 1 ? "A FAZER" : d.id == 2 ? "FAZENDO" : "FEITO",
-      };
-    });
-    return newData;
-  }
-
-  useEffect(() => {
-    async function getData() {
-      const workflowData = await getWorkflow();
-
-      setWorkflow(transformToOptions(workflowData));
-    }
-
-    getData();
-  }, []);
 
   return (
     <div className="flex flex-col gap-5 w-full">

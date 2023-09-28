@@ -5,6 +5,7 @@ import { getWorkflow } from "../../functions/workflowManagement";
 import { getStatus } from "../../functions/statusManagement";
 import { LoadingComponent } from "../../components/LoadingComponent/LoadingComponent";
 import { toast } from "react-toastify";
+import { transformToWorkflowOptions } from "../../functions/common";
 
 export const UpdateStatus = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ export const UpdateStatus = () => {
         }
 
         setStatusData(auxStatus);
-        setWorkflowData(await getWorkflow());
+        setWorkflowData(transformToWorkflowOptions(await getWorkflow()));
         setIsLoading(false);
       } catch (e) {
         console.log(e);

@@ -1,11 +1,10 @@
 import { toast } from "react-toastify";
 import { api } from "../service/api";
-import { getToken } from "./localstorage";
-const baseUrl = "/workflow";
+const baseURI = "/workflow";
 
 export const getWorkflow = async () => {
   try {
-    const request = await api.get(`${baseUrl}`);
+    const request = await api.get(baseURI);
 
     if (request.status === 200) {
       return request.data;

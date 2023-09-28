@@ -23,6 +23,7 @@ export const ViewStatuses = ({ listStatus, handleRemove }) => {
             <li className="py-3 flex flex-col gap-3" key={status.id}>
               <span className="font-bold">#{status.id}</span>
               <h2>{status.name}</h2>
+              <p className={`p-1 text-white w-20 text-center ${status.workflow.id === 1 ? 'bg-red-500' : status.workflow.id === 2 ? 'bg-yellow-500' : 'bg-green-500'}`}>{status.workflow.name === "doing" ? "Fazendo" : status.workflow.name === "done" ? "Feito" : "A fazer"}</p>
               <div className="flex justify-between gap-3">
                 <CommonButton
                   id="btnEditStatus"
