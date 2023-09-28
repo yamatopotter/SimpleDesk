@@ -1,60 +1,16 @@
 import { PencilSimpleLine, Plus, TrashSimple } from "@phosphor-icons/react";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
-import { toast } from "react-toastify";
-import { deleteStatus, getStatuses } from "../../functions/statusManagement";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const ViewStatuses = () => {
-  const [listStatuses, setListStatuses] = useState([]);
+export const ViewStatuses = ({ listStatus, handleRemove }) => {
   const navigate = useNavigate();
-
-  async function handleRemove(id) {
-    const newListStatuses = listStatuses.filter((item) => item.id !== id);
-    if (deleteStatus(id)) {
-      setListStatuses(newListStatuses);
-      toast.success("Status excluído com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } else {
-      toast.error(
-        "Não é possivel excluir porque há informações vinculadas a esse status",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
-    }
-  }
-
-  useEffect(() => {
-    async function getStatusesList() {
-      const data = await getStatuses();
-      setListStatuses(data);
-    }
-
-    getStatusesList();
-  }, []);
 
   return (
     <div className="flex flex-col gap-5 w-full">
       <div className="flex justify-between items-center">
         <h1 className="text-xl">Status</h1>
         <CommonButton
-          id="btnAddStatus"
+          id="btn_addStatus"
           colored={false}
           icon={<Plus size={24} />}
           onClick={() => navigate("/status/new")}
@@ -62,7 +18,7 @@ export const ViewStatuses = () => {
       </div>
 
       <ul>
-        {listStatuses.map((status) => {
+        {listStatus.map((status) => {
           return (
             <li className="py-3 flex flex-col gap-3" key={status.id}>
               <span className="font-bold">#{status.id}</span>

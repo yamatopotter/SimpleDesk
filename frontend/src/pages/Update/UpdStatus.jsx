@@ -6,8 +6,9 @@ import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { FlowArrow } from "@phosphor-icons/react";
 import { updateStatus } from "../../functions/statusManagement";
 import Select from "react-select";
+import { toast } from "react-toastify";
 
-export const UpdStatus = ({status, workflow}) => {
+export const UpdStatus = ({ status, workflow }) => {
   const {
     register,
     setValue,
@@ -19,7 +20,7 @@ export const UpdStatus = ({status, workflow}) => {
     const newData = data.map((d) => {
       return {
         value: d.id,
-        label: d.id == 1 ? "A FAZER" : d.id == 2 ? "FAZENDO" : "FEITO",
+        label: d.id == 1 ? "A fazer" : d.id == 2 ? "Fazendo" : "Feito",
       };
     });
     return newData;
@@ -34,8 +35,30 @@ export const UpdStatus = ({status, workflow}) => {
   const navigate = useNavigate();
 
   async function handleUpdateStatus(data) {
-    if (await updateStatus(data)) {
+    const response = await updateStatus(data);
+    if (response) {
+      toast.success("Status atualizado com sucesso", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       setTimeout(() => navigate("/status"), 1000);
+    } else {
+      toast.error("Valide os dados inseridos.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
 
@@ -90,11 +113,12 @@ export const UpdStatus = ({status, workflow}) => {
             })}
             defaultValue={{
               value: status.workflow.id,
-              label: status.workflow.id == 1
-                  ? "A FAZER"
-                  : status.id == 2
-                  ? "FAZENDO"
-                  : "FEITO",
+              label:
+                status.workflow.id == 1
+                  ? "A fazer"
+                  : status.workflow.id == 2
+                  ? "Fazendo"
+                  : "Feito",
             }}
             onChange={(option) => setValue("workflow", option?.value || "")}
             options={transformToOptions(workflow)}
