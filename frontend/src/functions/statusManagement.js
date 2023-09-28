@@ -106,6 +106,8 @@ export const deleteStatus = async (id) => {
       },
     });
 
+    console.log(request.status)
+
     if (request.status === 200) {
       return true;
     }
@@ -129,7 +131,7 @@ export const updateStatus = async (data) => {
       },
     });
 
-    if (request.status === 200) {
+    if (request.status === 204) {
       return true;
     }
   } catch {
