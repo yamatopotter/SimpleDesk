@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { LoadingComponent } from "../components/LoadingComponent/LoadingComponent";
-import { getUsers } from "../functions/userManagement";
-import { ViewUsers } from "../pages/Read/ViewUsers";
+import { LoadingComponent } from "../../components/LoadingComponent/LoadingComponent";
+import { getUsers } from "../../functions/userManagement";
+import { ViewUsers } from "../../pages/Read/ViewUsers";
 
 export const ListUsers = () => {
   const [listUsers, setListUsers] = useState([]);

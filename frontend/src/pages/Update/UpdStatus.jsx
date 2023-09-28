@@ -1,33 +1,54 @@
 import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { CommonInput } from "../../components/CommonInput/CommonInput";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
-import { FlowArrow, UsersFour } from "@phosphor-icons/react";
-import { getStatus, updateStatus } from "../../functions/statusManagement";
+import { FlowArrow } from "@phosphor-icons/react";
+import { updateStatus } from "../../functions/statusManagement";
+import Select from "react-select";
+import { toast } from "react-toastify";
 
-export const UpdStatus = () => {
-  const { id } = useParams();
+export const UpdStatus = ({ status, workflow }) => {
   const {
     register,
     setValue,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const navigate = useNavigate();
 
   useEffect(() => {
-    async function getStatusName() {
-      const data = await getStatus(id);
-      setValue("name", `${data.name}`);
-    }
-
-    getStatusName();
+    setValue("id", status.id);
+    setValue("name", status.name);
+    setValue("workflow", status.workflow.id);
   }, []);
 
+  const navigate = useNavigate();
+
   async function handleUpdateStatus(data) {
-    if (updateStatus(data.name, id)) {
-      setTimeout(() => navigate("/statuses"), 1000);
+    const response = await updateStatus(data);
+    if (response) {
+      toast.success("Status atualizado com sucesso", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setTimeout(() => navigate("/status"), 1000);
+    } else {
+      toast.error("Valide os dados inseridos.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
 
@@ -40,9 +61,24 @@ export const UpdStatus = () => {
         onSubmit={handleSubmit(handleUpdateStatus)}
       >
         <div className="flex flex-col gap-5">
-          <label htmlFor="sectorName">Nome</label>
+          <label htmlFor="in_id">ID</label>
           <CommonInput
-            id="statusName"
+            id="in_id"
+            extra={{
+              ...register("id", { required: "O ID não pode ser vazio" }),
+            }}
+          />
+          {errors?.name?.message && (
+            <p className="text-red-500 text-right text-sm">
+              {errors.name?.message}
+            </p>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-5">
+          <label htmlFor="in_name">Nome</label>
+          <CommonInput
+            id="in_name"
             extra={{
               ...register("name", { required: "O status não pode ser vazio" }),
             }}
@@ -52,6 +88,31 @@ export const UpdStatus = () => {
               {errors.name?.message}
             </p>
           )}
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label htmlFor="select_workflow">Workflow</label>
+          <Select
+            className="basic-single shadow-md"
+            classNamePrefix="select"
+            isMulti={false}
+            isSearchable={true}
+            name="in_workflow"
+            {...register("workflow", {
+              required: "É obrigatório a escolha do workflow",
+            })}
+            defaultValue={{
+              value: status.workflow.id,
+              label:
+                status.workflow.id == 1
+                  ? "A fazer"
+                  : status.workflow.id == 2
+                  ? "Fazendo"
+                  : "Feito",
+            }}
+            onChange={(option) => setValue("workflow", option?.value || "")}
+            options={workflow}
+          />
         </div>
 
         <CommonButton

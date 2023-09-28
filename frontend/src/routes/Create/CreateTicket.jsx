@@ -1,6 +1,6 @@
-import { getEquipments } from "../functions/equipmentManagement";
-import { LoadingComponent } from "../components/LoadingComponent/LoadingComponent";
-import { AddTicket } from "../pages/Create/AddTicket";
+import { getEquipments } from "../../functions/equipmentManagement";
+import { LoadingComponent } from "../../components/LoadingComponent/LoadingComponent";
+import { AddTicket } from "../../pages/Create/AddTicket";
 import { useEffect, useState } from "react";
 
 export const CreateTicket = () => {

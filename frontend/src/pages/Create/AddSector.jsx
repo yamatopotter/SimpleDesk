@@ -14,7 +14,7 @@ export const AddSector = () => {
   const navigate = useNavigate();
 
   const handleAddSector = async (data) => {
-    if (addSector(data)) {
+    if (await addSector(data)) {
       setTimeout(()=>navigate("/sectors"), 1000);
     }
   };

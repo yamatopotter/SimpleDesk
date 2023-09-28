@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { ViewTicket } from "../pages/Read/ViewTicket";
-import { LoadingComponent } from "../components/LoadingComponent/LoadingComponent";
-import { getTicket } from "../functions/ticketManagement";
+import { ViewTicket } from "../../pages/Read/ViewTicket";
+import { LoadingComponent } from "../../components/LoadingComponent/LoadingComponent";
+import { getTicket } from "../../functions/ticketManagement";
 import { useParams } from "react-router-dom";
-import { getTicketHistoryByTicket } from "../functions/ticketHistoryManagement";
+import { getTicketHistoryByTicket } from "../../functions/ticketHistoryManagement";
 
 export const DetailTicket = () => {
   const [isLoading, setIsLoading] = useState(true);

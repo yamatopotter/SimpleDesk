@@ -14,7 +14,7 @@ export const AddEquipmentType = () => {
   const navigate = useNavigate();
 
   const handleAddEquipementType = async (data) => {
-    if (addEquipementType(data)) {
+    if (await addEquipementType(data)) {
       setTimeout(() => navigate("/equipments_type"), 1000);
     }
   };

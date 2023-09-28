@@ -1,4 +1,4 @@
-import { UpdEquipmentType } from "../pages/Update/UpdEquipmentType";
+import { UpdEquipmentType } from "../../pages/Update/UpdEquipmentType";
 
 export const UpdateEquipmentType = () => {
   return <UpdEquipmentType />;

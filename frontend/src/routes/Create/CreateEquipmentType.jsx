@@ -1,4 +1,4 @@
-import { AddEquipmentType } from "../pages/Create/AddEquipmentType"
+import { AddEquipmentType } from "../../pages/Create/AddEquipmentType"
 
 export const CreateEquipmentType = () => {
     return <AddEquipmentType />

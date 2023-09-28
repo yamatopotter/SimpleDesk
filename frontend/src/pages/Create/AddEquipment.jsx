@@ -47,7 +47,7 @@ export const AddEquipment = () => {
   
 
   async function handleAddEquipment(data) {
-    if (addEquipment(data)) {
+    if (await addEquipment(data)) {
       setTimeout(() => navigate("/equipment"), 1000);
     }
   }
