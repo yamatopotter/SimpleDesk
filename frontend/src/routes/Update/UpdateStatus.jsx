@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { UpdStatus } from "../pages/Update/UpdStatus";
+import { UpdStatus } from "../../pages/Update/UpdStatus";
 import { useEffect, useState } from "react";
-import { getWorkflow } from "../functions/workflowManagement";
-import { getStatus } from "../functions/statusManagement";
-import { LoadingComponent } from "../components/LoadingComponent/LoadingComponent";
+import { getWorkflow } from "../../functions/workflowManagement";
+import { getStatus } from "../../functions/statusManagement";
+import { LoadingComponent } from "../../components/LoadingComponent/LoadingComponent";
 import { toast } from "react-toastify";
 
 export const UpdateStatus = () => {
