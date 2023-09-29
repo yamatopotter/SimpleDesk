@@ -59,6 +59,7 @@ function App() {
               />
               <Route path="/equipment" element={<ListEquipments />} />
               <Route path="/user" element={<ListUsers />} />
+              <Route path="/user/detail/:id" element={<DetailUser />} />
               <Route path="/user/update/:id" element={<DetailUser />} />
               <Route path="/user/new" element={<CreateUser />} />
               <Route path="/equipment_type" element={<ListEquipmentsType />} />

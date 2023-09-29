@@ -1,4 +1,4 @@
-import { PencilSimpleLine, Plus, TrashSimple } from "@phosphor-icons/react";
+import { Eye, PencilSimpleLine, Plus, TrashSimple } from "@phosphor-icons/react";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { useNavigate } from "react-router-dom";
 
@@ -30,7 +30,7 @@ export const ViewUsers = ({ listUsers }) => {
                   <CommonButton
                     id="editUser"
                     name="editUser"
-                    content="Editar usuário"
+                    content="Editar"
                     warn={true}
                     icon={<PencilSimpleLine size={24} />}
                     onClick={() => navigate(`/user/update/${user.id}`)}
@@ -39,7 +39,7 @@ export const ViewUsers = ({ listUsers }) => {
                   <CommonButton
                     id="deleteUser"
                     name="deleteUser"
-                    content="Excluir usuário"
+                    content="Excluir"
                     danger={true}
                     icon={<TrashSimple size={24} />}
                   />

@@ -3,6 +3,7 @@ import { LoadingComponent } from "../../components/LoadingComponent/LoadingCompo
 import { getUsers } from "../../functions/userManagement";
 import { ViewUsers } from "../../pages/Read/ViewUsers";
 import { toast } from "react-toastify";
+import { Container } from "../../components/Container";
 
 export const ListUsers = () => {
   const [listUsers, setListUsers] = useState([]);
@@ -12,11 +13,10 @@ export const ListUsers = () => {
     async function getDataFromServer() {
       const data = await getUsers();
 
-      if(data){
+      if (data) {
         setListUsers(data);
         setIsLoading(false);
-      }
-      else{
+      } else {
         toast.error("Erro na comunicação com a API. Tente novamente.", {
           position: "top-right",
           autoClose: 5000,
@@ -35,7 +35,9 @@ export const ListUsers = () => {
 
   return (
     <LoadingComponent isLoading={isLoading}>
-      <ViewUsers listUsers={listUsers} />
+      <Container>
+        <ViewUsers listUsers={listUsers} />
+      </Container>
     </LoadingComponent>
   );
 };

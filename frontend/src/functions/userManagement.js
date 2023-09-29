@@ -1,12 +1,15 @@
 import { toast } from "react-toastify";
 import { api } from "../service/api";
 import { getToken } from "./localstorage";
-const baseUrl = "/user";
+const baseURI = "/user";
 
 export const getUsers = async () => {
   try {
-    const request = await api.get(`${baseUrl}`, {
-      headers: { Authorization: `Bearer ${getToken()}` },
+    const request = await api.get(baseURI, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
     });
 
     if (request.status === 200) {
@@ -70,22 +73,18 @@ export const getUsers = async () => {
 
 export const getUser = async (id) => {
   try {
-    const request = await api.get(`${baseUrl}/${id}`);
+    const request = await api.get(baseURI + "/" + id, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
+    });
 
     if (request.status === 200) {
       return request.data;
     }
   } catch {
-    toast.error("Erro na comunicação com a API. Tente novamente.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    return false;
   }
 };
 

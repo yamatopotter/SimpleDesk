@@ -1,16 +1,16 @@
 import { PencilSimpleLine, TrashSimple } from "@phosphor-icons/react";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 
-export const ViewUser = () => {
+export const ViewUser = ({ user }) => {
   return (
     <div className="flex flex-col gap-5 w-full">
-      <h1 className="text-xl">Nome do usuário</h1>
+      <h1 className="text-xl">{user.name}</h1>
 
       <ul className="flex flex-col gap-2">
-        <li>email</li>
-        <li>telefone</li>
-        <li>criado em 00/00/0000</li>
-        <li>
+        <li>Email: {user.email}</li>
+        <li>Telefone: {user.phone}</li>
+        <li>Nível no sistema: {user.role}</li>
+        <div className="flex gap-5">
           <CommonButton
             id="editUser"
             name="editUser"
@@ -18,8 +18,6 @@ export const ViewUser = () => {
             warn={true}
             icon={<PencilSimpleLine size={24} />}
           />
-        </li>
-        <li>
           <CommonButton
             id="deleteUser"
             name="deleteUser"
@@ -27,7 +25,7 @@ export const ViewUser = () => {
             danger={true}
             icon={<TrashSimple size={24} />}
           />
-        </li>
+        </div>
       </ul>
     </div>
   );
