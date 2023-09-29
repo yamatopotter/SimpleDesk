@@ -1,4 +1,4 @@
-import { PencilSimpleLine, TrashSimple } from "@phosphor-icons/react";
+import { PencilSimpleLine, Plus, TrashSimple } from "@phosphor-icons/react";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { useNavigate } from "react-router-dom";
 
@@ -6,7 +6,15 @@ export const ViewUsers = ({ listUsers }) => {
   const navigate = useNavigate();
   return (
     <div className="flex flex-col gap-5 w-full">
-      <h1 className="text-xl">Lista de usuários</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-xl">Lista de usuários</h1>
+        <CommonButton
+          id="btn_addUser"
+          colored={false}
+          icon={<Plus size={24} />}
+          onClick={() => navigate("/user/new")}
+        />
+      </div>
 
       <ul className="flex flex-col gap-4">
         {listUsers.map((user) => {
@@ -25,7 +33,7 @@ export const ViewUsers = ({ listUsers }) => {
                     content="Editar usuário"
                     warn={true}
                     icon={<PencilSimpleLine size={24} />}
-                    onClick={()=>navigate(`/user/update/${user.id}`)}
+                    onClick={() => navigate(`/user/update/${user.id}`)}
                   />
 
                   <CommonButton
