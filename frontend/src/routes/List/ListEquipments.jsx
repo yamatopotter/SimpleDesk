@@ -14,7 +14,7 @@ export const ListEquipments = () => {
     const response = await deleteEquipment(id);
     if (response) {
       setListEquipments(newList);
-      toast.success("Tipo de equipamento excluído com sucesso", {
+      toast.success("Equipamento excluído com sucesso", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,

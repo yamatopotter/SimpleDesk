@@ -90,10 +90,10 @@ export const deleteEquipment = async (id) => {
   }
 };
 
-export const updateEquipment = async (id, data) => {
+export const updateEquipment = async (data) => {
   const updateEquipmentData = {
-    id: parseInt(id),
-    name: data.name.trim(),
+    id: data.id,
+    name: data.name,
     sector: {
       id: parseInt(data.idSector),
     },

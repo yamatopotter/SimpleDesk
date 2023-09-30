@@ -33,12 +33,12 @@ export const Footer = () => {
           text="Abrir Chamado"
           onClick={() => navigate("/ticket/new")}
         />
-        <ButtonBottomNav
+        {/* <ButtonBottomNav
           active={checkUrl(location.pathname, "ticket")}
           icon={<NotePencil size={24} />}
           text="Adicionar registro"
           onClick={() => navigate("/ticket/new")}
-        />
+        /> */}
 
         {userData.role === "ADMIN" && (
           <>
