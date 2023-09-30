@@ -45,15 +45,17 @@ public class UserService {
     @Transactional
     public Optional<UserInfoDTO> updateUserWithPassword(UserUpdateWithPasswordDTO user) {
         emptyAttributeWithPassword(user);
+        Optional<User> userEntity = Optional.of(userRepository.findById(user.id()).get());
 
         var userToUpdate = User.builder()
                 .id(user.id())
-                .name(user.name())
-                .email(user.email())
+                .name(userEntity.get().getName())
+                .email(userEntity.get().getEmail())
                 .password(passwordEncoder.encode(user.password()))
-                .phone(user.phone())
-                .role(user.role())
+                .phone(userEntity.get().getPhone())
+                .role(userEntity.get().getRole())
                 .build();
+
         userAlreadyRegistered(userToUpdate);
         return Optional.of(userInfoDTOMapper.apply(userRepository.saveAndFlush(userToUpdate)));
 
@@ -113,9 +115,7 @@ public class UserService {
     }
 
     public void emptyAttributeWithPassword(UserUpdateWithPasswordDTO data) {
-        if (data.name() == null || data.name().isEmpty() || data.email() == null || data.email().isEmpty()
-                || data.password() == null || data.password().isEmpty()
-                || data.phone() == null || data.phone().isEmpty() || data.role() == null)
+        if (data.password() == null || data.password().isEmpty() || data.id() == null)
             throw new EmptyAttributeException("Todos os atríbutos são necessários.");
     }
 

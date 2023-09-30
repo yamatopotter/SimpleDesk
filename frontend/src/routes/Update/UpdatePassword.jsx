@@ -9,7 +9,7 @@ export const UpdatePassword = () => {
   const navigate = useNavigate();
 
   const updateData = async (data) => {
-    const response = await updateUserPassword(data, id);
+    const response = await updateUserPassword(data);
 
     if (response) {
       toast.success("Senha atualizada com sucesso.", {
@@ -39,7 +39,7 @@ export const UpdatePassword = () => {
 
   return (
     <Container>
-      <UpdPassword updatePassword={updateData} />
+      <UpdPassword updatePassword={updateData} user={id} />
     </Container>
   );
 };

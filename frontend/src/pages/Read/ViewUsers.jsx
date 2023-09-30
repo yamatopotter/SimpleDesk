@@ -32,7 +32,7 @@ export const ViewUsers = ({ listUsers, deleteUser }) => {
                 <h2>{user.name}</h2>
                 <p>{user.email}</p>
                 <p>{user.phone}</p>
-                <p>{user.role}</p>
+                <p>{user.role === "USER" ? "Usuário" : "Administrador"}</p>
                 <div className="flex justify-between gap-2">
                   <CommonButton
                     id="btn_editUser"

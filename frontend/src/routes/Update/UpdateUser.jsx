@@ -35,7 +35,7 @@ export const UpdateUser = () => {
           navigate("/user");
         }
 
-        setUser(user);
+        setUser(data);
         setIsLoading(false);
       } catch (e) {
         console.log(e);

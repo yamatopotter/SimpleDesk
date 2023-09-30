@@ -106,9 +106,9 @@ export const deleteUser = async (id) => {
   }
 };
 
-export const updateUserPassword = async (data, id) => {
+export const updateUserPassword = async (data) => {
   try {
-    const request = await api.put(baseURI, data, {
+    const request = await api.put(baseURI+"/password", data, {
       headers: {
         Authorization: "Bearer " + getToken(),
         "Content-Type": "application/json",
