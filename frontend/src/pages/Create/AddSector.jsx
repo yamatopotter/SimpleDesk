@@ -4,6 +4,7 @@ import { CommonInput } from "../../components/CommonInput/CommonInput";
 import { useForm } from "react-hook-form";
 import { addSector } from "../../functions/sectorManagement";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const AddSector = () => {
   const {
@@ -14,8 +15,31 @@ export const AddSector = () => {
   const navigate = useNavigate();
 
   const handleAddSector = async (data) => {
-    if (await addSector(data)) {
-      setTimeout(()=>navigate("/sectors"), 1000);
+    const response = await addSector(data)
+    if (response) {
+      toast.success("Setor adicionado com sucesso", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setTimeout(()=>navigate("/sector"), 1000);
+    }
+    else{
+      toast.error("Valide os dados inseridos.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -28,10 +52,10 @@ export const AddSector = () => {
         onSubmit={handleSubmit(handleAddSector)}
       >
         <div className="flex flex-col gap-2">
-          <label htmlFor="sectorName">Nome</label>
+          <label htmlFor="in_sectorName">Nome</label>
           <CommonInput
-            id="sectorName"
-            name="sectorName"
+            id="in_sectorName"
+            name="in_sectorName"
             extra={{
               ...register("name", { required: "O setor não pode ser vazio" }),
             }}
@@ -46,8 +70,8 @@ export const AddSector = () => {
 
         <CommonButton
           icon={<UsersFour size={24} />}
-          id="btnAddSector"
-          name="btnAddSector"
+          id="btn_addSector"
+          name="btn_addSector"
           content="Salvar setor"
         />
       </form>

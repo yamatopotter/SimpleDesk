@@ -1,35 +1,21 @@
 import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { getSector, updateSector } from "../../functions/sectorManagement";
 import { useForm } from "react-hook-form";
 import { CommonInput } from "../../components/CommonInput/CommonInput";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { UsersFour } from "@phosphor-icons/react";
 
-export const UpdSector = () => {
-  const { id } = useParams();
+export const UpdSector = ({ sector, updateSector }) => {
   const {
     register,
     setValue,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const navigate = useNavigate();
 
   useEffect(() => {
-    async function getSectorName() {
-      const data = await getSector(id);
-      setValue("name", `${data.name}`);
-    }
-
-    getSectorName();
+    setValue("name", `${sector.name}`);
+    setValue("id", `${sector.id}`);
   }, []);
-
-  async function handleUpdateSector(data) {
-    if (updateSector(data.name, id)) {
-      setTimeout(()=>navigate("/sectors"), 1000);
-    }
-  }
 
   return (
     <div className="flex flex-col gap-5 w-full">
@@ -37,7 +23,7 @@ export const UpdSector = () => {
 
       <form
         className="flex flex-col gap-5"
-        onSubmit={handleSubmit(handleUpdateSector)}
+        onSubmit={handleSubmit(updateSector)}
       >
         <div className="flex flex-col gap-5">
           <label htmlFor="sectorName">Nome</label>
