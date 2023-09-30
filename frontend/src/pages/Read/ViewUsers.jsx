@@ -1,8 +1,15 @@
-import { Eye, PencilSimpleLine, Plus, TrashSimple } from "@phosphor-icons/react";
+import { PencilSimpleLine, Plus, TrashSimple } from "@phosphor-icons/react";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { useNavigate } from "react-router-dom";
+import { ModalDelete } from "../../components/ModalDelete";
+import { useState } from "react";
 
-export const ViewUsers = ({ listUsers }) => {
+export const ViewUsers = ({ listUsers, deleteUser }) => {
+  const [isVisible, setIsVisible] = useState({
+    visible: false,
+    id: 0,
+  });
+
   const navigate = useNavigate();
   return (
     <div className="flex flex-col gap-5 w-full">
@@ -42,6 +49,13 @@ export const ViewUsers = ({ listUsers }) => {
                     content="Excluir"
                     danger={true}
                     icon={<TrashSimple size={24} />}
+                    onClick={() =>
+                      setIsVisible({
+                        visible: true,
+                        id: user.id,
+                        name: user.name,
+                      })
+                    }
                   />
                 </div>
               </li>
@@ -49,77 +63,15 @@ export const ViewUsers = ({ listUsers }) => {
             </>
           );
         })}
-
-        {/* <li className="py-3 flex flex-col gap-2">
-          <span className="font-bold">#0000</span>
-          <h2>Nome do usuário</h2>
-          <p>Email</p>
-          <p>Telefone</p>
-          <div className="flex justify-between gap-2">
-            <CommonButton
-              id="ticketHistory"
-              name="ticketHistory"
-              content="Editar usuário"
-              warn={true}
-              icon={<PencilSimpleLine size={24} />}
-            />
-
-            <CommonButton
-              id="ticketHistory"
-              name="ticketHistory"
-              content="Editar usuário"
-              danger={true}
-              icon={<TrashSimple size={24} />}
-            />
-          </div>
-        </li>
-        <li className="py-3 flex flex-col gap-2">
-          <span className="font-bold">#0000</span>
-          <h2>Nome do usuário</h2>
-          <p>Email</p>
-          <p>Telefone</p>
-          <div className="flex justify-between gap-2">
-            <CommonButton
-              id="ticketHistory"
-              name="ticketHistory"
-              content="Editar usuário"
-              warn={true}
-              icon={<PencilSimpleLine size={24} />}
-            />
-
-            <CommonButton
-              id="ticketHistory"
-              name="ticketHistory"
-              content="Editar usuário"
-              danger={true}
-              icon={<TrashSimple size={24} />}
-            />
-          </div>
-        </li>
-        <li className="py-3 flex flex-col gap-3">
-          <span className="font-bold">#0000</span>
-          <h2>Nome do usuário</h2>
-          <p>Email</p>
-          <p>Telefone</p>
-          <div className="flex justify-between gap-3">
-            <CommonButton
-              id="ticketHistory"
-              name="ticketHistory"
-              content="Editar usuário"
-              warn={true}
-              icon={<PencilSimpleLine size={24} />}
-            />
-
-            <CommonButton
-              id="ticketHistory"
-              name="ticketHistory"
-              content="Editar usuário"
-              danger={true}
-              icon={<TrashSimple size={24} />}
-            />
-          </div>
-        </li> */}
       </ul>
+
+      <ModalDelete
+        isVisible={isVisible.visible}
+        setIsVisible={setIsVisible}
+        idEntity={isVisible.id}
+        nameEntity={isVisible.name}
+        onClickYes={() => deleteUser(isVisible.id)}
+      />
     </div>
   );
 };

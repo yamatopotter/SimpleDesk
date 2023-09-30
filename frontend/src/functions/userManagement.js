@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 import { api } from "../service/api";
 import { getToken } from "./localstorage";
+import { get } from "react-hook-form";
 const baseURI = "/user";
 
 export const getUsers = async () => {
@@ -91,7 +92,12 @@ export const getUser = async (id) => {
 export const deleteUser = async (id) => {
   try {
     // todo: Conferir se o usuário não está querendo se excluir
-    const request = await api.delete(`${baseUrl}/${id}`);
+    const request = await api.delete(baseURI + "/" + id, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
+    });
 
     if (request.status === 200) {
       return true;
@@ -101,15 +107,7 @@ export const deleteUser = async (id) => {
   }
 };
 
-export const updateUser = async (id, data) => {
-  const updateUserData = {
-    id: parseInt(id),
-    name: data.title.trim(),
-    email: data.description.trim(),
-    password: data.urlPhoto.trim(),
-    phone: data.phone.trim(),
-  };
-
+export const updateUser = async (data) => {
   try {
     const request = await api.put(`${baseUrl}`, updateUserData);
     console.log(request.status);
