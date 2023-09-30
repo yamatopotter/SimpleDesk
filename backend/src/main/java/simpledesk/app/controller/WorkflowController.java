@@ -78,7 +78,7 @@ public class WorkflowController {
     }
 
     @Operation(summary = "Deletar workflow")
-    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+    @ApiResponse(responseCode = "204", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = WorkflowDTO.class))
     })
     @DeleteMapping("/{id}")

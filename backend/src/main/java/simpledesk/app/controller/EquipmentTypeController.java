@@ -82,7 +82,7 @@ public class EquipmentTypeController {
     }
 
     @Operation(summary = "Deletar tipo de equipamento")
-    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+    @ApiResponse(responseCode = "204", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
     })
     @DeleteMapping("/{id}")

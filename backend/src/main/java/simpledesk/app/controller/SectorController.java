@@ -16,8 +16,6 @@ import simpledesk.app.service.SectorService;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.log4j.Logger;
-
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/sector")
@@ -85,7 +83,7 @@ public class SectorController {
     }
 
     @Operation(summary = "Deletar setor")
-    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+    @ApiResponse(responseCode = "204", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
     })
     @DeleteMapping("/{id}")
