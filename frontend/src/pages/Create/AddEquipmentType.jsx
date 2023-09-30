@@ -4,6 +4,7 @@ import { CommonInput } from "../../components/CommonInput/CommonInput";
 import { useForm } from "react-hook-form";
 import { addEquipementType } from "../../functions/equipmentTypeManagement";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const AddEquipmentType = () => {
   const {
@@ -13,9 +14,34 @@ export const AddEquipmentType = () => {
   } = useForm();
   const navigate = useNavigate();
 
-  const handleAddEquipementType = async (data) => {
-    if (await addEquipementType(data)) {
-      setTimeout(() => navigate("/equipments_type"), 1000);
+  const saveData = async (data) => {
+    const response = await addEquipementType(data);
+    if (response) {
+      toast.success("Tipo de equipamento adicionado com sucesso", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setTimeout(navigate("/equipment_type"), 1000);
+    } else {
+      toast.error(
+        "Falha ao adicionar o tipo de equipamento, verifique se todas as informações foram preenchidas",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        }
+      );
     }
   };
 
@@ -23,15 +49,12 @@ export const AddEquipmentType = () => {
     <div className="flex flex-col gap-5 w-full">
       <h1 className="text-xl">Adicionar tipo de equipamento</h1>
 
-      <form
-        className="flex flex-col gap-5"
-        onSubmit={handleSubmit(handleAddEquipementType)}
-      >
+      <form className="flex flex-col gap-5" onSubmit={handleSubmit(saveData)}>
         <div className="flex flex-col gap-5">
-          <label htmlFor="equipmentTypeName">Nome</label>
+          <label htmlFor="in_equipmentTypeName">Nome</label>
           <CommonInput
-            id="equipmentTypeName"
-            name="equipmentTypeName"
+            id="in_equipmentTypeName"
+            name="in_equipmentTypeName"
             extra={{
               ...register("name", { required: "O setor não pode ser vazio" }),
             }}
@@ -46,8 +69,8 @@ export const AddEquipmentType = () => {
 
         <CommonButton
           icon={<Circuitry size={24} />}
-          id="btnAddSector"
-          name="btnAddSector"
+          id="btn_addEquipmentType"
+          name="btn_addEquipmentType"
           content="Salvar tipo de equipamento"
         />
       </form>

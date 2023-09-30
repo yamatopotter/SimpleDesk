@@ -1,12 +1,10 @@
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 // Phone
 import PhoneInputWithCountry from "react-phone-number-input/react-hook-form";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import "react-phone-number-input/style.css";
 
 // Password Validation
-import validator from "validator";
 import { useEffect } from "react";
 import { CommonInput } from "../../components/CommonInput/CommonInput";
 import Select from "react-select";
@@ -21,23 +19,6 @@ export const UpdUser = ({ user, updateUser }) => {
     control,
     formState: { errors },
   } = useForm();
-  const navigate = useNavigate();
-
-  const validatePasswordRule = (value) => {
-    if (
-      validator.isStrongPassword(value, {
-        minLength: 8,
-        minLowercase: 1,
-        minUppercase: 1,
-        minNumbers: 1,
-        minSymbols: 1,
-      })
-    ) {
-      return true;
-    } else {
-      return "A senha precisa ter letra maiúscula e minúscula, número e simbolo.";
-    }
-  };
 
   const validatePhoneNumber = (value) => {
     const phoneNumber = parsePhoneNumberFromString(value);
@@ -135,7 +116,7 @@ export const UpdUser = ({ user, updateUser }) => {
             isSearchable={false}
             name="in_role"
             {...register("role")}
-            onChange={(option) => setValue("agencyPlan", option?.value || "")}
+            onChange={(option) => setValue("role", option?.value || "")}
             defaultValue={
               user.role === "USER"
                 ? { value: "USER", label: "Usuário" }

@@ -5,13 +5,19 @@ import validator from "validator";
 import { CommonInput } from "../../components/CommonInput/CommonInput";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { Key } from "@phosphor-icons/react";
+import { useEffect } from "react";
 
-export const UpdPassword = ({ updatePassword }) => {
+export const UpdPassword = ({ updatePassword, user }) => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
+
+  useEffect(()=>{
+    setValue("id", user)
+  }, [])
 
   const validatePasswordRule = (value) => {
     if (

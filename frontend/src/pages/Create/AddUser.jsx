@@ -18,6 +18,7 @@ export const AddUser = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     control,
     formState: { errors },
   } = useForm();

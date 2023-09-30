@@ -1,58 +1,15 @@
 import { PencilSimpleLine, Plus, TrashSimple } from "@phosphor-icons/react";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import {
-  deleteEquipmentType,
-  getEquipmentsType,
-} from "../../functions/equipmentTypeManagement";
-import { toast } from "react-toastify";
+import { useState } from "react";
+import { ModalDelete } from "../../components/ModalDelete";
 
-export const ViewEquipmentsType = () => {
-  const [listEquipmentType, setListEquipmentsType] = useState([]);
+export const ViewEquipmentsType = ({ equipmentsType, deleteEquipmentType }) => {
+  const [isVisible, setIsVisible] = useState({
+    visible: false,
+    id: 0,
+  });
   const navigate = useNavigate();
-
-  async function handleRemove(id) {
-    const newListEquipmentType = listEquipmentType.filter(
-      (item) => item.id !== id
-    );
-    if (deleteEquipmentType(id)) {
-      toast.success("Tipo de equipamento excluído com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setListEquipmentsType(newListEquipmentType);
-    }else{
-      toast.error(
-        "Não é possivel excluir porque há informações vinculadas a esse tipo de equipamento",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
-    }
-  }
-
-  useEffect(() => {
-    async function getEquipmentTypeList() {
-      const data = await getEquipmentsType();
-      setListEquipmentsType(data);
-    }
-
-    getEquipmentTypeList();
-  }, []);
 
   return (
     <div className="flex flex-col gap-5 w-full">
@@ -67,7 +24,7 @@ export const ViewEquipmentsType = () => {
       </div>
 
       <ul>
-        {listEquipmentType.map((equipmentType) => {
+        {equipmentsType.map((equipmentType) => {
           return (
             <li className="py-3 flex flex-col gap-3" key={equipmentType.id}>
               <span className="font-bold">#{equipmentType.id}</span>
@@ -78,6 +35,7 @@ export const ViewEquipmentsType = () => {
                   name="btnEditEquipmentType"
                   content="Editar"
                   warn={true}
+                  full={true}
                   icon={<PencilSimpleLine size={24} />}
                   onClick={() =>
                     navigate(`/equipment_type/update/${equipmentType.id}`)
@@ -89,8 +47,15 @@ export const ViewEquipmentsType = () => {
                   name="btnDeleteEquipmentType"
                   content="Excluir"
                   danger={true}
+                  full={true}
                   icon={<TrashSimple size={24} />}
-                  onClick={() => handleRemove(equipmentType.id)}
+                  onClick={() =>
+                    setIsVisible({
+                      visible: true,
+                      id: equipmentType.id,
+                      name: equipmentType.name,
+                    })
+                  }
                 />
               </div>
               <hr></hr>
@@ -98,6 +63,14 @@ export const ViewEquipmentsType = () => {
           );
         })}
       </ul>
+
+      <ModalDelete
+        isVisible={isVisible.visible}
+        setIsVisible={setIsVisible}
+        idEntity={isVisible.id}
+        nameEntity={isVisible.name}
+        onClickYes={() => deleteEquipmentType(isVisible.id)}
+      />
     </div>
   );
 };
