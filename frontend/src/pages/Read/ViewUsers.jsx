@@ -1,4 +1,4 @@
-import { PencilSimpleLine, Plus, TrashSimple } from "@phosphor-icons/react";
+import { Key, PencilSimpleLine, Plus, TrashSimple } from "@phosphor-icons/react";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { useNavigate } from "react-router-dom";
 import { ModalDelete } from "../../components/ModalDelete";
@@ -35,19 +35,33 @@ export const ViewUsers = ({ listUsers, deleteUser }) => {
                 <p>{user.role}</p>
                 <div className="flex justify-between gap-2">
                   <CommonButton
-                    id="editUser"
-                    name="editUser"
+                    id="btn_editUser"
+                    name="btn_editUser"
                     content="Editar"
                     warn={true}
+                    full={true}
+                    showTextOnMobile={false}
                     icon={<PencilSimpleLine size={24} />}
                     onClick={() => navigate(`/user/update/${user.id}`)}
                   />
 
                   <CommonButton
-                    id="deleteUser"
-                    name="deleteUser"
+                    id="btn_updatePassword"
+                    name="btn_updatePassword"
+                    content="Trocar senha"
+                    full={true}
+                    showTextOnMobile={false}
+                    icon={<Key size={24} />}
+                    onClick={() => navigate(`/user/password/${user.id}`)}
+                  />
+
+                  <CommonButton
+                    id="btn_deleteUser"
+                    name="btn_deleteUser"
                     content="Excluir"
                     danger={true}
+                    full={true}
+                    showTextOnMobile={false}
                     icon={<TrashSimple size={24} />}
                     onClick={() =>
                       setIsVisible({

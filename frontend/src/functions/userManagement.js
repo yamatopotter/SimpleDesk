@@ -1,7 +1,6 @@
 import { toast } from "react-toastify";
 import { api } from "../service/api";
 import { getToken } from "./localstorage";
-import { get } from "react-hook-form";
 const baseURI = "/user";
 
 export const getUsers = async () => {
@@ -107,35 +106,36 @@ export const deleteUser = async (id) => {
   }
 };
 
-export const updateUser = async (data) => {
+export const updateUserPassword = async (data, id) => {
   try {
-    const request = await api.put(`${baseUrl}`, updateUserData);
-    console.log(request.status);
+    const request = await api.put(baseURI, data, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
+    });
 
     if (request.status === 200) {
-      toast.success("Chamado atualizado com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       return true;
     }
   } catch {
-    toast.error("Valide os dados inseridos.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
+    return false;
+  }
+};
+
+export const updateUser = async (data) => {
+  try {
+    const request = await api.put(baseURI, data, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
     });
+
+    if (request.status === 200) {
+      return true;
+    }
+  } catch {
     return false;
   }
 };

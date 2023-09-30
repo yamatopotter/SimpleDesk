@@ -27,6 +27,8 @@ import { UpdateSector } from "./routes/Update/UpdateSector";
 import { UpdateStatus } from "./routes/Update/UpdateStatus";
 import { UpdateEquipment } from "./routes/Update/UpdateEquipment";
 import { UpdateEquipmentType } from "./routes/Update/UpdateEquipmentType";
+import { UpdateUser } from "./routes/Update/UpdateUser";
+import { UpdatePassword } from "./routes/Update/UpdatePassword";
 
 function App() {
   return (
@@ -60,8 +62,9 @@ function App() {
               <Route path="/equipment" element={<ListEquipments />} />
               <Route path="/user" element={<ListUsers />} />
               <Route path="/user/detail/:id" element={<DetailUser />} />
-              <Route path="/user/update/:id" element={<DetailUser />} />
+              <Route path="/user/update/:id" element={<UpdateUser />} />
               <Route path="/user/new" element={<CreateUser />} />
+              <Route path="/user/password/:id" element={<UpdatePassword />} />
               <Route path="/equipment_type" element={<ListEquipmentsType />} />
               <Route
                 path="/equipment_type/:id"

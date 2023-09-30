@@ -1,29 +1,70 @@
-export const UpdUser = ({user}) => {
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+// Phone
+import PhoneInputWithCountry from "react-phone-number-input/react-hook-form";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
+import "react-phone-number-input/style.css";
+
+// Password Validation
+import validator from "validator";
+import { useEffect } from "react";
+import { CommonInput } from "../../components/CommonInput/CommonInput";
+import Select from "react-select";
+import { CommonButton } from "../../components/CommonButton/CommonButton";
+import { User } from "@phosphor-icons/react";
+
+export const UpdUser = ({ user, updateUser }) => {
   const {
     register,
-    setValue,
     handleSubmit,
+    setValue,
+    control,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
 
-  function updateData(data){
-    
-  }
+  const validatePasswordRule = (value) => {
+    if (
+      validator.isStrongPassword(value, {
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+    ) {
+      return true;
+    } else {
+      return "A senha precisa ter letra maiúscula e minúscula, número e simbolo.";
+    }
+  };
 
+  const validatePhoneNumber = (value) => {
+    const phoneNumber = parsePhoneNumberFromString(value);
+    if (!phoneNumber || !phoneNumber.isValid()) {
+      return "Invalid phone number";
+    }
+    return true;
+  };
+
+  useEffect(() => {
+    setValue("id", user.id);
+    setValue("name", user.name);
+    setValue("email", user.email);
+    setValue("phone", user.phone);
+    setValue("role", user.role);
+  }, []);
 
   return (
     <div className="flex flex-col gap-5 w-full">
       <h1 className="text-xl">Modificar usuário</h1>
 
-      <form
-        className="flex flex-col gap-5"
-        onSubmit={handleSubmit(updateData)}
-      >
+      <form className="flex flex-col gap-5" onSubmit={handleSubmit(updateUser)}>
         <div className="flex flex-col gap-2">
-          <label htmlFor="nameUser">Nome</label>
+          <label htmlFor="in_name">Nome</label>
           <CommonInput
-            id="nameUser"
-            name="nameUser"
+            id="in_name"
+            name="in_name"
             extra={{
               ...register("name", {
                 required: "O nome não pode ser vazio",
@@ -40,10 +81,10 @@ export const UpdUser = ({user}) => {
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="emailUser">Email</label>
+          <label htmlFor="in_email">Email</label>
           <CommonInput
-            id="emailUser"
-            name="emailUser"
+            id="in_email"
+            name="in_email"
             type="email"
             extra={{
               ...register("email", {
@@ -65,47 +106,18 @@ export const UpdUser = ({user}) => {
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="passwordUser">Senha</label>
-          <CommonInput
-            id="passwordUser"
-            name="passwordUser"
-            type="password"
-            extra={{
-              ...register("password", {
-                required: "A senha não pode ser vazia",
-                minLength: {
-                  value: 8,
-                  message: "A senha deve conter no mínimo 8 caracteres",
-                },
-              }),
+          <label htmlFor="in_phone">Telefone</label>
+          <PhoneInputWithCountry
+            name="phone"
+            id="in_phone"
+            control={control}
+            className={`border rounded-md p-2 shadow-md ${
+              errors?.phone?.message ? "border-red-500" : ""
+            }`}
+            rules={{
+              required: "Telefone não pode ser vazio",
+              validate: validatePhoneNumber,
             }}
-            className={errors?.password?.message ? "border-red-500" : ""}
-          />
-          {errors?.password?.message && (
-            <p className="text-red-500 text-right text-sm">
-              {errors.password?.message}
-            </p>
-          )}
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label htmlFor="phoneUser">Telefone</label>
-          <CommonInput
-            id="phoneUser"
-            name="phoneUser"
-            type="tel"
-            minLength="10"
-            maxLength="11"
-            extra={{
-              ...register("phone", {
-                required: "o telefone não pode ser vazio",
-                pattern: {
-                  value: /^[0-9]{10,11}$/i,
-                  message: "O telefone deve conter entre 10 e 11 digitos",
-                },
-              }),
-            }}
-            className={errors?.phone?.message ? "border-red-500" : ""}
           />
           {errors?.phone?.message && (
             <p className="text-red-500 text-right text-sm">
@@ -114,11 +126,44 @@ export const UpdUser = ({user}) => {
           )}
         </div>
 
+        <div className="flex flex-col gap-2">
+          <label htmlFor="in_role">Nível de acesso</label>
+          <Select
+            className="basic-single shadow-md"
+            classNamePrefix="select"
+            isMulti={false}
+            isSearchable={false}
+            name="in_role"
+            {...register("role")}
+            onChange={(option) => setValue("agencyPlan", option?.value || "")}
+            defaultValue={
+              user.role === "USER"
+                ? { value: "USER", label: "Usuário" }
+                : {
+                    value: "ADMIN",
+                    label: "Administrador",
+                  }
+            }
+            options={[
+              { value: "USER", label: "Usuário" },
+              {
+                value: "ADMIN",
+                label: "Administrador",
+              },
+            ]}
+          />
+          {errors?.role?.message && (
+            <p className="text-red-500 text-right text-sm">
+              {errors.role?.message}
+            </p>
+          )}
+        </div>
+
         <CommonButton
           icon={<User size={24} />}
-          id="btnAddUser"
-          name="btnAddUser"
-          content="Adicionar Usuário"
+          id="btn_updateUser"
+          name="btn_updateUser"
+          content="Atualizar Usuário"
         />
       </form>
     </div>

@@ -35,7 +35,7 @@ export const AddUser = () => {
     ) {
       return true;
     } else {
-      return "A senha precisa ter letra maiúscula e minúscula, numero e simbolo.";
+      return "A senha precisa ter letra maiúscula e minúscula, número e simbolo.";
     }
   };
 
@@ -154,10 +154,10 @@ export const AddUser = () => {
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="phoneUser">Telefone</label>
+          <label htmlFor="in_phone">Telefone</label>
           <PhoneInputWithCountry
             name="phone"
-            id="phoneUser"
+            id="in_phone"
             control={control}
             className={`border rounded-md p-2 shadow-md ${
               errors?.phone?.message ? "border-red-500" : ""
@@ -180,10 +180,10 @@ export const AddUser = () => {
             className="basic-single shadow-md"
             classNamePrefix="select"
             isMulti={false}
-            isSearchable={true}
+            isSearchable={false}
             name="in_role"
             {...register("role")}
-            onChange={(option) => setValue("agencyPlan", option?.value || "")}
+            onChange={(option) => setValue("role", option?.value || "")}
             defaultValue={{ value: "USER", label: "Usuário" }}
             options={[
               { value: "USER", label: "Usuário" },
