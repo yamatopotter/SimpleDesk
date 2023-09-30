@@ -1,11 +1,9 @@
 package simpledesk.app.DTO.user;
 
-import lombok.Data;
-import lombok.Setter;
 import simpledesk.app.entity.Role;
 
 
-public record UserUpdateDTO(
+public record UserUpdateWithPasswordDTO(
         Long id,
         String name,
         String email,

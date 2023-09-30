@@ -7,13 +7,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import simpledesk.app.DTO.user.UserDTO;
-import simpledesk.app.DTO.user.UserUpdateDTO;
+import simpledesk.app.DTO.user.UserInfoDTO;
+import simpledesk.app.DTO.user.UserUpdateWithPasswordDTO;
+import simpledesk.app.DTO.user.UserUpdateWithoutPasswordDTO;
 import simpledesk.app.service.UserService;
 
 import java.util.List;
@@ -22,84 +24,86 @@ import java.util.Optional;
 @RestController
 @CrossOrigin(origins = "*") // Liberando o controlador dos CORS
 @RequestMapping(value = "/user")
-@Tag(description = "Usuários da aplicação", name="Usuário")
+@Tag(description = "Usuários da aplicação", name = "Usuário")
+@Slf4j
 public class UserController {
-    final static Logger log = Logger.getLogger(String.valueOf(UserController.class));
     @Autowired
     private UserService userService;
 
     @Operation(summary = "Buscar todos os usuários")
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))
+            @Content(mediaType = "application/json", schema = @Schema(implementation = UserInfoDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping
-    public ResponseEntity<List<UserDTO>> findAll() {
+    public ResponseEntity<List<UserInfoDTO>> findAll() {
         try {
-            List<UserDTO> list = userService.findAll();
+            log.info("Buscando todos os usuários do sistema.");
+            List<UserInfoDTO> list = userService.findAll();
             return ResponseEntity.ok().body(list);
-        } catch (Exception e){
-            log.error("Não foi possível buscar todos os usuários. " + e.getMessage());
+        } catch (Exception e) {
+            log.error("Não foi possível buscar todos os usuários.");
             return ResponseEntity.notFound().build();
         }
     }
 
     @Operation(summary = "Buscar usuário pelo ID")
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))
+            @Content(mediaType = "application/json", schema = @Schema(implementation = UserInfoDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Optional<UserDTO>> findById(@PathVariable Long id) throws Exception {
-        try {
-            log.info("Buscando o usuário pelo ID: " + id);
-            Optional<UserDTO> user = userService.findById(id);
-
-            if (user.isPresent()) return ResponseEntity.ok(user);
-        } catch (Exception e) {
-            log.error("Erro ao buscar o usuário de ID: " + id);
-            return ResponseEntity.notFound().build();
-        }
-        return null;
+    public ResponseEntity<UserInfoDTO> findById(@PathVariable Long id) throws Exception {
+        log.info("Searching for user ID: " + id);
+        Optional<UserInfoDTO> user = userService.findById(id);
+        return user.map(ResponseEntity::ok).orElse(ResponseEntity.badRequest().build());
     }
 
-    @Operation(summary = "Atualizar usuário")
+    @Operation(summary = "Atualizar usuário com senha")
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))
+            @Content(mediaType = "application/json", schema = @Schema(implementation = UserInfoDTO.class))
+    })
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PutMapping("/password")
+    public ResponseEntity<UserInfoDTO> updateUserWithPassword(@RequestBody UserUpdateWithPasswordDTO user) {
+        log.info("Editando o usuario com senha de ID: " + user.id());
+        Optional<UserInfoDTO> updateUser = userService.updateUserWithPassword(user);
+
+        return updateUser.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.badRequest().build());
+
+    }
+
+    @Operation(summary = "Atualizar usuário sem senha")
+    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = UserInfoDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PutMapping
-    public ResponseEntity<Optional<UserDTO>> updateUser(@RequestBody UserUpdateDTO user){
+    public ResponseEntity<UserInfoDTO> updateUserWithoutPassword(@RequestBody UserUpdateWithoutPasswordDTO user) {
+        log.info("Editando o usuario sem senha de ID: " + user.id());
+        Optional<UserInfoDTO> updateUser = userService.updateUserWithoutPassword(user);
 
-        try {
-            log.info("Editando o usuario de ID: " + user.id());
-            if (user != null){
-                Optional<UserDTO> updateUser = userService.updateUser(user);
-                if(updateUser.isPresent()){
-                    return ResponseEntity.ok(updateUser);
-                }
-            }
-        } catch (Exception e){
-            log.error("Não foi possível editar o usuario de ID: "+ user.id());
+        return updateUser.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.badRequest().build());
 
-            return ResponseEntity.badRequest().build();
-        }
-        return null;
     }
+
     @Operation(summary = "Deletar usuário")
-    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+    @ApiResponse(responseCode = "204", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Optional<UserDTO>> harDeleteUser(@PathVariable Long id){
+    public ResponseEntity<Optional<UserDTO>> harDeleteUser(@PathVariable Long id) {
         try {
             log.info("Deletando o usuario de ID: " + id);
-            if (userService.hardDeleteUser(id)){
+            if (userService.hardDeleteUser(id)) {
                 return ResponseEntity.noContent().build();
             }
             return ResponseEntity.badRequest().build();

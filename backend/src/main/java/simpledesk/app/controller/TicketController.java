@@ -104,7 +104,7 @@ public class TicketController {
     }
 
     @Operation(summary = "Deletar ticket")
-    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+    @ApiResponse(responseCode = "204", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
     @DeleteMapping("/{id}")

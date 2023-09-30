@@ -81,7 +81,7 @@ public class StatusController {
     }
 
     @Operation(summary = "Deletar status")
-    @ApiResponse(responseCode = "200", description = "Sucesso", content = {
+    @ApiResponse(responseCode = "204", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = StatusDTO.class))
     })
     @DeleteMapping("/{id}")

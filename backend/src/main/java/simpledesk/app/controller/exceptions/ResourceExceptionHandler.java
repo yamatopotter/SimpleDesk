@@ -1,6 +1,5 @@
 package simpledesk.app.controller.exceptions;
 
-import simpledesk.app.service.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import simpledesk.app.service.exceptions.*;
 
 import java.time.LocalDateTime;
 
