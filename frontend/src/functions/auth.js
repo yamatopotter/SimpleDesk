@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 import { api } from "../service/api";
 import { deleteToken, getToken, setToken } from "./localstorage";
+const baseURI = "/authentication";
 
 export const authUser = async (data, setIsAuthenticated, setUsetData) => {
   const loginData = {
@@ -9,7 +10,7 @@ export const authUser = async (data, setIsAuthenticated, setUsetData) => {
   };
 
   try {
-    const response = await api.post("/authentication/login", loginData);
+    const response = await api.post(baseURI + "/login", loginData);
 
     if (response.status === 200) {
       toast.success("Login realizado com sucesso", {
@@ -72,43 +73,15 @@ export async function getUserData(setIsAuthenticated, setUserData) {
   }
 }
 
-export const RegisterUser = async (data) => {
-  const newUser = {
-    name: data.name.trim(),
-    email: data.email.trim(),
-    password: data.password.trim(),
-    phone: data.phone.trim(),
-    role: "USER",
-  };
-
+export const registerUser = async (data) => {
   try {
-    const response = await api.post("/authentication/register", newUser);
+    const response = await api.post(baseURI + "/register", data);
     if (response.status === 201) {
-      toast.success("Usuário registrado com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      return true;
     }
+    return false;
   } catch (e) {
-    toast.error(
-      "Falha ao adicionar o usuário, verifique se todas as informações foram preenchidas",
-      {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      }
-    );
+    return false;
   }
 };
 
@@ -118,4 +91,4 @@ export const logoutUser = (setIsAuthenticated, setUserData) => {
   deleteToken();
 
   return true;
-}
+};

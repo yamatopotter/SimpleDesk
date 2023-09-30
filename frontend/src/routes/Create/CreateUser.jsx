@@ -1,5 +1,10 @@
-import { AddUser } from "../../pages/Create/AddUser"
+import { Container } from "../../components/Container";
+import { AddUser } from "../../pages/Create/AddUser";
 
 export const CreateUser = () => {
-    return <AddUser />
-}
+  return (
+    <Container>
+      <AddUser />
+    </Container>
+  );
+};
