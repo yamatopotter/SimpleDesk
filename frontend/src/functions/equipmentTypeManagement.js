@@ -1,90 +1,69 @@
 import { toast } from "react-toastify";
 import { api } from "../service/api";
-const baseUrl = "/equipmentType";
+import { getToken } from "./localstorage";
+const baseURI = "/equipmentType";
 
 export const getEquipmentsType = async () => {
   try {
-    const request = await api.get(`${baseUrl}`);
+    const request = await api.get(baseURI, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
+    });
 
     if (request.status === 200) {
       return request.data;
     }
   } catch {
-    toast.error("Erro na comunicação com a API. Tente novamente.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    return false;
   }
 };
 
 export const addEquipementType = async (data) => {
-  const newEquipementType = {
-    name: data.name.trim(),
-  };
-
   try {
-    const request = await api.post(`${baseUrl}`, newEquipementType);
+    const request = await api.post(baseURI, data, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
+    });
 
     if (request.status === 201) {
-      toast.success("Tipo de equipamento adicionado com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       return true;
     }
   } catch {
-    toast.error("Valide os dados inseridos.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
     return false;
   }
 };
 
 export const getEquipmentType = async (id) => {
   try {
-    const request = await api.get(`${baseUrl}/${id}`);
+    const request = await api.get(baseURI + "/" + id, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
+    });
 
     if (request.status === 200) {
       return request.data;
     }
   } catch {
-    toast.error("Erro na comunicação com a API. Tente novamente.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    return false;
   }
 };
 
 export const deleteEquipmentType = async (id) => {
   try {
-    const request = await api.delete(`${baseUrl}/${id}`);
+    const request = await api.delete(baseURI + "/" + id, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
+    });
 
-    if (request.status === 200) {
+    if (request.status === 204) {
       return true;
     }
   } catch {
@@ -92,39 +71,19 @@ export const deleteEquipmentType = async (id) => {
   }
 };
 
-export const updateEquipmentType = async (name, id) => {
-  const updateEquipmentTypeData = {
-    id: id,
-    name: name.trim(),
-  };
-
+export const updateEquipmentType = async (data) => {
   try {
-    const request = await api.put(`${baseUrl}`, updateEquipmentTypeData);
+    const request = await api.put(baseURI, data, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
+    });
 
     if (request.status === 200) {
-      toast.success("Tipo de equipamento atualizado com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       return true;
     }
   } catch {
-    toast.error("Valide os dados inseridos.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
     return false;
   }
 };

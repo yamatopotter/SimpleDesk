@@ -1,5 +1,10 @@
-import { AddEquipmentType } from "../../pages/Create/AddEquipmentType"
+import { Container } from "../../components/Container";
+import { AddEquipmentType } from "../../pages/Create/AddEquipmentType";
 
 export const CreateEquipmentType = () => {
-    return <AddEquipmentType />
-}
+  return (
+    <Container>
+      <AddEquipmentType />
+    </Container>
+  );
+};
