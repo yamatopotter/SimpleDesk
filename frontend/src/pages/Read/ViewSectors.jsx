@@ -1,53 +1,15 @@
 import { PencilSimpleLine, Plus, TrashSimple } from "@phosphor-icons/react";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
-import { useEffect, useState } from "react";
-import { deleteSector, getSectors } from "../../functions/sectorManagement";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useState } from "react";
+import { ModalDelete } from "../../components/ModalDelete";
 
-export const ViewSectors = () => {
-  const [listSectors, setListSectors] = useState([]);
+export const ViewSectors = ({ sectors, deleteSector }) => {
+  const [isVisible, setIsVisible] = useState({
+    visible: false,
+    id: 0,
+  });
   const navigate = useNavigate();
-
-  async function handleRemove(id) {
-    const newListSectors = listSectors.filter((item) => item.id !== id);
-    if (deleteSector(id)) {
-      setListSectors(newListSectors);
-      toast.success("Setor excluído com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } else {
-      toast.error(
-        "Não é possivel excluir porque há informações vinculadas a esse setor",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
-    }
-  }
-
-  useEffect(() => {
-    async function getSectorList() {
-      const data = await getSectors();
-      setListSectors(data);
-    }
-
-    getSectorList();
-  }, []);
 
   return (
     <div className="flex flex-col gap-5 w-full">
@@ -63,28 +25,38 @@ export const ViewSectors = () => {
       </div>
 
       <ul>
-        {listSectors.map((sector) => {
+        {sectors.map((sector) => {
           return (
-            <li className="py-3 flex flex-col gap-3" key={sector.id}>
+            <li className="py-3 flex flex-col gap-2" key={sector.id}>
               <span className="font-bold">#{sector.id}</span>
               <h2>{sector.name}</h2>
-              <div className="flex justify-between gap-3">
+              <div className="flex justify-between gap-2">
                 <CommonButton
-                  id="btnEditSector"
-                  name="btnEditSector"
+                  id="btn_editSector"
+                  name="btn_editSector"
                   content="Editar setor"
                   warn={true}
+                  full={true}
+                  showTextOnMobile={false}
                   icon={<PencilSimpleLine size={24} />}
                   onClick={() => navigate(`/sector/update/${sector.id}`)}
                 />
 
                 <CommonButton
-                  id="btnDeleteSector"
-                  name="btnDeleteSector"
+                  id="btn_deleteSector"
+                  name="btn_deleteSector"
                   content="Excluir setor"
                   danger={true}
+                  full={true}
+                  showTextOnMobile={false}
                   icon={<TrashSimple size={24} />}
-                  onClick={() => handleRemove(sector.id)}
+                  onClick={() =>
+                    setIsVisible({
+                      visible: true,
+                      id: sector.id,
+                      name: sector.name,
+                    })
+                  }
                 />
               </div>
               <hr></hr>
@@ -92,6 +64,14 @@ export const ViewSectors = () => {
           );
         })}
       </ul>
+
+      <ModalDelete
+        isVisible={isVisible.visible}
+        setIsVisible={setIsVisible}
+        idEntity={isVisible.id}
+        nameEntity={isVisible.name}
+        onClickYes={() => deleteSector(isVisible.id)}
+      />
     </div>
   );
 };

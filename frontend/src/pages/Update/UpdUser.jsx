@@ -1,9 +1,5 @@
-import { User } from "@phosphor-icons/react";
-import { CommonButton } from "../../components/CommonButton/CommonButton";
-import { CommonInput } from "../../components/CommonInput/CommonInput";
 import { useForm } from "react-hook-form";
-import { registerUser } from "../../functions/auth";
-import Select from "react-select";
+import { useNavigate } from "react-router-dom";
 // Phone
 import PhoneInputWithCountry from "react-phone-number-input/react-hook-form";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
@@ -11,13 +7,17 @@ import "react-phone-number-input/style.css";
 
 // Password Validation
 import validator from "validator";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { CommonInput } from "../../components/CommonInput/CommonInput";
+import Select from "react-select";
+import { CommonButton } from "../../components/CommonButton/CommonButton";
+import { User } from "@phosphor-icons/react";
 
-export const AddUser = () => {
+export const UpdUser = ({ user, updateUser }) => {
   const {
     register,
     handleSubmit,
+    setValue,
     control,
     formState: { errors },
   } = useForm();
@@ -39,37 +39,6 @@ export const AddUser = () => {
     }
   };
 
-  const saveData = async (data) => {
-    const response = await registerUser(data);
-    if (response) {
-      toast.success("Usuário registrado com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setTimeout(navigate("/user"), 1000);
-    } else {
-      toast.error(
-        "Falha ao adicionar o usuário, verifique se todas as informações foram preenchidas",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
-    }
-  };
-
   const validatePhoneNumber = (value) => {
     const phoneNumber = parsePhoneNumberFromString(value);
     if (!phoneNumber || !phoneNumber.isValid()) {
@@ -78,16 +47,24 @@ export const AddUser = () => {
     return true;
   };
 
+  useEffect(() => {
+    setValue("id", user.id);
+    setValue("name", user.name);
+    setValue("email", user.email);
+    setValue("phone", user.phone);
+    setValue("role", user.role);
+  }, []);
+
   return (
     <div className="flex flex-col gap-5 w-full">
-      <h1 className="text-xl">Adicionar usuário</h1>
+      <h1 className="text-xl">Modificar usuário</h1>
 
-      <form className="flex flex-col gap-5" onSubmit={handleSubmit(saveData)}>
+      <form className="flex flex-col gap-5" onSubmit={handleSubmit(updateUser)}>
         <div className="flex flex-col gap-2">
-          <label htmlFor="nameUser">Nome</label>
+          <label htmlFor="in_name">Nome</label>
           <CommonInput
-            id="nameUser"
-            name="nameUser"
+            id="in_name"
+            name="in_name"
             extra={{
               ...register("name", {
                 required: "O nome não pode ser vazio",
@@ -104,10 +81,10 @@ export const AddUser = () => {
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="emailUser">Email</label>
+          <label htmlFor="in_email">Email</label>
           <CommonInput
-            id="emailUser"
-            name="emailUser"
+            id="in_email"
+            name="in_email"
             type="email"
             extra={{
               ...register("email", {
@@ -124,31 +101,6 @@ export const AddUser = () => {
           {errors?.email?.message && (
             <p className="text-red-500 text-right text-sm">
               {errors.email?.message}
-            </p>
-          )}
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label htmlFor="passwordUser">Senha</label>
-          <CommonInput
-            id="passwordUser"
-            name="passwordUser"
-            type="password"
-            extra={{
-              ...register("password", {
-                required: "A senha não pode ser vazia",
-                validate: validatePasswordRule,
-                minLength: {
-                  value: 8,
-                  message: "A senha deve conter no mínimo 8 caracteres",
-                },
-              }),
-            }}
-            className={errors?.password?.message ? "border-red-500" : ""}
-          />
-          {errors?.password?.message && (
-            <p className="text-red-500 text-right text-sm">
-              {errors.password?.message}
             </p>
           )}
         </div>
@@ -183,8 +135,15 @@ export const AddUser = () => {
             isSearchable={false}
             name="in_role"
             {...register("role")}
-            onChange={(option) => setValue("role", option?.value || "")}
-            defaultValue={{ value: "USER", label: "Usuário" }}
+            onChange={(option) => setValue("agencyPlan", option?.value || "")}
+            defaultValue={
+              user.role === "USER"
+                ? { value: "USER", label: "Usuário" }
+                : {
+                    value: "ADMIN",
+                    label: "Administrador",
+                  }
+            }
             options={[
               { value: "USER", label: "Usuário" },
               {
@@ -202,9 +161,9 @@ export const AddUser = () => {
 
         <CommonButton
           icon={<User size={24} />}
-          id="btnAddUser"
-          name="btnAddUser"
-          content="Adicionar Usuário"
+          id="btn_updateUser"
+          name="btn_updateUser"
+          content="Atualizar Usuário"
         />
       </form>
     </div>

@@ -1,21 +1,21 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { Container } from "../../components/Container";
-import { LoadingComponent } from "../../components/LoadingComponent/LoadingComponent";
-import { UpdSector } from "../../pages/Update/UpdSector";
-import { useEffect, useState } from "react";
-import { getSector, updateSector } from "../../functions/sectorManagement";
 import { toast } from "react-toastify";
+import { LoadingComponent } from "../../components/LoadingComponent/LoadingComponent";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Container } from "../../components/Container";
+import { getUser, updateUser } from "../../functions/userManagement";
+import { UpdUser } from "../../pages/Update/UpdUser";
 
-export const UpdateSector = () => {
+export const UpdateUser = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [sector, setSector] = useState({});
+  const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function getData() {
       try {
-        const data = await getSector(id);
+        const data = await getUser(id);
 
         if (data == null) {
           toast.error(
@@ -32,10 +32,10 @@ export const UpdateSector = () => {
             }
           );
           setIsLoading(false);
-          navigate("/sector");
+          navigate("/user");
         }
 
-        setSector(data);
+        setUser(user);
         setIsLoading(false);
       } catch (e) {
         console.log(e);
@@ -53,7 +53,7 @@ export const UpdateSector = () => {
           }
         );
         setIsLoading(false);
-        navigate("/sector");
+        navigate("/user");
       }
     }
 
@@ -61,9 +61,9 @@ export const UpdateSector = () => {
   }, []);
 
   const updateData = async (data) => {
-    const response = await updateSector(data);
+    const response = await updateUser(data);
     if (response) {
-      toast.success("Setor atualizado com sucesso.", {
+      toast.success("Usuário atualizado com sucesso.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -73,25 +73,28 @@ export const UpdateSector = () => {
         progress: undefined,
         theme: "light",
       });
-      setTimeout(navigate("/sector"), 1000);
+      setTimeout(navigate("/user"), 1000);
     } else {
-      toast.error("Valide os dados inseridos.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.error(
+        "Valide os dados inseridos.",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        }
+      );
     }
   };
 
   return (
     <LoadingComponent isLoading={isLoading}>
       <Container>
-        <UpdSector sector={sector} updateSector={updateData}/>
+        <UpdUser user={user} updateUser={updateData} />
       </Container>
     </LoadingComponent>
   );

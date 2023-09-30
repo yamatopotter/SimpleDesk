@@ -1,28 +1,21 @@
 import { toast } from "react-toastify";
 import { api } from "../service/api";
 import { getToken } from "./localstorage";
-const baseUrl = "/user";
+const baseURI = "/user";
 
 export const getUsers = async () => {
   try {
-    const request = await api.get(`${baseUrl}`, {
-      headers: { Authorization: `Bearer ${getToken()}` },
+    const request = await api.get(baseURI, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
     });
 
     if (request.status === 200) {
       return request.data;
     }
   } catch {
-    toast.error("Erro na comunicação com a API. Tente novamente.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
     return false;
   }
 };
@@ -80,29 +73,30 @@ export const getUsers = async () => {
 
 export const getUser = async (id) => {
   try {
-    const request = await api.get(`${baseUrl}/${id}`);
+    const request = await api.get(baseURI + "/" + id, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
+    });
 
     if (request.status === 200) {
       return request.data;
     }
   } catch {
-    toast.error("Erro na comunicação com a API. Tente novamente.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    return false;
   }
 };
 
 export const deleteUser = async (id) => {
   try {
     // todo: Conferir se o usuário não está querendo se excluir
-    const request = await api.delete(`${baseUrl}/${id}`);
+    const request = await api.delete(baseURI + "/" + id, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
+    });
 
     if (request.status === 200) {
       return true;
@@ -112,43 +106,36 @@ export const deleteUser = async (id) => {
   }
 };
 
-export const updateUser = async (id, data) => {
-  const updateUserData = {
-    id: parseInt(id),
-    name: data.title.trim(),
-    email: data.description.trim(),
-    password: data.urlPhoto.trim(),
-    phone: data.phone.trim(),
-  };
-
+export const updateUserPassword = async (data, id) => {
   try {
-    const request = await api.put(`${baseUrl}`, updateUserData);
-    console.log(request.status);
+    const request = await api.put(baseURI, data, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
+    });
 
     if (request.status === 200) {
-      toast.success("Chamado atualizado com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       return true;
     }
   } catch {
-    toast.error("Valide os dados inseridos.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
+    return false;
+  }
+};
+
+export const updateUser = async (data) => {
+  try {
+    const request = await api.put(baseURI, data, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
     });
+
+    if (request.status === 200) {
+      return true;
+    }
+  } catch {
     return false;
   }
 };
