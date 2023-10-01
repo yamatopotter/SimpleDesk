@@ -4,6 +4,7 @@ import { LoadingComponent } from "../../components/LoadingComponent/LoadingCompo
 import { getTicket } from "../../functions/ticketManagement";
 import { useParams } from "react-router-dom";
 import { getTicketHistoryByTicket } from "../../functions/ticketHistoryManagement";
+import { Container } from "../../components/Container";
 
 export const DetailTicket = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -13,19 +14,15 @@ export const DetailTicket = () => {
 
   useEffect(() => {
     async function loadData() {
-      try{
+      try {
         const ticket = await getTicket(id);
-        console.log(ticket);
         const ticketHistory = await getTicketHistoryByTicket(ticket.id);
         setTicketData(ticket);
         setTicketHistory(ticketHistory);
         setIsLoading(false);
-      }
-      catch(e){
+      } catch (e) {
         console.log(e);
       }
-
-
     }
 
     loadData();
@@ -33,7 +30,9 @@ export const DetailTicket = () => {
 
   return (
     <LoadingComponent isLoading={isLoading}>
-      <ViewTicket ticketData={ticketData} ticketHistory={ticketHistory}/>
+      <Container>
+        <ViewTicket ticketData={ticketData} ticketHistory={ticketHistory} />
+      </Container>
     </LoadingComponent>
   );
 };

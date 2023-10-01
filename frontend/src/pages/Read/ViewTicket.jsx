@@ -1,7 +1,21 @@
+import { Plus } from "@phosphor-icons/react";
+import { CommonButton } from "../../components/CommonButton/CommonButton";
+import { useNavigate } from "react-router-dom";
+
 export const ViewTicket = ({ ticketData, ticketHistory }) => {
+  const navigate = useNavigate();
+  
   return (
     <div className="flex flex-col gap-5 w-full">
-      <h1 className="text-lg">Ticket #{ticketData.id}</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-lg">Ticket #{ticketData.id}</h1>
+        <CommonButton
+          id="btn_addStatus"
+          colored={false}
+          icon={<Plus size={24} />}
+          onClick={() => navigate("/ticket/ticket_history/" + ticketData.id)}
+        />
+      </div>
 
       <ul className="flex flex-col gap-3">
         <li>Criado por: {ticketData.user.name}</li>
@@ -20,7 +34,9 @@ export const ViewTicket = ({ ticketData, ticketHistory }) => {
         {/* Todo: Criar modal */}
         <li>Computador: {ticketData.equipment.name}</li>
         <li>Setor: {ticketData.equipment.sector.name}</li>
-        <li>Criado em: {new Date(ticketData.created_at).toLocaleString("pt-br")}</li>
+        <li>
+          Criado em: {new Date(ticketData.created_at).toLocaleString("pt-br")}
+        </li>
         <li>Ultimo status: {ticketData.status.name}</li>
       </ul>
 
@@ -30,7 +46,10 @@ export const ViewTicket = ({ ticketData, ticketHistory }) => {
 
       {ticketHistory.map((data) => {
         return (
-          <ul className="flex flex-col gap-2 border rounded-md shadow-sm p-2" key={data.id}>
+          <ul
+            className="flex flex-col gap-2 border rounded-md shadow-sm p-2"
+            key={data.id}
+          >
             <li>Data: {new Date(data.created_at).toLocaleString("pt-br")} </li>
             <li>Status: {data.status.name}</li>
             <li>Descrição: {data.description}</li>
@@ -46,18 +65,6 @@ export const ViewTicket = ({ ticketData, ticketHistory }) => {
           </ul>
         );
       })}
-
-      {/* <ul className="flex flex-col gap-2 border rounded-md shadow-sm p-2">
-        <li>Data: 00/00/0000 00:00</li>
-        <li>Status: Aguardando peça</li>
-        <li>Descrição: Aguardando peça</li>
-        <li>
-          Foto:{" "}
-          <a href="" className="text-violet-700">
-            Ver Imagem
-          </a>
-        </li>
-      </ul> */}
     </div>
   );
 };

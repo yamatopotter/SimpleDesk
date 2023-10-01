@@ -119,8 +119,7 @@ public class TicketService {
 
 
     public void emptyAttribute(TicketDTO ticketDTO) {
-        if (ticketDTO.title().isEmpty() || ticketDTO.description().isEmpty() || ticketDTO.urlPhoto().isEmpty() ||
-                ticketDTO.equipment() == null || ticketDTO.equipment().id() == null || ticketDTO.status() == null ||
+        if (ticketDTO.title().isEmpty() || ticketDTO.description().isEmpty() || ticketDTO.equipment() == null || ticketDTO.equipment().id() == null || ticketDTO.status() == null ||
                 ticketDTO.status().id() == null)
             throw new EmptyAttributeException("Todos os atríbutos são necessários");
     }

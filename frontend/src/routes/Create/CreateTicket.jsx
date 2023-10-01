@@ -2,6 +2,7 @@ import { getEquipments } from "../../functions/equipmentManagement";
 import { LoadingComponent } from "../../components/LoadingComponent/LoadingComponent";
 import { AddTicket } from "../../pages/Create/AddTicket";
 import { useEffect, useState } from "react";
+import { Container } from "../../components/Container";
 
 export const CreateTicket = () => {
   const [equipmentList, setEquipmentList] = useState([]);
@@ -18,7 +19,7 @@ export const CreateTicket = () => {
     async function getData() {
       const data = await getEquipments();
       setEquipmentList(transformToOptions(data));
-      setIsLoading(false)
+      setIsLoading(false);
     }
 
     getData();
@@ -26,7 +27,9 @@ export const CreateTicket = () => {
 
   return (
     <LoadingComponent isLoading={isLoading}>
-      <AddTicket equipmentList={equipmentList} />
+      <Container>
+        <AddTicket equipmentList={equipmentList} />
+      </Container>
     </LoadingComponent>
   );
 };
