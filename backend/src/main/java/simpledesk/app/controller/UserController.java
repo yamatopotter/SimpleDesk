@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "*") // Liberando o controlador dos CORS
 @RequestMapping(value = "/user")
 @Tag(description = "Usuários da aplicação", name = "Usuário")
 @Slf4j
@@ -101,15 +100,8 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<UserDTO>> harDeleteUser(@PathVariable Long id) {
-        try {
-            log.info("Deletando o usuario de ID: " + id);
-            if (userService.hardDeleteUser(id)) {
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            log.error("Não foi possível deletar o usuario de ID: " + id);
-            return ResponseEntity.badRequest().build();
-        }
+        log.info("Deletando o usuario de ID: " + id);
+
+        return userService.hardDeleteUser(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }
