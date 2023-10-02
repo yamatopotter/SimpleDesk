@@ -1,4 +1,6 @@
 import { api } from "../service/api";
+import { getToken } from "./localstorage";
+import { showToast } from "./message";
 const baseURI = "/workflow";
 
 export const getWorkflow = async () => {
@@ -10,12 +12,9 @@ export const getWorkflow = async () => {
       },
     });
 
-    if (request.status === 200) {
-      return request.data;
-    }
-
-    return false;
-  } catch {
+    return request.data;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };

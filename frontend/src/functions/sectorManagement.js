@@ -30,6 +30,8 @@ export const addSector = async (data) => {
       },
     });
 
+    console.log(request);
+
     if (request.status === 201) {
       return true;
     }

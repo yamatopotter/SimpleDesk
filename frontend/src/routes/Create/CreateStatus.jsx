@@ -3,6 +3,7 @@ import { LoadingComponent } from "../../components/LoadingComponent/LoadingCompo
 import { transformToWorkflowOptions } from "../../functions/common";
 import { getWorkflow } from "../../functions/workflowManagement";
 import { AddStatus } from "../../pages/Create/AddStatus";
+import { Container } from "../../components/Container";
 
 export const CreateStatus = () => {
   const [workflow, setWorkflow] = useState([]);
@@ -11,6 +12,7 @@ export const CreateStatus = () => {
   useEffect(() => {
     async function getData() {
       const workflowData = await getWorkflow();
+      console.log(workflowData);
 
       if (workflowData) {
         setWorkflow(transformToWorkflowOptions(workflowData));
@@ -25,7 +27,9 @@ export const CreateStatus = () => {
 
   return (
     <LoadingComponent isLoading={isLoading}>
-      <AddStatus workflow={workflow} />
+      <Container>
+        <AddStatus workflow={workflow} />
+      </Container>
     </LoadingComponent>
   );
 };

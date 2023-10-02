@@ -1,5 +1,6 @@
 import { api } from "../service/api";
 import { getToken } from "./localstorage";
+import { showToast } from "./message";
 const baseURI = "/status";
 
 export const getStatuses = async () => {
@@ -23,7 +24,7 @@ export const getStatuses = async () => {
 
 export const addStatus = async (data) => {
   const newStatus = {
-    name: data.name.trim(),
+    sname: data.name.trim(),
     workflow: { id: data.workflow },
   };
 
@@ -35,12 +36,10 @@ export const addStatus = async (data) => {
       },
     });
 
-    if (request.status === 201) {
-      return true;
-    }
-
-    return false;
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };

@@ -16,7 +16,8 @@ export const getTicket = async (id) => {
     }
 
     return false;
-  } catch {
+  } catch(err) {
+    console.log(err)
     return false;
   }
 };
@@ -54,6 +55,7 @@ export const getTicketsByWorkflow = async (workflow) => {
     }
     return [];
   } catch (err) {
+    console.log(err.request.status);
     return [];
   }
 };

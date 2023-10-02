@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 import { api } from "../service/api";
 import { deleteToken, getToken, setToken } from "./localstorage";
+import { showToast } from "./message";
 const baseURI = "/authentication";
 
 export const authUser = async (data, setIsAuthenticated, setUsetData) => {
@@ -12,36 +13,12 @@ export const authUser = async (data, setIsAuthenticated, setUsetData) => {
   try {
     const response = await api.post(baseURI + "/login", loginData);
 
-    if (response.status === 200) {
-      toast.success("Login realizado com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+    setToken(response.data.token);
+    await getUserData(setIsAuthenticated, setUsetData);
 
-      setToken(response.data.token);
-      await getUserData(setIsAuthenticated, setUsetData);
-
-      return true;
-    }
+    return true;
   } catch (e) {
-    console.log(e);
-    toast.error("Falha ao realizar login, verifique o usuário e senha", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-
+    showToast(e);
     return false;
   }
 };
