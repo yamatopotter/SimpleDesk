@@ -1,11 +1,16 @@
 import { toast } from "react-toastify";
 import { api } from "../service/api";
 import { getToken } from "./localstorage";
-const baseUrl = "/ticket";
+const baseURI = "/ticket";
 
 export const getTickets = async () => {
   try {
-    const request = await api.get(`${baseUrl}`);
+    const request = await api.get(baseURI, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
+    });
 
     if (request.status === 200) {
       return request.data;
@@ -27,7 +32,12 @@ export const getTickets = async () => {
 
 export const getTicketsByWorkflow = async (workflow) => {
   try {
-    const request = await api.get(`${baseUrl}/workflow/${workflow}`);
+    const request = await api.get(baseURI + "/workflow/" + workflow, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
+    });
 
     if (request.status === 200) {
       return request.data;
@@ -66,9 +76,10 @@ export const addTicket = async (data, imgUrl, userId) => {
   };
 
   try {
-    const request = await api.post(`${baseUrl}`, newTicket, {
+    const request = await api.post(baseURI, newTicket, {
       headers: {
         Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
       },
     });
 
@@ -102,7 +113,7 @@ export const addTicket = async (data, imgUrl, userId) => {
 
 export const getTicket = async (id) => {
   try {
-    const request = await api.get(`${baseUrl}/${id}`);
+    const request = await api.get(baseURI+ "/" + id );
 
     if (request.status === 200) {
       return request.data;

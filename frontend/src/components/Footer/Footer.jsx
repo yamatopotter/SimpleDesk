@@ -1,4 +1,15 @@
-import { Circuitry, DesktopTower, FlowArrow, House, Info, MagnifyingGlass, NotePencil, Siren, User, UsersFour } from "@phosphor-icons/react";
+import {
+  Circuitry,
+  DesktopTower,
+  FlowArrow,
+  House,
+  Info,
+  MagnifyingGlass,
+  NotePencil,
+  Siren,
+  User,
+  UsersFour,
+} from "@phosphor-icons/react";
 import { ButtonBottomNav } from "../ButtonBottomNav/ButtonBottomNav";
 import { useContext } from "react";
 import { AuthenticationContext } from "../../provider/AuthenticationProvider";
@@ -28,17 +39,17 @@ export const Footer = () => {
           onClick={() => navigate("/home")}
         />
         <ButtonBottomNav
-          active={checkUrl(location.pathname, "ticket")}
+          active={location.pathname == "/ticket/new" ? true : false}
           icon={<Siren size={24} />}
           text="Abrir Chamado"
           onClick={() => navigate("/ticket/new")}
         />
-        {/* <ButtonBottomNav
-          active={checkUrl(location.pathname, "ticket")}
+        <ButtonBottomNav
+          active={location.pathname == "/ticket" ? true : false}
           icon={<NotePencil size={24} />}
           text="Adicionar registro"
-          onClick={() => navigate("/ticket/new")}
-        /> */}
+          onClick={() => navigate("/ticket")}
+        />
 
         {userData.role === "ADMIN" && (
           <>

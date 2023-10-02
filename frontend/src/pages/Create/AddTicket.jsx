@@ -33,9 +33,7 @@ export const AddTicket = ({ equipmentList }) => {
     setTakePicture(false);
   }
 
-  useEffect(()=>setValue("idEquipment", equipmentList[0].value), []);
-
-  const handleAddTicket = async (data) => {
+  const saveData = async (data) => {
     try {
       if(picture){
         const imageData = await uploadPicture(picture);
@@ -70,17 +68,16 @@ export const AddTicket = ({ equipmentList }) => {
     <div className="flex flex-col flex-1 gap-5 w-full">
       <h1 className="text-xl">Abrir chamado</h1>
 
-      <form
-        className="flex flex-col gap-8"
-        onSubmit={handleSubmit(handleAddTicket)}
-      >
+      <form className="flex flex-col gap-8" onSubmit={handleSubmit(saveData)}>
         <div className="flex flex-col">
-          <label htmlFor="ticketTitle">Título</label>
+          <label htmlFor="in_ticketTitle">Título</label>
           <CommonInput
-            id="ticketTitle"
-            name="ticketTitle"
+            id="in_ticketTitle"
+            name="in_ticketTitle"
             extra={{
-              ...register("title", { required: "O chamado deve conter um título" }),
+              ...register("title", {
+                required: "O chamado deve conter um título",
+              }),
             }}
           />
           {errors?.title?.message && (

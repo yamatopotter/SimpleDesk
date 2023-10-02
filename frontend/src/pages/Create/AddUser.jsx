@@ -185,7 +185,6 @@ export const AddUser = () => {
             name="in_role"
             {...register("role")}
             onChange={(option) => setValue("role", option?.value || "")}
-            defaultValue={{ value: "USER", label: "Usuário" }}
             options={[
               { value: "USER", label: "Usuário" },
               {

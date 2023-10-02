@@ -7,3 +7,10 @@ export function transformToWorkflowOptions(data) {
   });
   return newData;
 }
+
+export function transformToOptions(data) {
+  const newData = data.map((d) => {
+    return { value: d.id, label: d.name };
+  });
+  return newData;
+}

@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import { ListItemBoxed } from "../../components/ListItemBoxed/ListItemBoxed";
 
 export const ViewTickets = ({ todo, doing }) => {
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col gap-10 w-full">
       <section id="openTickets" className="flex flex-col gap-2">
@@ -12,10 +14,11 @@ export const ViewTickets = ({ todo, doing }) => {
               title={`#${task.id} ${task.title}`}
               description={`${task.status.name}`}
               key={task.id}
+              onClick={() => navigate(`/ticket/${task.id}`)}
             />
           ))}
 
-          {doing.length == 0 && (
+          {todo.length == 0 && (
             <p className="pt-3">Não há chamados em aberto</p>
           )}
         </ul>
@@ -32,8 +35,8 @@ export const ViewTickets = ({ todo, doing }) => {
                   description={`${task.status.name}`}
                   started={true}
                   key={task.id}
+                  onClick={() => navigate(`/ticket/${task.id}`)}
                 />
-                <hr></hr>
               </>
             );
           })}

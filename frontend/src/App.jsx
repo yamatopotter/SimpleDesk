@@ -29,6 +29,7 @@ import { UpdateEquipment } from "./routes/Update/UpdateEquipment";
 import { UpdateEquipmentType } from "./routes/Update/UpdateEquipmentType";
 import { UpdateUser } from "./routes/Update/UpdateUser";
 import { UpdatePassword } from "./routes/Update/UpdatePassword";
+import { ListTickets } from "./routes/List/ListTickets";
 
 function App() {
   return (
@@ -40,19 +41,25 @@ function App() {
             <Route path="" element={<Header />}>
               <Route path="" element={<Login />} />
               <Route path="/home" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              {/* Ticket */}
+              <Route path="/ticket" element={<ListTickets />} />
               <Route path="/ticket/new" element={<CreateTicket />} />
               <Route path="/ticket/:id" element={<DetailTicket />} />
               <Route
-                path="/ticket/ticketHistory/:id"
+                path="/ticket/ticket_history/:id"
                 element={<CreateTicketHistory />}
               />
+              {/* Sector */}
               <Route path="/sector/new" element={<CreateSector />} />
               <Route path="/sector" element={<ListSectors />} />
               <Route path="/sector/update/:id" element={<UpdateSector />} />
+              {/* Status */}
               <Route path="/status/new" element={<CreateStatus />} />
               <Route path="/status/:id" element={<DetailStatus />} />
               <Route path="/status/update/:id" element={<UpdateStatus />} />
               <Route path="/status" element={<ListStatuses />} />
+              {/* Equipment */}
               <Route path="/equipment/new" element={<CreateEquipment />} />
               <Route path="/equipment/:id" element={<DetailEquipment />} />
               <Route
@@ -60,11 +67,13 @@ function App() {
                 element={<UpdateEquipment />}
               />
               <Route path="/equipment" element={<ListEquipments />} />
+              {/* User */}
               <Route path="/user" element={<ListUsers />} />
               <Route path="/user/detail/:id" element={<DetailUser />} />
               <Route path="/user/update/:id" element={<UpdateUser />} />
               <Route path="/user/new" element={<CreateUser />} />
               <Route path="/user/password/:id" element={<UpdatePassword />} />
+              {/* Equipment Type */}
               <Route path="/equipment_type" element={<ListEquipmentsType />} />
               <Route
                 path="/equipment_type/:id"
@@ -78,7 +87,6 @@ function App() {
                 path="/equipment_type/update/:id"
                 element={<UpdateEquipmentType />}
               />
-              <Route path="/about" element={<About />} />
             </Route>
           </Routes>
         </BrowserRouter>
