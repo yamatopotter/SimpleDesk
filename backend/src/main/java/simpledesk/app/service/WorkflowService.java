@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import simpledesk.app.domain.dto.workflow.WorkflowDTO;
 import simpledesk.app.domain.dto.workflow.WorkflowDTOMapper;
+import simpledesk.app.domain.entity.Status;
 import simpledesk.app.domain.entity.Workflow;
+import simpledesk.app.repository.IStatusRepository;
 import simpledesk.app.repository.IWorkflowRepository;
 import simpledesk.app.service.exceptions.DataIntegratyViolationException;
 import simpledesk.app.service.exceptions.EmptyAttributeException;
@@ -21,6 +23,7 @@ public class WorkflowService {
 
     private final WorkflowDTOMapper mapper;
     private final IWorkflowRepository repository;
+    private final IStatusRepository statusRepository;
 
     @Transactional(readOnly = true)
     public List<WorkflowDTO> findAll() {
@@ -57,6 +60,7 @@ public class WorkflowService {
 
     @Transactional
     public Boolean hardDeleteWorkflow(Long id) {
+        validatingTheIntegrityOfTheRelationship(id);
         if (repository.findById(id).isPresent()) {
             repository.deleteById(id);
             return true;
@@ -64,13 +68,25 @@ public class WorkflowService {
         return false;
     }
 
-
+    @Transactional(readOnly = true)
     public void findByName(WorkflowDTO workflowDTO) {
         Optional<Workflow> workflow = repository.findByName(workflowDTO.name());
         if (workflow.isPresent() && !workflow.get().getId().equals(workflowDTO.id()))
             throw new DataIntegratyViolationException("Workflow já cadastrado.");
     }
+    @Transactional(readOnly = true)
+    public void validatingTheIntegrityOfTheRelationship(Long id) {
+        Workflow workflow = repository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("O workflow de ID: " + id + " não foi encontrado."));
 
+        List<Status> statusList = statusRepository.findByWorkflow(workflow);
+
+        for (Status status : statusList) {
+            if (status.getWorkflow().getId().equals(workflow.getId()))
+                throw new DataIntegratyViolationException("O workflow está vinculado a um status.");
+        }
+
+    }
 
     public void emptyAttribute(WorkflowDTO workflowDTO) {
         if (workflowDTO.name().isEmpty())
