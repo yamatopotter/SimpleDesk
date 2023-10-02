@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import simpledesk.app.domain.dto.sector.SectorDTO;
 import simpledesk.app.domain.dto.sector.SectorDTOMapper;
+import simpledesk.app.domain.entity.Equipment;
 import simpledesk.app.domain.entity.Sector;
+import simpledesk.app.repository.IEquipmentRepositoy;
 import simpledesk.app.repository.ISectorRepository;
 import simpledesk.app.service.exceptions.DataIntegratyViolationException;
 import simpledesk.app.service.exceptions.EmptyAttributeException;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 public class SectorService {
     private final SectorDTOMapper mapper;
     private final ISectorRepository repository;
+    private final IEquipmentRepositoy equipmentRepositoy;
 
     @Transactional(readOnly = true)
     public List<SectorDTO> findAll() {
@@ -55,6 +58,7 @@ public class SectorService {
 
     @Transactional
     public Boolean hardDeleteSector(Long id) {
+        validatingTheIntegrityOfTheRelationship(id);
         if (repository.findById(id).isPresent()) {
             repository.deleteById(id);
             return true;
@@ -68,6 +72,19 @@ public class SectorService {
         Optional<Sector> sector = repository.findByName(sectorDTO.name());
         if (sector.isPresent() && !sector.get().getId().equals(sectorDTO.id()))
             throw new DataIntegratyViolationException("Setor já cadastrado.");
+    }
+
+    @Transactional(readOnly = true)
+    public void validatingTheIntegrityOfTheRelationship(Long id) {
+        Sector sector = repository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Sector de ID: " + id + " não foi encontrado."));
+
+        List<Equipment> equipmentList = equipmentRepositoy.findBySector(sector);
+
+        for (Equipment equipment : equipmentList) {
+            if (equipment.getEquipmentType().getId().equals(sector.getId()))
+                throw new DataIntegratyViolationException("O sector está vinculado a um equipment");
+        }
     }
 
 

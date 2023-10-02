@@ -8,9 +8,12 @@ import simpledesk.app.domain.dto.equipment.EquipmentDTOMapper;
 import simpledesk.app.domain.entity.Equipment;
 import simpledesk.app.domain.entity.EquipmentType;
 import simpledesk.app.domain.entity.Sector;
+import simpledesk.app.domain.entity.Ticket;
 import simpledesk.app.repository.IEquipmentRepositoy;
 import simpledesk.app.repository.IEquipmentTypeRepository;
 import simpledesk.app.repository.ISectorRepository;
+import simpledesk.app.repository.ITicketRepository;
+import simpledesk.app.service.exceptions.DataIntegratyViolationException;
 import simpledesk.app.service.exceptions.EmptyAttributeException;
 import simpledesk.app.service.exceptions.ObjectNotFoundException;
 
@@ -24,6 +27,7 @@ public class EquipmentService {
 
     private final IEquipmentRepositoy repository;
     private final EquipmentDTOMapper mapper;
+    private final ITicketRepository ticketRepository;
     private final IEquipmentTypeRepository equipmentTypeRepository;
     private final ISectorRepository sectorRepository;
 
@@ -73,11 +77,25 @@ public class EquipmentService {
 
     @Transactional
     public Boolean hardDeleteEquipment(Long id) {
+        validatingTheIntegrityOfTheRelationship(id);
         if (repository.findById(id).isPresent()) {
             repository.deleteById(id);
             return true;
         }
         return false;
+    }
+
+    @Transactional(readOnly = true)
+    public void validatingTheIntegrityOfTheRelationship(Long id) {
+        Equipment equipment = repository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Equipment de ID: " + id + " não foi encontrado."));
+
+        List<Ticket> tickets = ticketRepository.findByEquipment(equipment);
+
+        for (Ticket ticket : tickets) {
+            if (ticket.getEquipment().getId().equals(equipment.getId()))
+                throw new DataIntegratyViolationException("O equipment está vinculado a um ticket.");
+        }
     }
 
     public void emptyAttribute(EquipmentDTO equipmentDTO) {
