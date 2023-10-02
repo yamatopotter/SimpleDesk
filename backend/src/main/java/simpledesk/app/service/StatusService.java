@@ -84,14 +84,14 @@ public class StatusService {
 
         for (TicketHistory history : ticketHistories) {
             if (history.getStatus().getId().equals(status.getId()))
-                throw new DataIntegratyViolationException("O usuário está vinculado a um ticket history.");
+                throw new DataIntegratyViolationException("O status está vinculado a um ticket history.");
         }
 
         List<Ticket> tickets = ticketRepository.findByStatus(status);
 
         for (Ticket ticket : tickets) {
             if (ticket.getStatus().getId().equals(status.getId()))
-                throw new DataIntegratyViolationException("O usuário está vinculado a um ticket.");
+                throw new DataIntegratyViolationException("O status está vinculado a um ticket.");
         }
 
     }
