@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/equipmentType")
 @Tag(description = "Tipo de equipamentos da aplicação", name = "Tipo de equipamento")
 @Slf4j
@@ -31,6 +31,7 @@ public class EquipmentTypeController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping
     public ResponseEntity<List<EquipmentTypeDTO>> findAll() {
         try {
@@ -47,6 +48,7 @@ public class EquipmentTypeController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/{id}")
     public ResponseEntity<EquipmentTypeDTO> findById(@PathVariable Long id) {
         log.info("Buscando o tipo de equipamento pelo ID: " + id);
@@ -59,6 +61,7 @@ public class EquipmentTypeController {
     @ApiResponse(responseCode = "201", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping
     public ResponseEntity<EquipmentTypeDTO> addEquipmentType(@RequestBody EquipmentTypeDTO equipmentType) {
         log.info("Adicionando um novo tipo de equipamento");
@@ -72,6 +75,7 @@ public class EquipmentTypeController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping
     public ResponseEntity<EquipmentTypeDTO> updateEquipmentType(@RequestBody EquipmentTypeDTO equipmentType) {
         log.info("Editando o tipo de equipamento de ID: " + equipmentType.id());
@@ -85,6 +89,7 @@ public class EquipmentTypeController {
     @ApiResponse(responseCode = "204", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<EquipmentTypeDTO>> hardDeleteEquipmentType(@PathVariable Long id) {
         log.info("Deletando o tipo de equipamento de ID: " + id);

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
@@ -21,7 +22,6 @@ import simpledesk.app.service.AuthenticationService;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "*") // Liberando o controlador dos CORS
 @RequestMapping("/authentication")
 @Tag(description = "Registro e Login na aplicação", name = "Autenticação")
 @RequiredArgsConstructor
@@ -58,6 +58,7 @@ public class AuthenticationController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = UserInfoDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping
     public ResponseEntity<Optional<UserInfoDTO>> infoUser(){
         try {
