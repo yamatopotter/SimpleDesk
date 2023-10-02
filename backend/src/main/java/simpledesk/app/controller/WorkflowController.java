@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class WorkflowController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = WorkflowDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping
     public ResponseEntity<List<WorkflowDTO>> findAll() {
         try {
@@ -45,6 +47,7 @@ public class WorkflowController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = WorkflowDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/{id}")
     public ResponseEntity<WorkflowDTO> findById(@PathVariable Long id) {
         log.info("Buscando o workflow pelo ID: " + id);
@@ -56,6 +59,7 @@ public class WorkflowController {
     @ApiResponse(responseCode = "201", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = WorkflowDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping
     public ResponseEntity<WorkflowDTO> addWorkflow(@RequestBody WorkflowDTO workflow) {
         log.info("Adicionando um novo workflow");
@@ -68,6 +72,7 @@ public class WorkflowController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = WorkflowDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping
     public ResponseEntity<WorkflowDTO> updateWorkflow(@RequestBody WorkflowDTO workflow) {
         log.info("Editando o workflow de ID: " + workflow.id());
@@ -80,6 +85,7 @@ public class WorkflowController {
     @ApiResponse(responseCode = "204", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = WorkflowDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<WorkflowDTO>> hardDeleteWorkflow(@PathVariable Long id) {
         log.info("Deletando o workflow de ID: " + id);

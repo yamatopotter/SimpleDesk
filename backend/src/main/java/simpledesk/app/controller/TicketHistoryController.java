@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class TicketHistoryController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping
     public ResponseEntity<List<TicketHistoryDTO>> findAll() {
         try {
@@ -49,6 +51,7 @@ public class TicketHistoryController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/{id}")
     public ResponseEntity<TicketHistoryDTO> findById(@PathVariable Long id) {
         log.info("Buscando o ticketHistory pelo ID: " + id);
@@ -61,6 +64,7 @@ public class TicketHistoryController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("ticket/{id}")
     public ResponseEntity<List<TicketHistoryDTO>> findByTicketId(@PathVariable Long id) {
         try {
@@ -78,6 +82,7 @@ public class TicketHistoryController {
     @ApiResponse(responseCode = "201", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping
     public ResponseEntity<TicketHistoryDTO> addTicketHistory(@RequestBody TicketHistoryDTO ticket) {
         log.info("Adicionando um novo ticketHistory");
@@ -91,6 +96,7 @@ public class TicketHistoryController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping
     public ResponseEntity<TicketHistoryDTO> updateTicketHistory(@RequestBody TicketHistoryDTO ticketDTO) {
         log.info("Editando o ticketHistory de ID: " + ticketDTO.id());
@@ -104,6 +110,7 @@ public class TicketHistoryController {
     @ApiResponse(responseCode = "204", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<TicketHistoryDTO>> hardDeleteTicket(@PathVariable Long id) {
         log.info("Deletando o ticketHistory de ID: " + id);

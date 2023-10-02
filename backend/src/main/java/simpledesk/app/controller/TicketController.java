@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class TicketController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping
     public ResponseEntity<List<TicketDataDTO>> findAll() {
         try {
@@ -45,6 +47,7 @@ public class TicketController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/type/{equipmentTypeName}")
     public ResponseEntity<List<TicketDataDTO>> getTicketsByEquipmentTypeName(@PathVariable String equipmentTypeName) {
         log.info("Buscando todos os tickets por tipo de equipamento por: " + equipmentTypeName);
@@ -57,6 +60,7 @@ public class TicketController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/workflow/{workflow}")
     public ResponseEntity<List<TicketDataDTO>> getTicketsByWorkflow(@PathVariable String workflow) {
         log.info("Buscando todos os tickets por workflow: " + workflow);
@@ -69,6 +73,7 @@ public class TicketController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/{id}")
     public ResponseEntity<TicketDataDTO> findById(@PathVariable Long id) {
         log.info("Buscando o ticket pelo ID: " + id);
@@ -81,6 +86,7 @@ public class TicketController {
     @ApiResponse(responseCode = "201", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping
     public ResponseEntity<TicketDataDTO> addTicket(@RequestBody TicketDTO ticket) {
         log.info("Adicionando um novo ticket");
@@ -94,6 +100,7 @@ public class TicketController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping
     public ResponseEntity<TicketDataDTO> updateTicket(@RequestBody TicketDTO ticket) {
         log.info("Editando o ticket de ID: " + ticket.id());
@@ -107,6 +114,7 @@ public class TicketController {
     @ApiResponse(responseCode = "204", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<TicketDTO>> hardDeleteTicket(@PathVariable Long id) {
         log.info("Deletando o ticket de ID: " + id);
