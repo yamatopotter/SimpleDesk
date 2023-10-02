@@ -12,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import simpledesk.app.DTO.user.UserDTO;
-import simpledesk.app.DTO.user.UserInfoDTO;
-import simpledesk.app.DTO.user.UserUpdateWithPasswordDTO;
-import simpledesk.app.DTO.user.UserUpdateWithoutPasswordDTO;
+import simpledesk.app.domain.dto.user.UserDTO;
+import simpledesk.app.domain.dto.user.UserInfoDTO;
+import simpledesk.app.domain.dto.user.UserUpdateWithPasswordDTO;
+import simpledesk.app.domain.dto.user.UserUpdateWithoutPasswordDTO;
 import simpledesk.app.service.UserService;
 
 import java.util.List;

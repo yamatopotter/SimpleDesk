@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import simpledesk.app.DTO.equipmentType.EquipmentTypeDTO;
+import simpledesk.app.domain.dto.equipmentType.EquipmentTypeDTO;
 import simpledesk.app.service.EquipmentTypeService;
 
 import java.util.List;

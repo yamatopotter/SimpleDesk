@@ -1,8 +1,8 @@
 package simpledesk.app.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import simpledesk.app.entity.Ticket;
-import simpledesk.app.entity.TicketHistory;
+import simpledesk.app.domain.entity.Ticket;
+import simpledesk.app.domain.entity.TicketHistory;
 
 import java.util.List;
 
