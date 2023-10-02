@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { api } from "../service/api";
 import { getToken } from "./localstorage";
 const baseURI = "/user";
@@ -15,61 +14,12 @@ export const getUsers = async () => {
     if (request.status === 200) {
       return request.data;
     }
+
+    return false;
   } catch {
     return false;
   }
 };
-
-// export const addUser = async (data, imgUrl, userId) => {
-//   const newTicket = {
-//     title: data.title.trim(),
-//     description: data.description ? data.description.trim() : "",
-//     urlPhoto: imgUrl ? imgUrl.trim() : "",
-//     user: {
-//       id: parseInt(userId),
-//     },
-//     equipment: {
-//       id: parseInt(data.idEquipment),
-//     },
-//     status: {
-//       id: 1,
-//     },
-//   };
-
-//   try {
-//     const request = await api.post(`${baseUrl}`, newTicket, {
-//       headers: {
-//         Authorization: "Bearer " + getToken(),
-//       },
-//     });
-
-//     if (request.status === 201) {
-//       toast.success("Chamado criado com sucesso", {
-//         position: "top-right",
-//         autoClose: 3000,
-//         hideProgressBar: false,
-//         closeOnClick: true,
-//         pauseOnHover: true,
-//         draggable: true,
-//         progress: undefined,
-//         theme: "light",
-//       });
-//       return true;
-//     }
-//   } catch {
-//     toast.error("Valide os dados inseridos.", {
-//       position: "top-right",
-//       autoClose: 5000,
-//       hideProgressBar: false,
-//       closeOnClick: true,
-//       pauseOnHover: true,
-//       draggable: true,
-//       progress: undefined,
-//       theme: "light",
-//     });
-//     return false;
-//   }
-// };
 
 export const getUser = async (id) => {
   try {
@@ -83,6 +33,8 @@ export const getUser = async (id) => {
     if (request.status === 200) {
       return request.data;
     }
+
+    return false;
   } catch {
     return false;
   }
@@ -98,9 +50,11 @@ export const deleteUser = async (id) => {
       },
     });
 
-    if (request.status === 200) {
+    if (request.status === 204) {
       return true;
     }
+
+    return false;
   } catch {
     return false;
   }
@@ -108,7 +62,7 @@ export const deleteUser = async (id) => {
 
 export const updateUserPassword = async (data) => {
   try {
-    const request = await api.put(baseURI+"/password", data, {
+    const request = await api.put(baseURI + "/password", data, {
       headers: {
         Authorization: "Bearer " + getToken(),
         "Content-Type": "application/json",
@@ -118,6 +72,8 @@ export const updateUserPassword = async (data) => {
     if (request.status === 200) {
       return true;
     }
+
+    return false;
   } catch {
     return false;
   }
@@ -135,6 +91,8 @@ export const updateUser = async (data) => {
     if (request.status === 200) {
       return true;
     }
+
+    return false;
   } catch {
     return false;
   }

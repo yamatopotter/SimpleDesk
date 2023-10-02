@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { api } from "../service/api";
 import { getToken } from "./localstorage";
 const baseURI = "/equipmentType";
@@ -15,6 +14,8 @@ export const getEquipmentsType = async () => {
     if (request.status === 200) {
       return request.data;
     }
+
+    return false;
   } catch {
     return false;
   }
@@ -32,6 +33,8 @@ export const addEquipementType = async (data) => {
     if (request.status === 201) {
       return true;
     }
+
+    return false;
   } catch {
     return false;
   }
@@ -49,6 +52,8 @@ export const getEquipmentType = async (id) => {
     if (request.status === 200) {
       return request.data;
     }
+
+    return false;
   } catch {
     return false;
   }
@@ -66,6 +71,8 @@ export const deleteEquipmentType = async (id) => {
     if (request.status === 204) {
       return true;
     }
+
+    return false;
   } catch {
     return false;
   }
@@ -83,6 +90,8 @@ export const updateEquipmentType = async (data) => {
     if (request.status === 200) {
       return true;
     }
+
+    return false;
   } catch {
     return false;
   }

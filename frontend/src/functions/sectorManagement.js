@@ -14,6 +14,8 @@ export const getSectors = async () => {
     if (request.status === 200) {
       return request.data;
     }
+
+    return false;
   } catch {
     return false;
   }
@@ -21,7 +23,12 @@ export const getSectors = async () => {
 
 export const addSector = async (data) => {
   try {
-    const request = await api.post(baseURI, data);
+    const request = await api.post(baseURI, data, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
+    });
 
     if (request.status === 201) {
       return true;

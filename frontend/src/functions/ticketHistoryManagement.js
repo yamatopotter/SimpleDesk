@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { api } from "../service/api";
 import { getToken } from "./localstorage";
 const baseURI = "/ticketHistory";
@@ -15,17 +14,10 @@ export const getTicketHistoryByTicket = async (id) => {
     if (request.status === 200) {
       return request.data;
     }
+
+    return false;
   } catch {
-    toast.error("Erro na comunicação com a API. Tente novamente.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    return false;
   }
 };
 
@@ -52,17 +44,9 @@ export const addTicketHistory = async (data, urlPhoto) => {
     if (request.status === 201) {
       return true;
     }
+
+    return false;
   } catch {
     return false;
-    toast.error("Erro na comunicação com a API. Tente novamente.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
   }
 };

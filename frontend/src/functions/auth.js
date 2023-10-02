@@ -75,7 +75,12 @@ export async function getUserData(setIsAuthenticated, setUserData) {
 
 export const registerUser = async (data) => {
   try {
-    const response = await api.post(baseURI + "/register", data);
+    const response = await api.post(baseURI + "/register", data, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
+    });
     if (response.status === 201) {
       return true;
     }

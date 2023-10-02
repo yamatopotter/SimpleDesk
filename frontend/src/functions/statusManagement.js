@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { api } from "../service/api";
 import { getToken } from "./localstorage";
 const baseURI = "/status";
@@ -15,17 +14,10 @@ export const getStatuses = async () => {
     if (request.status === 200) {
       return request.data;
     }
+
+    return false;
   } catch {
-    toast.error("Erro na comunicação com a API. Tente novamente.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    return false;
   }
 };
 
@@ -46,6 +38,8 @@ export const addStatus = async (data) => {
     if (request.status === 201) {
       return true;
     }
+
+    return false;
   } catch {
     return false;
   }
@@ -64,16 +58,7 @@ export const getStatus = async (id) => {
       return request.data;
     }
   } catch {
-    toast.error("Erro na comunicação com a API. Tente novamente.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    return false;
   }
 };
 
@@ -86,9 +71,7 @@ export const deleteStatus = async (id) => {
       },
     });
 
-    console.log(request.status);
-
-    if (request.status === 200) {
+    if (request.status === 204) {
       return true;
     }
   } catch {
@@ -111,7 +94,7 @@ export const updateStatus = async (data) => {
       },
     });
 
-    if (request.status === 204) {
+    if (request.status === 200) {
       return true;
     }
   } catch {
