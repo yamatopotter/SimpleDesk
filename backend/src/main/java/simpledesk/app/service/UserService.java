@@ -5,11 +5,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import simpledesk.app.DTO.user.UserInfoDTO;
-import simpledesk.app.DTO.user.UserInfoDTOMapper;
-import simpledesk.app.DTO.user.UserUpdateWithPasswordDTO;
-import simpledesk.app.DTO.user.UserUpdateWithoutPasswordDTO;
-import simpledesk.app.entity.User;
+import simpledesk.app.domain.dto.user.UserInfoDTO;
+import simpledesk.app.domain.dto.user.UserInfoDTOMapper;
+import simpledesk.app.domain.dto.user.UserUpdateWithPasswordDTO;
+import simpledesk.app.domain.dto.user.UserUpdateWithoutPasswordDTO;
+import simpledesk.app.domain.entity.Ticket;
+import simpledesk.app.domain.entity.TicketHistory;
+import simpledesk.app.domain.entity.User;
+import simpledesk.app.repository.ITicketHistoryRepository;
+import simpledesk.app.repository.ITicketRepository;
 import simpledesk.app.repository.IUserRepository;
 import simpledesk.app.service.exceptions.DataIntegratyViolationException;
 import simpledesk.app.service.exceptions.EmptyAttributeException;
@@ -26,6 +30,8 @@ public class UserService {
     private final UserInfoDTOMapper userInfoDTOMapper;
     private final IUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ITicketRepository ticketRepository;
+    private final ITicketHistoryRepository ticketHistoryRepository;
 
 
     @Transactional(readOnly = true)
@@ -86,16 +92,18 @@ public class UserService {
 
     @Transactional
     public Boolean hardDeleteUser(Long id) {
+        validatingTheIntegrityOfTheRelationship(id);
         Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
         String idUser = (String) principal;
         User userEntity = userRepository.findByEmail(idUser).
                 orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado."));
 
-        if (!userEntity.getId().equals(id)) {
-            if (userRepository.findById(id).isPresent()) {
-                userRepository.deleteById(id);
-                return true;
-            }
+        if (userEntity.getId().equals(id))
+            throw new DataIntegratyViolationException("O usuário não pode excluir a si mesmo.");
+
+        if (userRepository.findById(id).isPresent()) {
+            userRepository.deleteById(id);
+            return true;
         }
         return false;
     }
@@ -106,6 +114,27 @@ public class UserService {
 
         if (userLogin.isPresent() && !userLogin.get().getId().equals(data.getId()))
             throw new DataIntegratyViolationException("Usuário já registrado.");
+    }
+
+    @Transactional(readOnly = true)
+    public void validatingTheIntegrityOfTheRelationship(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Usuário de ID: " + id + " não encontrado."));
+
+        List<TicketHistory> ticketHistories = ticketHistoryRepository.findByUser(user);
+
+        for (TicketHistory history : ticketHistories) {
+            if (history.getUser().getId().equals(user.getId()))
+                throw new DataIntegratyViolationException("O usuário está vinculado a um ticket history.");
+        }
+
+        List<Ticket> tickets = ticketRepository.findByUser(user);
+
+        for (Ticket ticket : tickets) {
+            if (ticket.getUser().getId().equals(user.getId()))
+                throw new DataIntegratyViolationException("O usuário está vinculado a um ticket.");
+        }
+
     }
 
     public void emptyAttributeWithoutPassword(UserUpdateWithoutPasswordDTO data) {

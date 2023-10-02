@@ -1,7 +1,7 @@
 package simpledesk.app.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import simpledesk.app.entity.EquipmentType;
+import simpledesk.app.domain.entity.EquipmentType;
 
 import java.util.Optional;
 

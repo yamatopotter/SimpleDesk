@@ -1,7 +1,7 @@
 package simpledesk.app.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import simpledesk.app.entity.Workflow;
+import simpledesk.app.domain.entity.Workflow;
 
 import java.util.Optional;
 

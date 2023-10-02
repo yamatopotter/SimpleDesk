@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import simpledesk.app.DTO.workflow.WorkflowDTO;
+import simpledesk.app.domain.dto.workflow.WorkflowDTO;
 import simpledesk.app.service.WorkflowService;
 
 import java.util.List;

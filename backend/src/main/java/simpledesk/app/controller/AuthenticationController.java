@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import simpledesk.app.DTO.user.UserInfoDTO;
-import simpledesk.app.auth.AuthenticationRequest;
-import simpledesk.app.auth.AuthenticationResponse;
-import simpledesk.app.auth.RegisterRequest;
+import simpledesk.app.domain.dto.auth.AuthenticationRequest;
+import simpledesk.app.domain.dto.auth.AuthenticationResponse;
+import simpledesk.app.domain.dto.auth.RegisterRequest;
+import simpledesk.app.domain.dto.user.UserInfoDTO;
 import simpledesk.app.repository.IUserRepository;
 import simpledesk.app.service.AuthenticationService;
 
