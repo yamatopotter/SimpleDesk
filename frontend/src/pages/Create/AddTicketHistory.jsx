@@ -2,7 +2,7 @@ import { Camera, Siren } from "@phosphor-icons/react";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { CommonTextarea } from "../../components/CommonTextarea/CommonTextarea";
 import Webcam from "react-webcam";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ import { uploadPicture } from "../../service/cloudnaryService";
 import { addTicketHistory } from "../../functions/ticketHistoryManagement";
 import { toast } from "react-toastify";
 
-export const AddTicketHistory = ({ statuses }) => {
+export const AddTicketHistory = ({ statuses, ticket }) => {
   const [takePicture, setTakePicture] = useState(false);
   const [picture, setPicture] = useState(null);
   const webcamRef = useRef(null);
@@ -29,6 +29,8 @@ export const AddTicketHistory = ({ statuses }) => {
     setPicture(webcamRef.current.getScreenshot());
     setTakePicture(false);
   }
+
+  useEffect(() => setValue("idTicket", ticket), []);
 
   const saveData = async (data) => {
     try {

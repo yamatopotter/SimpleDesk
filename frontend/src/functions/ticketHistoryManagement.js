@@ -5,10 +5,10 @@ const baseURI = "/ticketHistory";
 
 export const getTicketHistoryByTicket = async (id) => {
   try {
-    const request = await api.get(baseURI + "/" + id, {
+    const request = await api.get(baseURI + "/ticket/" + id, {
       headers: {
-        "Content-Type": "application/json",
         Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
       },
     });
 
@@ -34,15 +34,15 @@ export const addTicketHistory = async (data, urlPhoto) => {
     description: data.description,
     urlPhoto: urlPhoto ? urlPhoto.trim() : null,
     ticket: {
-      id: data.idTicket,
+      id: parseInt(data.idTicket),
     },
     status: {
-      id: data.status,
+      id: parseInt(data.status),
     },
   };
 
   try {
-    const request = await api.get(baseURI, newTicketHistory, {
+    const request = await api.post(baseURI, newTicketHistory, {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + getToken(),

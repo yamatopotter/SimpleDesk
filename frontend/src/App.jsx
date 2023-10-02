@@ -29,6 +29,7 @@ import { UpdateEquipment } from "./routes/Update/UpdateEquipment";
 import { UpdateEquipmentType } from "./routes/Update/UpdateEquipmentType";
 import { UpdateUser } from "./routes/Update/UpdateUser";
 import { UpdatePassword } from "./routes/Update/UpdatePassword";
+import { ListTickets } from "./routes/List/ListTickets";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/about" element={<About />} />
               {/* Ticket */}
+              <Route path="/ticket" element={<ListTickets />} />
               <Route path="/ticket/new" element={<CreateTicket />} />
               <Route path="/ticket/:id" element={<DetailTicket />} />
               <Route

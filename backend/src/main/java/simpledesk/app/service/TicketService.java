@@ -6,14 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import simpledesk.app.DTO.ticket.TicketDTO;
 import simpledesk.app.DTO.ticket.TicketDTOMapper;
-import simpledesk.app.entity.Equipment;
-import simpledesk.app.entity.Status;
-import simpledesk.app.entity.Ticket;
-import simpledesk.app.entity.User;
-import simpledesk.app.repository.IEquipmentRepositoy;
-import simpledesk.app.repository.IStatusRepository;
-import simpledesk.app.repository.ITicketRepository;
-import simpledesk.app.repository.IUserRepository;
+import simpledesk.app.entity.*;
+import simpledesk.app.repository.*;
 import simpledesk.app.service.exceptions.DataIntegratyViolationException;
 import simpledesk.app.service.exceptions.EmptyAttributeException;
 import simpledesk.app.service.exceptions.ObjectNotFoundException;
@@ -31,6 +25,8 @@ public class TicketService {
     private final IEquipmentRepositoy equipmentRepositoy;
     private final IUserRepository userRepository;
     private final IStatusRepository statusRepository;
+
+    private final ITicketHistoryRepository  ticketHistoryRepository;
 
     @Transactional(readOnly = true)
     public List<TicketDTO> findAll() {
@@ -79,6 +75,8 @@ public class TicketService {
 
         Ticket ticket = repository.save(new Ticket(null, ticketDTO.title(), ticketDTO.description(),
                 ticketDTO.urlPhoto(), userEntity, equipmentToTicket, statusToTicket, null));
+
+        ticketHistoryRepository.save(new TicketHistory(null, userEntity, ticket, statusToTicket, ticketDTO.description(), ticketDTO.urlPhoto(), null));
         return Optional.of(mapper.apply(ticket));
     }
     @Transactional

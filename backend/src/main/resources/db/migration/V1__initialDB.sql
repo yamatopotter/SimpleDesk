@@ -78,7 +78,7 @@ CREATE TABLE ticket_history (
 -- Triggers Ticket_History
 
 CREATE TRIGGER trg_before_update_ticket_history
-BEFORE UPDATE ON simple_desk.ticket_history
+AFTER INSERT ON simple_desk.ticket_history
 FOR EACH ROW
 BEGIN
 	IF NEW.fk_id_ticket = (SELECT id FROM ticket WHERE id = NEW.fk_id_ticket)
@@ -106,13 +106,6 @@ BEGIN
 END;
 
 -- Triggers Ticket
-
-CREATE TRIGGER trg_after_insert_ticket AFTER INSERT ON simple_desk.ticket
-FOR EACH ROW
-BEGIN
-    INSERT INTO simple_desk.ticket_history (description, url_photo, fk_id_user, fk_id_ticket, fk_id_status)
-    VALUES (NEW.description, NEW.url_photo, NEW.fk_id_user, NEW.id, NEW.fk_id_status);
-END;
 
 CREATE TRIGGER trg_before_insert_ticket
 BEFORE INSERT ON simple_desk.ticket

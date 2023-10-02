@@ -2,7 +2,7 @@ export const ListItemBoxed = ({ title, description, started, onClick }) => {
   return (
     <>
       <li
-        className="flex flex-col gap-2 justify-between"
+        className={`flex flex-col gap-2 justify-between ${onClick ? "cursor-pointer" : ""}`}
         onClick={onClick ? onClick : ""}
       >
         <p className="text-violet-700">{title}</p>

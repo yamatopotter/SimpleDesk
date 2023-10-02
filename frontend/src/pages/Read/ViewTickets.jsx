@@ -14,11 +14,11 @@ export const ViewTickets = ({ todo, doing }) => {
               title={`#${task.id} ${task.title}`}
               description={`${task.status.name}`}
               key={task.id}
-              onClick={()=>navigate(`/ticket/${task.id}`)}
+              onClick={() => navigate(`/ticket/${task.id}`)}
             />
           ))}
 
-          {doing.length == 0 && (
+          {todo.length == 0 && (
             <p className="pt-3">Não há chamados em aberto</p>
           )}
         </ul>
@@ -35,8 +35,8 @@ export const ViewTickets = ({ todo, doing }) => {
                   description={`${task.status.name}`}
                   started={true}
                   key={task.id}
+                  onClick={() => navigate(`/ticket/${task.id}`)}
                 />
-                <hr></hr>
               </>
             );
           })}

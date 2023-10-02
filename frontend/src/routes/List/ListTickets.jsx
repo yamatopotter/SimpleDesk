@@ -1,25 +1,28 @@
 import { useEffect, useState } from "react";
 import { LoadingComponent } from "../../components/LoadingComponent/LoadingComponent";
 import { getTickets } from "../../functions/ticketManagement";
-import { ViewTickets } from "../../pages/Read/ViewTicketsOld";
+import { ViewAllTickets } from "../../pages/Read/ViewAllTickets";
+import { Container } from "../../components/Container";
 
 export const ListTickets = () => {
   const [listTickets, setListTickets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function getStatusesList() {
+    async function getDataFromServer() {
       const data = await getTickets();
       setListTickets(data);
-      setIsLoading(false)
+      setIsLoading(false);
     }
 
-    getStatusesList();
+    getDataFromServer();
   }, []);
 
   return (
     <LoadingComponent isLoading={isLoading}>
-      <ViewTickets ticketsData={listTickets}/>
+      <Container>
+        <ViewAllTickets ticketsData={listTickets} />
+      </Container>
     </LoadingComponent>
   );
 };

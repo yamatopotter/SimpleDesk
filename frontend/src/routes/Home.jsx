@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getTicketsByWorkflow } from "../functions/ticketManagement";
 import { ViewTickets } from "../pages/Read/ViewTickets";
 import { LoadingComponent } from "../components/LoadingComponent/LoadingComponent";
+import { Container } from "../components/Container";
 
 export const Home = () => {
   const [listTicketsToDo, setListTicketsToDo] = useState([]);
@@ -23,7 +24,9 @@ export const Home = () => {
 
   return (
     <LoadingComponent isLoading={isLoading}>
-      <ViewTickets todo={listTicketsToDo} doing={listTicketsDoing} />
+      <Container>
+        <ViewTickets todo={listTicketsToDo} doing={listTicketsDoing} />
+      </Container>
     </LoadingComponent>
   );
 };

@@ -89,7 +89,7 @@ public class TicketHistoryService {
     }
 
     public void emptyAttribute(TicketHistoryDTO ticketHistoryDTO) {
-        if (ticketHistoryDTO.description().isEmpty() || ticketHistoryDTO.urlPhoto() == null ||
+        if (ticketHistoryDTO.description().isEmpty() ||
                 ticketHistoryDTO.ticket() == null || ticketHistoryDTO.ticket().id() == null ||
                 ticketHistoryDTO.status() == null || ticketHistoryDTO.status().id() == null)
             throw new EmptyAttributeException("Todos os atríbutos são necessários");
