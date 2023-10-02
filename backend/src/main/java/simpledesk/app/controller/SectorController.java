@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/sector")
 @Tag(description = "Setores da aplicação", name = "Setor")
 @Slf4j

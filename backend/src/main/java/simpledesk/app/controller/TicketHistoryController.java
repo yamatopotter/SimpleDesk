@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/ticketHistory")
 @Tag(description = "Histórico de ticket's da aplicação", name = "Ticket History")
 @Slf4j

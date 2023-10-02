@@ -39,7 +39,7 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests()
                 .requestMatchers(
-                        "/**")
+                        "/authentication/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

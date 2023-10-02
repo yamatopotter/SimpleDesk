@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/workflow")
 @Tag(description = "Workflow da aplicação", name = "Workflow")
 @Slf4j

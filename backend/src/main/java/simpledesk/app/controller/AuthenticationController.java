@@ -21,7 +21,6 @@ import simpledesk.app.service.AuthenticationService;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "*") // Liberando o controlador dos CORS
 @RequestMapping("/authentication")
 @Tag(description = "Registro e Login na aplicação", name = "Autenticação")
 @RequiredArgsConstructor

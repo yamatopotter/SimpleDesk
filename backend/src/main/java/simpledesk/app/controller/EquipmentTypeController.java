@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/equipmentType")
 @Tag(description = "Tipo de equipamentos da aplicação", name = "Tipo de equipamento")
 @Slf4j

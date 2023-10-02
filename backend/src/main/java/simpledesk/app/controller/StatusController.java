@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/status")
 @Tag(description = "Status da aplicação", name = "Status")
 @Slf4j

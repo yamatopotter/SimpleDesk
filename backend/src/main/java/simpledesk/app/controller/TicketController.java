@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/ticket")
 @Tag(description = "Tickets da aplicação", name = "Ticket")
 @Slf4j
