@@ -15,7 +15,6 @@ import { AuthenticationContext } from "../../provider/AuthenticationProvider";
 export const AddTicket = ({ equipmentList }) => {
   const [takePicture, setTakePicture] = useState(false);
   const [picture, setPicture] = useState(null);
-  const { userData } = useContext(AuthenticationContext);
   const webcamRef = useRef(null);
 
   const {
@@ -39,14 +38,13 @@ export const AddTicket = ({ equipmentList }) => {
         const imageData = await uploadPicture(picture);
 
         if(imageData){
-          const userId = userData.id;
-          if (await addTicket(data, imageData.url, userId)) {
+          if (await addTicket(data, imageData.url)) {
             setTimeout(() => navigate("/home"), 1000);
           }
         }
       }
       else{
-        if (await addTicket(data, null, 1)) {
+        if (await addTicket(data, null)) {
           setTimeout(() => navigate("/home"), 1000);
         }
       }

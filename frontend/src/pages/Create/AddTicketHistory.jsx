@@ -40,7 +40,7 @@ export const AddTicketHistory = ({ statuses, ticket }) => {
         if (imageData) {
           const response = await addTicketHistory(data, imageData.url);
           if (response) {
-            toast.success("Status adicionado com sucesso", {
+            toast.success("Resposta adicionada com sucesso", {
               position: "top-right",
               autoClose: 3000,
               hideProgressBar: false,
@@ -67,7 +67,7 @@ export const AddTicketHistory = ({ statuses, ticket }) => {
       } else {
         const response = await addTicketHistory(data, null);
         if (response) {
-          toast.success("Status adicionado com sucesso", {
+          toast.success("Resposta adicionada com sucesso", {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
