@@ -16,7 +16,6 @@ export const showToast = (responseServer) => {
     }
 
     if (responseServer.status == 201) {
-      console.log("Entrei aqui");
       return toast.success("Dados adicionados com sucesso.", {
         position: "top-right",
         autoClose: 3000,

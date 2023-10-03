@@ -58,11 +58,10 @@ export const registerUser = async (data) => {
         "Content-Type": "application/json",
       },
     });
-    if (response.status === 201) {
-      return true;
-    }
-    return false;
-  } catch (e) {
+    showToast(response);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
