@@ -3,3 +3,5 @@ spring:
     active: ${APP_PROFILE:prod}
   jwt:
     secret: ${JWT_SECRET:472D4B6150645367566B597033733676397924423F4528482B4D625165546857}
+cors:
+  origins: ${CORS}
