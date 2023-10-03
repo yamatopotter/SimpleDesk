@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import simpledesk.app.domain.dto.auth.RegisterRequest;
 import simpledesk.app.domain.dto.user.UserInfoDTO;
 import simpledesk.app.domain.dto.user.UserInfoDTOMapper;
 import simpledesk.app.domain.dto.user.UserUpdateWithPasswordDTO;
@@ -15,6 +16,7 @@ import simpledesk.app.domain.entity.User;
 import simpledesk.app.repository.ITicketHistoryRepository;
 import simpledesk.app.repository.ITicketRepository;
 import simpledesk.app.repository.IUserRepository;
+import simpledesk.app.service.exceptions.BadRequestException;
 import simpledesk.app.service.exceptions.DataIntegratyViolationException;
 import simpledesk.app.service.exceptions.EmptyAttributeException;
 import simpledesk.app.service.exceptions.ObjectNotFoundException;
@@ -51,6 +53,7 @@ public class UserService {
     @Transactional
     public Optional<UserInfoDTO> updateUserWithPassword(UserUpdateWithPasswordDTO user) {
         emptyAttributeWithPassword(user);
+        passwordLength(user);
         Optional<User> userEntity = Optional.of(userRepository.findById(user.id()).get());
 
         var userToUpdate = User.builder()
@@ -150,6 +153,11 @@ public class UserService {
     public void emptyAttributeWithPassword(UserUpdateWithPasswordDTO data) {
         if (data.password() == null || data.password().isEmpty() || data.id() == null)
             throw new EmptyAttributeException("Todos os atríbutos são necessários.");
+    }
+
+    public void passwordLength(UserUpdateWithPasswordDTO data) {
+        if (data.password().length() < 8)
+            throw new BadRequestException("A senha deve possuir mínimo 8 caracteres.");
     }
 
 

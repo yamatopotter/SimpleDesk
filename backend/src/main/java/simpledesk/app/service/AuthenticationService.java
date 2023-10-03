@@ -16,6 +16,7 @@ import simpledesk.app.domain.dto.user.UserInfoDTOMapper;
 import simpledesk.app.domain.entity.User;
 import simpledesk.app.infra.security.JwtService;
 import simpledesk.app.repository.IUserRepository;
+import simpledesk.app.service.exceptions.BadRequestException;
 import simpledesk.app.service.exceptions.DataIntegratyViolationException;
 import simpledesk.app.service.exceptions.EmptyAttributeException;
 import simpledesk.app.service.exceptions.ObjectNotFoundException;
@@ -35,6 +36,7 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegisterRequest request) {
         userAlreadyRegistered(request);
         emptyAttribute(request);
+        passwordLength(request);
 
         var user = User.builder()
                 .name(request.getName())
@@ -97,5 +99,9 @@ public class AuthenticationService {
             throw new EmptyAttributeException("Todos os atríbutos são necessários");
     }
 
+    public void passwordLength(RegisterRequest data) {
+        if (data.getPassword().length() < 8)
+            throw new BadRequestException("A senha deve possuir mínimo 8 caracteres.");
+    }
 
 }
