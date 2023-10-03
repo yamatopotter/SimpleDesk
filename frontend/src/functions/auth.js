@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { api } from "../service/api";
 import { deleteToken, getToken, setToken } from "./localstorage";
 import { showToast } from "./message";
@@ -50,6 +49,10 @@ export async function getUserData(setIsAuthenticated, setUserData) {
   }
 }
 
+export async function updateLiveUserData(userData, setUserData) {
+  setUserData(userData);
+}
+
 export const registerUser = async (data) => {
   try {
     const response = await api.post(baseURI + "/register", data, {
@@ -58,11 +61,10 @@ export const registerUser = async (data) => {
         "Content-Type": "application/json",
       },
     });
-    if (response.status === 201) {
-      return true;
-    }
-    return false;
-  } catch (e) {
+    showToast(response);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };

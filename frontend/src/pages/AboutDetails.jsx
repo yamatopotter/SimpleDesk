@@ -45,9 +45,26 @@ export const AboutDetails = () => {
       <h1 className="text-lg">Olá {userData.name}</h1>
 
       <div className="flex flex-col gap-4 mt-4">
-        <CommonButton content="Logout" id="btnLogout" onClick={doLogout} />
-        <CommonButton content="Alterar meus dados" id="btnUpdateMyUser" />
-        <CommonButton content="Sobre o sistema" id="btnAboutSystem" />
+        <CommonButton content="Logout" id="btn_logout" onClick={doLogout} />
+        <CommonButton
+          content="Alterar meus dados"
+          id="btn_updateMyData"
+          onClick={() => {
+            navigate("/user/update");
+          }}
+        />
+        <CommonButton
+          content="Alterar minha senha"
+          id="btn_updateMyPassword"
+          onClick={() => {
+            navigate("/user/update");
+          }}
+        />
+        <CommonButton
+          content="Sobre o sistema"
+          id="btnAboutSystem"
+          onClick={() => navigate("/about/system")}
+        />
       </div>
     </div>
   );
