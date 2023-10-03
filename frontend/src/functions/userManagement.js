@@ -79,7 +79,7 @@ export const updateUser = async (data) => {
     });
 
     showToast(request);
-    return true;
+    return request.data;
   } catch (err) {
     showToast(err);
     return false;

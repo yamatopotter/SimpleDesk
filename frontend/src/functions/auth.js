@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { api } from "../service/api";
 import { deleteToken, getToken, setToken } from "./localstorage";
 import { showToast } from "./message";
@@ -48,6 +47,10 @@ export async function getUserData(setIsAuthenticated, setUserData) {
     setIsAuthenticated(false);
     return false;
   }
+}
+
+export async function updateLiveUserData(userData, setUserData) {
+  setUserData(userData);
 }
 
 export const registerUser = async (data) => {

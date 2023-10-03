@@ -65,6 +65,7 @@ import { AuthenticationProvider } from "./provider/AuthenticationProvider";
 
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
 import { Suspense } from "react";
+const AboutSystem = lazyLoad("./pages/AboutSystem", "AboutSystem");
 
 function App() {
   return (
@@ -78,6 +79,7 @@ function App() {
                 <Route path="" element={<Login />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/about/system" element={<AboutSystem />} />
                 {/* Ticket */}
                 <Route path="/ticket" element={<ListTickets />} />
                 <Route path="/ticket/new" element={<CreateTicket />} />
@@ -187,7 +189,15 @@ function App() {
                   }
                 />
                 <Route path="/user/detail/:id" element={<DetailUser />} />
-                <Route path="/user/update/:id" element={<UpdateUser />} />
+                <Route path="/user/update" element={<UpdateUser />} />
+                <Route
+                  path="/user/update/:id"
+                  element={
+                    <ProtectedRoute>
+                      <UpdateUser />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route
                   path="/user/new"
                   element={
@@ -196,7 +206,15 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-                <Route path="/user/password/:id" element={<UpdatePassword />} />
+                <Route path="/user/password" element={<UpdatePassword />} />
+                <Route
+                  path="/user/password/:id"
+                  element={
+                    <ProtectedRoute>
+                      <UpdatePassword />
+                    </ProtectedRoute>
+                  }
+                />
                 {/* Equipment Type */}
                 <Route
                   path="/equipment_type"
