@@ -5,6 +5,7 @@ import { authUser } from "../../functions/auth";
 import { useNavigate } from "react-router-dom";
 import { AuthenticationContext } from "../../provider/AuthenticationProvider";
 import { useContext, useEffect } from "react";
+import { showToast } from "../../functions/message";
 
 export const LoginForm = () => {
   const {
@@ -23,7 +24,10 @@ export const LoginForm = () => {
     const response = await authUser(data, setIsAuthenticated, setUserData);
     if (response) {
       navigate("/home");
+      return;
     }
+
+    showToast(response)
   }
 
   useEffect(() => {
