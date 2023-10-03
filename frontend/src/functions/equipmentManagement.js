@@ -1,6 +1,6 @@
-import { toast } from "react-toastify";
 import { api } from "../service/api";
 import { getToken } from "./localstorage";
+import { showToast } from "./message";
 const baseURI = "/equipment";
 
 export const getEquipments = async () => {
@@ -12,10 +12,9 @@ export const getEquipments = async () => {
       },
     });
 
-    if (request.status === 200) {
-      return request.data;
-    }
-  } catch {
+    return request.data;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -29,20 +28,10 @@ export const getEquipment = async (id) => {
       },
     });
 
-    if (request.status === 200) {
-      return request.data;
-    }
-  } catch {
-    toast.error("Erro na comunicação com a API. Tente novamente.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    return request.data;
+  } catch (err) {
+    showToast(err);
+    return false;
   }
 };
 
@@ -65,10 +54,10 @@ export const addEquipment = async (data) => {
       },
     });
 
-    if (request.status === 201) {
-      return true;
-    }
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -82,10 +71,10 @@ export const deleteEquipment = async (id) => {
       },
     });
 
-    if (request.status === 204) {
-      return true;
-    }
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -109,12 +98,11 @@ export const updateEquipment = async (data) => {
         "Content-Type": "application/json",
       },
     });
-    console.log(request.status);
 
-    if (request.status === 200) {
-      return true;
-    }
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };

@@ -3,10 +3,13 @@ import { LoadingComponent } from "../../components/LoadingComponent/LoadingCompo
 import { transformToWorkflowOptions } from "../../functions/common";
 import { getWorkflow } from "../../functions/workflowManagement";
 import { AddStatus } from "../../pages/Create/AddStatus";
+import { Container } from "../../components/Container";
+import { useNavigate } from "react-router-dom";
 
 export const CreateStatus = () => {
   const [workflow, setWorkflow] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getData() {
@@ -15,9 +18,10 @@ export const CreateStatus = () => {
       if (workflowData) {
         setWorkflow(transformToWorkflowOptions(workflowData));
         setIsLoading(false);
-      } else {
-        setIsLoading(false);
+        return;
       }
+      setIsLoading(false);
+      navigate("/status");
     }
 
     getData();
@@ -25,7 +29,9 @@ export const CreateStatus = () => {
 
   return (
     <LoadingComponent isLoading={isLoading}>
-      <AddStatus workflow={workflow} />
+      <Container>
+        <AddStatus workflow={workflow} />
+      </Container>
     </LoadingComponent>
   );
 };

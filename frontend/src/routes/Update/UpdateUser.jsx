@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { LoadingComponent } from "../../components/LoadingComponent/LoadingComponent";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -14,47 +13,15 @@ export const UpdateUser = () => {
 
   useEffect(() => {
     async function getData() {
-      try {
-        const data = await getUser(id);
+      const data = await getUser(id);
 
-        if (data == null) {
-          toast.error(
-            "Houve um erro no carregamento dos dados, tente novamente.",
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
-          setIsLoading(false);
-          navigate("/user");
-        }
-
+      if (data) {
         setUser(data);
         setIsLoading(false);
-      } catch (e) {
-        console.log(e);
-        toast.error(
-          "Houve um erro no carregamento dos dados, tente novamente.",
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
-        );
-        setIsLoading(false);
-        navigate("/user");
+        return;
       }
+      setIsLoading(false);
+      navigate("/user");
     }
 
     getData();
@@ -63,31 +30,7 @@ export const UpdateUser = () => {
   const updateData = async (data) => {
     const response = await updateUser(data);
     if (response) {
-      toast.success("Usuário atualizado com sucesso.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       setTimeout(navigate("/user"), 1000);
-    } else {
-      toast.error(
-        "Valide os dados inseridos.",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
     }
   };
 

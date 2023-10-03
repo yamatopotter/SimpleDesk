@@ -3,19 +3,17 @@ import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { CommonInput } from "../../components/CommonInput/CommonInput";
 import { CommonTextarea } from "../../components/CommonTextarea/CommonTextarea";
 import Webcam from "react-webcam";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Select from "react-select";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { uploadPicture } from "../../service/cloudnaryService";
 import { addTicket } from "../../functions/ticketManagement";
-import { AuthenticationContext } from "../../provider/AuthenticationProvider";
 
 export const AddTicket = ({ equipmentList }) => {
   const [takePicture, setTakePicture] = useState(false);
   const [picture, setPicture] = useState(null);
-  const { userData } = useContext(AuthenticationContext);
   const webcamRef = useRef(null);
 
   const {
@@ -34,33 +32,18 @@ export const AddTicket = ({ equipmentList }) => {
   }
 
   const saveData = async (data) => {
-    try {
-      if(picture){
-        const imageData = await uploadPicture(picture);
+    if (picture) {
+      const imageData = await uploadPicture(picture);
 
-        if(imageData){
-          const userId = userData.id;
-          if (await addTicket(data, imageData.url, userId)) {
-            setTimeout(() => navigate("/home"), 1000);
-          }
-        }
-      }
-      else{
-        if (await addTicket(data, null, 1)) {
+      if (imageData) {
+        if (await addTicket(data, imageData.url)) {
           setTimeout(() => navigate("/home"), 1000);
         }
       }
-    } catch (e) {
-      toast.error("Valide os dados inseridos.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+    } else {
+      if (await addTicket(data, null)) {
+        setTimeout(() => navigate("/home"), 1000);
+      }
     }
   };
 

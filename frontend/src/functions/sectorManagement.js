@@ -11,24 +11,26 @@ export const getSectors = async () => {
       },
     });
 
-    if (request.status === 200) {
-      return request.data;
-    }
-  } catch {
+    return request.data;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
 
 export const addSector = async (data) => {
   try {
-    const request = await api.post(baseURI, data);
+    const request = await api.post(baseURI, data, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
+    });
 
-    if (request.status === 201) {
-      return true;
-    }
-
-    return false;
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -42,12 +44,9 @@ export const getSector = async (id) => {
       },
     });
 
-    if (request.status === 200) {
-      return request.data;
-    }
-
-    return false;
-  } catch {
+    return request.data;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -61,12 +60,10 @@ export const deleteSector = async (id) => {
       },
     });
 
-    if (request.status === 204) {
-      return true;
-    }
-
-    return false;
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -80,12 +77,10 @@ export const updateSector = async (data) => {
       },
     });
 
-    if (request.status === 200) {
-      return true;
-    }
-
-    return false;
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };

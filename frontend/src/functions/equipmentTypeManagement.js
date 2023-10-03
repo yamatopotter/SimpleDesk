@@ -1,6 +1,6 @@
-import { toast } from "react-toastify";
 import { api } from "../service/api";
 import { getToken } from "./localstorage";
+import { showToast } from "./message";
 const baseURI = "/equipmentType";
 
 export const getEquipmentsType = async () => {
@@ -12,27 +12,9 @@ export const getEquipmentsType = async () => {
       },
     });
 
-    if (request.status === 200) {
-      return request.data;
-    }
-  } catch {
-    return false;
-  }
-};
-
-export const addEquipementType = async (data) => {
-  try {
-    const request = await api.post(baseURI, data, {
-      headers: {
-        Authorization: "Bearer " + getToken(),
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (request.status === 201) {
-      return true;
-    }
-  } catch {
+    return request.data;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -46,10 +28,26 @@ export const getEquipmentType = async (id) => {
       },
     });
 
-    if (request.status === 200) {
-      return request.data;
-    }
-  } catch {
+    return request.data;
+  } catch (err) {
+    showToast(err);
+    return false;
+  }
+};
+
+export const addEquipementType = async (data) => {
+  try {
+    const request = await api.post(baseURI, data, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
+    });
+
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -63,10 +61,10 @@ export const deleteEquipmentType = async (id) => {
       },
     });
 
-    if (request.status === 204) {
-      return true;
-    }
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -80,10 +78,10 @@ export const updateEquipmentType = async (data) => {
       },
     });
 
-    if (request.status === 200) {
-      return true;
-    }
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };

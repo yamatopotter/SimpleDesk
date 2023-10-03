@@ -1,25 +1,20 @@
-import { toast } from "react-toastify";
 import { api } from "../service/api";
+import { getToken } from "./localstorage";
+import { showToast } from "./message";
 const baseURI = "/workflow";
 
 export const getWorkflow = async () => {
   try {
-    const request = await api.get(baseURI);
-
-    if (request.status === 200) {
-      return request.data;
-    }
-  } catch {
-    toast.error("Erro na comunicação com a API. Tente novamente.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
+    const request = await api.get(baseURI, {
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        "Content-Type": "application/json",
+      },
     });
+
+    return request.data;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };

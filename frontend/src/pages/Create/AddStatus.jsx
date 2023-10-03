@@ -7,7 +7,7 @@ import { addStatus } from "../../functions/statusManagement";
 import Select from "react-select";
 import { toast } from "react-toastify";
 
-export const AddStatus = ({workflow}) => {
+export const AddStatus = ({ workflow }) => {
   const {
     register,
     handleSubmit,
@@ -16,32 +16,10 @@ export const AddStatus = ({workflow}) => {
   } = useForm();
   const navigate = useNavigate();
 
-  
   const handleAddStatus = async (data) => {
-    const response = await addStatus(data)
+    const response = await addStatus(data);
     if (response) {
-      toast.success("Status adicionado com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       setTimeout(() => navigate("/status"), 1000);
-    }else{
-      toast.error("Valide os dados inseridos.", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
     }
   };
 

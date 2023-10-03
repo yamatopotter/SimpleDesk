@@ -43,31 +43,7 @@ export const AddUser = () => {
   const saveData = async (data) => {
     const response = await registerUser(data);
     if (response) {
-      toast.success("Usuário registrado com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       setTimeout(navigate("/user"), 1000);
-    } else {
-      toast.error(
-        "Falha ao adicionar o usuário, verifique se todas as informações foram preenchidas",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
     }
   };
 
