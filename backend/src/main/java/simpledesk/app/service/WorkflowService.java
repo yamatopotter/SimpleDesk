@@ -51,7 +51,8 @@ public class WorkflowService {
 
     @Transactional
     public Optional<WorkflowDTO> updateWorkflow(WorkflowDTO workflow) {
-        emptyAttribute(workflow);
+        emptyAttributeUpdate(workflow);
+        workflowExists(workflow);
         findByName(workflow);
 
         Workflow workflowEntity = repository.save(new Workflow(workflow.id(), workflow.name()));
@@ -66,6 +67,13 @@ public class WorkflowService {
             return true;
         }
         return false;
+    }
+
+    @Transactional(readOnly = true)
+    public void workflowExists(WorkflowDTO workflowDTO) {
+        Optional<Workflow> workflow = repository.findById(workflowDTO.id());
+        if (workflow.isEmpty())
+            throw new ObjectNotFoundException("O workflow de ID: " + workflowDTO.id() + " não existe.");
     }
 
     @Transactional(readOnly = true)
@@ -90,6 +98,11 @@ public class WorkflowService {
 
     public void emptyAttribute(WorkflowDTO workflowDTO) {
         if (workflowDTO.name().isEmpty())
+            throw new EmptyAttributeException("Todos os atríbutos são necessários");
+    }
+
+    public void emptyAttributeUpdate(WorkflowDTO workflowDTO) {
+        if (workflowDTO.id() == null || workflowDTO.name().isEmpty())
             throw new EmptyAttributeException("Todos os atríbutos são necessários");
     }
 

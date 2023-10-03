@@ -110,10 +110,14 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public void userAlreadyRegistered(User data) {
-        Optional<User> userLogin = userRepository.findByEmail(data.getEmail());
+        Optional<User> userName = userRepository.findByName(data.getName());
+        Optional<User> userEmail = userRepository.findByEmail(data.getEmail());
 
-        if (userLogin.isPresent() && !userLogin.get().getId().equals(data.getId()))
-            throw new DataIntegratyViolationException("Usuário já registrado.");
+        if (userName.isPresent() && !userName.get().getId().equals(data.getId()))
+            throw new DataIntegratyViolationException("Usuário com o nome: " + userName.get().getName() + " já cadastrado.");
+
+        if (userEmail.isPresent() && !userEmail.get().getId().equals(data.getId()))
+            throw new DataIntegratyViolationException("Usuário com o e-mail: " + userEmail.get().getEmail() + " já cadastrado.");
     }
 
     @Transactional(readOnly = true)
