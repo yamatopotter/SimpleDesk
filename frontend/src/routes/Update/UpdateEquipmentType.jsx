@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { Container } from "../../components/Container";
 import { LoadingComponent } from "../../components/LoadingComponent/LoadingComponent";
 import {
@@ -17,47 +16,16 @@ export const UpdateEquipmentType = () => {
 
   useEffect(() => {
     async function getData() {
-      try {
-        const data = await getEquipmentType(id);
+      const data = await getEquipmentType(id);
 
-        if (data == null) {
-          toast.error(
-            "Houve um erro no carregamento dos dados, tente novamente.",
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
-          setIsLoading(false);
-          navigate("/equipment_type");
-        }
-
+      if (data) {
         setEquipmentType(data);
         setIsLoading(false);
-      } catch (e) {
-        console.log(e);
-        toast.error(
-          "Houve um erro no carregamento dos dados, tente novamente.",
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
-        );
-        setIsLoading(false);
-        navigate("/equipment_type");
+        return;
       }
+
+      setIsLoading(false);
+      navigate("/equipment_type");
     }
 
     getData();
@@ -66,28 +34,7 @@ export const UpdateEquipmentType = () => {
   const updateData = async (data) => {
     const response = await updateEquipmentType(data);
     if (response) {
-      toast.success("Tipo de equipamento atualizado com sucesso.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       setTimeout(navigate("/equipment_type"), 1000);
-    } else {
-      toast.error("Valide os dados inseridos.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
     }
   };
   return (

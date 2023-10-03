@@ -27,28 +27,7 @@ export const UpdStatus = ({ status, workflow }) => {
   async function handleUpdateStatus(data) {
     const response = await updateStatus(data);
     if (response) {
-      toast.success("Status atualizado com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       setTimeout(() => navigate("/status"), 1000);
-    } else {
-      toast.error("Valide os dados inseridos.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
     }
   }
 

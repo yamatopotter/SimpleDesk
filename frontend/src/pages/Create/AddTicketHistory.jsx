@@ -33,75 +33,20 @@ export const AddTicketHistory = ({ statuses, ticket }) => {
   useEffect(() => setValue("idTicket", ticket), []);
 
   const saveData = async (data) => {
-    try {
-      if (picture) {
-        const imageData = await uploadPicture(picture);
+    if (picture) {
+      const imageData = await uploadPicture(picture);
 
-        if (imageData) {
-          const response = await addTicketHistory(data, imageData.url);
-          if (response) {
-            toast.success("Resposta adicionada com sucesso", {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-            setTimeout(() => navigate("/home"), 1000);
-          } else {
-            toast.error("Valide os dados inseridos.", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-          }
-        }
-      } else {
-        const response = await addTicketHistory(data, null);
+      if (imageData) {
+        const response = await addTicketHistory(data, imageData.url);
         if (response) {
-          toast.success("Resposta adicionada com sucesso", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
           setTimeout(() => navigate("/home"), 1000);
-        } else {
-          toast.error("Valide os dados inseridos.", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
         }
       }
-    } catch (e) {
-      toast.error("Valide os dados inseridos.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+    } else {
+      const response = await addTicketHistory(data, null);
+      if (response) {
+        setTimeout(() => navigate("/home"), 1000);
+      }
     }
   };
 

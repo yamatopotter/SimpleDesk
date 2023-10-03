@@ -20,31 +20,7 @@ export const AddEquipment = ({ equipmentType, sector }) => {
   const saveData = async (data) => {
     const response = await addEquipment(data);
     if (response) {
-      toast.success("Equipamento adicionado com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       setTimeout(navigate("/equipment"), 1000);
-    } else {
-      toast.error(
-        "Falha ao adicionar o equipamento, verifique se todas as informações foram preenchidas",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
     }
   };
 
@@ -52,10 +28,7 @@ export const AddEquipment = ({ equipmentType, sector }) => {
     <div className="flex flex-col gap-5 w-full">
       <h1 className="text-xl">Novo Equipamento</h1>
 
-      <form
-        className="flex flex-col gap-5"
-        onSubmit={handleSubmit(saveData)}
-      >
+      <form className="flex flex-col gap-5" onSubmit={handleSubmit(saveData)}>
         <div className="flex flex-col gap-2">
           <label htmlFor="nameEquipment">Nome</label>
           <CommonInput

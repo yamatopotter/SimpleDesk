@@ -15,31 +15,9 @@ export const AddSector = () => {
   const navigate = useNavigate();
 
   const handleAddSector = async (data) => {
-    const response = await addSector(data)
+    const response = await addSector(data);
     if (response) {
-      toast.success("Setor adicionado com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setTimeout(()=>navigate("/sector"), 1000);
-    }
-    else{
-      toast.error("Valide os dados inseridos.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      setTimeout(() => navigate("/sector"), 1000);
     }
   };
 

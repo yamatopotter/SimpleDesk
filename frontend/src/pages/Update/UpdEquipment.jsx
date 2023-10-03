@@ -13,8 +13,6 @@ export const UpdEquipment = ({equipment, listSector, listEquipmentsType, updateE
     formState: { errors },
   } = useForm();
 
-
-
   useEffect(()=>{
     setValue("id", equipment.id);
     setValue("name", equipment.name);

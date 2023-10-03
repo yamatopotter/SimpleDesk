@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ViewTicket } from "../../pages/Read/ViewTicket";
 import { LoadingComponent } from "../../components/LoadingComponent/LoadingComponent";
 import { getTicket } from "../../functions/ticketManagement";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getTicketHistoryByTicket } from "../../functions/ticketHistoryManagement";
 import { Container } from "../../components/Container";
 
@@ -11,18 +11,22 @@ export const DetailTicket = () => {
   const [ticketData, setTicketData] = useState({});
   const [ticketHistory, setTicketHistory] = useState([]);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadData() {
-      try {
-        const ticket = await getTicket(id);
-        const ticketHistory = await getTicketHistoryByTicket(ticket.id);
+      const ticket = await getTicket(id);
+      const ticketHistory = await getTicketHistoryByTicket(ticket.id);
+
+      if (ticket !== null || ticketHistory !== null) {
         setTicketData(ticket);
         setTicketHistory(ticketHistory);
         setIsLoading(false);
-      } catch (e) {
-        console.log(e);
+        return;
       }
+
+      setIsLoading(false);
+      navigate("/ticket");
     }
 
     loadData();

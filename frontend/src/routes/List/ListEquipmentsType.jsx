@@ -6,41 +6,18 @@ import {
   deleteEquipmentType,
   getEquipmentsType,
 } from "../../functions/equipmentTypeManagement";
-import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const ListEquipmentsType = () => {
   const [listEquipmentsType, setListEquipmentsType] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   async function deleteData(id) {
     const newList = listEquipmentsType.filter((item) => item.id !== id);
     const response = await deleteEquipmentType(id);
     if (response) {
       setListEquipmentsType(newList);
-      toast.success("Tipo de equipamento excluído com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } else {
-      toast.error(
-        "Não é possivel excluir porque há informações vinculadas a esse setor",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
     }
   }
 
@@ -51,21 +28,12 @@ export const ListEquipmentsType = () => {
       if (data) {
         setListEquipmentsType(data);
         setIsLoading(false);
-      } else {
-        toast.error("Erro na comunicação com a API. Tente novamente.", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        setIsLoading(false);
+        return;
       }
-    }
 
+      setIsLoading(false);
+      navigate("/home");
+    }
     getData();
   }, []);
 

@@ -3,10 +3,12 @@ import { LoadingComponent } from "../../components/LoadingComponent/LoadingCompo
 import { AddTicket } from "../../pages/Create/AddTicket";
 import { useEffect, useState } from "react";
 import { Container } from "../../components/Container";
+import { useNavigate } from "react-router-dom";
 
 export const CreateTicket = () => {
   const [equipmentList, setEquipmentList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   function transformToOptions(data) {
     const newData = data.map((d) => {
@@ -18,8 +20,13 @@ export const CreateTicket = () => {
   useEffect(() => {
     async function getData() {
       const data = await getEquipments();
-      setEquipmentList(transformToOptions(data));
+      if (data) {
+        setEquipmentList(transformToOptions(data));
+        setIsLoading(false);
+        return;
+      }
       setIsLoading(false);
+      navigate("/ticket");
     }
 
     getData();

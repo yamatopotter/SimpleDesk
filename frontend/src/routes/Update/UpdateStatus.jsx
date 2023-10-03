@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { getWorkflow } from "../../functions/workflowManagement";
 import { getStatus } from "../../functions/statusManagement";
 import { LoadingComponent } from "../../components/LoadingComponent/LoadingComponent";
-import { toast } from "react-toastify";
 import { transformToWorkflowOptions } from "../../functions/common";
+import { Container } from "../../components/Container";
 
 export const UpdateStatus = () => {
   const navigate = useNavigate();
@@ -16,48 +16,18 @@ export const UpdateStatus = () => {
 
   useEffect(() => {
     async function getData() {
-      try {
-        const auxStatus = await getStatus(id);
+      const auxStatus = await getStatus(id);
+      const auxWorkflow = await getWorkflow();
 
-        if (auxStatus == null) {
-          toast.error(
-            "Houve um erro no carregamento dos dados, tente novamente.",
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
-          setIsLoading(false);
-          navigate("/status");
-        }
-
+      if (auxStatus && auxWorkflow) {
         setStatusData(auxStatus);
-        setWorkflowData(transformToWorkflowOptions(await getWorkflow()));
+        setWorkflowData(transformToWorkflowOptions(auxWorkflow));
         setIsLoading(false);
-      } catch (e) {
-        console.log(e);
-        toast.error(
-          "Houve um erro no carregamento dos dados, tente novamente.",
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
-        );
-        setIsLoading(false);
-        navigate("/status");
+        return;
       }
+      
+      setIsLoading(false);
+      navigate("/status");
     }
 
     getData();
@@ -65,7 +35,9 @@ export const UpdateStatus = () => {
 
   return (
     <LoadingComponent isLoading={isLoading}>
-      <UpdStatus status={statusData} workflow={workflowData} />
+      <Container>
+        <UpdStatus status={statusData} workflow={workflowData} />
+      </Container>
     </LoadingComponent>
   );
 };

@@ -4,7 +4,6 @@ import { LoadingComponent } from "../../components/LoadingComponent/LoadingCompo
 import { UpdSector } from "../../pages/Update/UpdSector";
 import { useEffect, useState } from "react";
 import { getSector, updateSector } from "../../functions/sectorManagement";
-import { toast } from "react-toastify";
 
 export const UpdateSector = () => {
   const navigate = useNavigate();
@@ -14,47 +13,15 @@ export const UpdateSector = () => {
 
   useEffect(() => {
     async function getData() {
-      try {
-        const data = await getSector(id);
+      const data = await getSector(id);
 
-        if (data == null) {
-          toast.error(
-            "Houve um erro no carregamento dos dados, tente novamente.",
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
-          setIsLoading(false);
-          navigate("/sector");
-        }
-
+      if (data) {
         setSector(data);
         setIsLoading(false);
-      } catch (e) {
-        console.log(e);
-        toast.error(
-          "Houve um erro no carregamento dos dados, tente novamente.",
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
-        );
-        setIsLoading(false);
-        navigate("/sector");
+        return;
       }
+      setIsLoading(false);
+      navigate("/sector");
     }
 
     getData();
@@ -63,35 +30,14 @@ export const UpdateSector = () => {
   const updateData = async (data) => {
     const response = await updateSector(data);
     if (response) {
-      toast.success("Setor atualizado com sucesso.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       setTimeout(navigate("/sector"), 1000);
-    } else {
-      toast.error("Valide os dados inseridos.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
     }
   };
 
   return (
     <LoadingComponent isLoading={isLoading}>
       <Container>
-        <UpdSector sector={sector} updateSector={updateData}/>
+        <UpdSector sector={sector} updateSector={updateData} />
       </Container>
     </LoadingComponent>
   );

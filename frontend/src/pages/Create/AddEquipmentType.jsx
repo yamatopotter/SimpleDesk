@@ -17,32 +17,9 @@ export const AddEquipmentType = () => {
   const saveData = async (data) => {
     const response = await addEquipementType(data);
     if (response) {
-      toast.success("Tipo de equipamento adicionado com sucesso", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+
       setTimeout(navigate("/equipment_type"), 1000);
-    } else {
-      toast.error(
-        "Falha ao adicionar o tipo de equipamento, verifique se todas as informações foram preenchidas",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
-    }
+    } 
   };
 
   return (
