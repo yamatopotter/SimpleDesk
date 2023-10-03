@@ -6,7 +6,17 @@ const Header = lazyLoad("./components/Header/Header", "Header");
 const About = lazyLoad("./routes/About", "About");
 const ListSectors = lazyLoad("./routes/List/ListSectors", "ListSectors");
 const ListUsers = lazyLoad("./routes/List/ListUsers", "ListUsers");
-const ListEquipments = lazyLoad("./routes/List/ListEquipments", "ListEquipments");
+const ListEquipments = lazyLoad(
+  "./routes/List/ListEquipments",
+  "ListEquipments"
+);
+const ListEquipmentsType = lazyLoad(
+  "./routes/List/ListEquipmentsType",
+  "ListEquipmentsType"
+);
+
+const ListTickets = lazyLoad("./routes/List/ListTickets", "ListTickets");
+const ListStatuses = lazyLoad("./routes/List/ListStatuses", "ListStatuses");
 const CreateTicket = lazyLoad("./routes/Create/CreateTicket", "CreateTicket");
 const CreateSector = lazyLoad("./routes/Create/CreateSector", "CreateSector");
 const CreateStatus = lazyLoad("./routes/Create/CreateStatus", "CreateStatus");
@@ -28,24 +38,33 @@ const DetailEquipment = lazyLoad(
   "./routes/Detail/DetailEquipment",
   "DetailEquipment"
 );
-import { ListEquipments } from "./routes/List/ListEquipments";
-import { ListEquipmentsType } from "./routes/List/ListEquipmentsType";
-import { DetailUser } from "./routes/Detail/DetailUser";
-import { DetailEquipmentType } from "./routes/Detail/DetailEquipmentType";
-import { ListStatuses } from "./routes/List/ListStatuses";
-import { DetailStatus } from "./routes/Detail/DetailStatus";
+const DetailUser = lazyLoad("./routes/Detail/DetailUser", "DetailUser");
+const DetailEquipmentType = lazyLoad(
+  "./routes/Detail/DetailEquipmentType",
+  "DetailEquipmentType"
+);
+const DetailStatus = lazyLoad("./routes/Detail/DetailStatus", "DetailStatus");
+const UpdateSector = lazyLoad("./routes/Update/UpdateSector", "UpdateSector");
+const UpdateStatus = lazyLoad("./routes/Update/UpdateStatus", "UpdateStatus");
+const UpdateEquipment = lazyLoad(
+  "./routes/Update/UpdateEquipment",
+  "UpdateEquipment"
+);
+const UpdateEquipmentType = lazyLoad(
+  "./routes/Update/UpdateEquipmentType",
+  "UpdateEquipmentType"
+);
+const UpdateUser = lazyLoad("./routes/Update/UpdateUser", "UpdateUser");
+const UpdatePassword = lazyLoad(
+  "./routes/Update/UpdatePassword",
+  "UpdatePassword"
+);
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthenticationProvider } from "./provider/AuthenticationProvider";
-import { UpdateSector } from "./routes/Update/UpdateSector";
-import { UpdateStatus } from "./routes/Update/UpdateStatus";
-import { UpdateEquipment } from "./routes/Update/UpdateEquipment";
-import { UpdateEquipmentType } from "./routes/Update/UpdateEquipmentType";
-import { UpdateUser } from "./routes/Update/UpdateUser";
-import { UpdatePassword } from "./routes/Update/UpdatePassword";
-import { ListTickets } from "./routes/List/ListTickets";
+
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
-import { Suspense, lazy } from "react";
+import { Suspense } from "react";
 
 function App() {
   return (
