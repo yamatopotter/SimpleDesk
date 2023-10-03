@@ -1,5 +1,6 @@
 import { api } from "../service/api";
 import { getToken } from "./localstorage";
+import { showToast } from "./message";
 const baseURI = "/user";
 
 export const getUsers = async () => {
@@ -11,12 +12,9 @@ export const getUsers = async () => {
       },
     });
 
-    if (request.status === 200) {
-      return request.data;
-    }
-
-    return false;
-  } catch {
+    return request.data;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -30,19 +28,15 @@ export const getUser = async (id) => {
       },
     });
 
-    if (request.status === 200) {
-      return request.data;
-    }
-
-    return false;
-  } catch {
+    return request.data;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
 
 export const deleteUser = async (id) => {
   try {
-    // todo: Conferir se o usuário não está querendo se excluir
     const request = await api.delete(baseURI + "/" + id, {
       headers: {
         Authorization: "Bearer " + getToken(),
@@ -50,12 +44,10 @@ export const deleteUser = async (id) => {
       },
     });
 
-    if (request.status === 204) {
-      return true;
-    }
-
-    return false;
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -69,12 +61,10 @@ export const updateUserPassword = async (data) => {
       },
     });
 
-    if (request.status === 200) {
-      return true;
-    }
-
-    return false;
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -88,12 +78,10 @@ export const updateUser = async (data) => {
       },
     });
 
-    if (request.status === 200) {
-      return true;
-    }
-
-    return false;
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };

@@ -1,5 +1,6 @@
 import { api } from "../service/api";
 import { getToken } from "./localstorage";
+import { showToast } from "./message";
 const baseURI = "/ticketHistory";
 
 export const getTicketHistoryByTicket = async (id) => {
@@ -11,12 +12,9 @@ export const getTicketHistoryByTicket = async (id) => {
       },
     });
 
-    if (request.status === 200) {
-      return request.data;
-    }
-
-    return false;
-  } catch {
+    return request.data;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -41,12 +39,10 @@ export const addTicketHistory = async (data, urlPhoto) => {
       },
     });
 
-    if (request.status === 201) {
-      return true;
-    }
-
-    return false;
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };

@@ -1,5 +1,6 @@
 import { api } from "../service/api";
 import { getToken } from "./localstorage";
+import { showToast } from "./message";
 const baseURI = "/equipment";
 
 export const getEquipments = async () => {
@@ -11,12 +12,9 @@ export const getEquipments = async () => {
       },
     });
 
-    if (request.status === 200) {
-      return request.data;
-    }
-
-    return false;
-  } catch {
+    return request.data;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -30,13 +28,10 @@ export const getEquipment = async (id) => {
       },
     });
 
-    if (request.status === 200) {
-      return request.data;
-    }
-
+    return request.data;
+  } catch (err) {
+    showToast(err);
     return false;
-  } catch {
-    return false
   }
 };
 
@@ -59,12 +54,10 @@ export const addEquipment = async (data) => {
       },
     });
 
-    if (request.status === 201) {
-      return true;
-    }
-
-    return false;
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -78,12 +71,10 @@ export const deleteEquipment = async (id) => {
       },
     });
 
-    if (request.status === 204) {
-      return true;
-    }
-
-    return false;
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -108,12 +99,10 @@ export const updateEquipment = async (data) => {
       },
     });
 
-    if (request.status === 200) {
-      return true;
-    }
-
-    return false;
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };

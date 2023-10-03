@@ -2,8 +2,8 @@ import { toast } from "react-toastify";
 
 export const showToast = (responseServer) => {
   console.log(responseServer);
-  if (responseServer.response) {
-    if (responseServer.response.status == 200) {
+  if (responseServer.status) {
+    if (responseServer.status == 200) {
       return toast.success("Dados atualizados com sucesso.", {
         position: "top-right",
         autoClose: 3000,
@@ -16,7 +16,8 @@ export const showToast = (responseServer) => {
       });
     }
 
-    if (responseServer.response.status == 201) {
+    if (responseServer.status == 201) {
+      console.log("Entrei aqui");
       return toast.success("Dados adicionados com sucesso.", {
         position: "top-right",
         autoClose: 3000,
@@ -29,7 +30,7 @@ export const showToast = (responseServer) => {
       });
     }
 
-    if (responseServer.response.status == 204) {
+    if (responseServer.status == 204) {
       return toast.success("Dados excluidos com sucesso.", {
         position: "top-right",
         autoClose: 3000,
@@ -42,7 +43,7 @@ export const showToast = (responseServer) => {
       });
     }
 
-    if (responseServer.response.status == 400) {
+    if (responseServer.status == 400) {
       return toast.error("Revise os dados inseridos.", {
         position: "top-right",
         autoClose: 3000,

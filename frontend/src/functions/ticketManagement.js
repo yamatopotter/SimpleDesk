@@ -1,5 +1,6 @@
 import { api } from "../service/api";
 import { getToken } from "./localstorage";
+import { showToast } from "./message";
 const baseURI = "/ticket";
 
 export const getTicket = async (id) => {
@@ -11,13 +12,9 @@ export const getTicket = async (id) => {
       },
     });
 
-    if (request.status === 200) {
-      return request.data;
-    }
-
-    return false;
-  } catch(err) {
-    console.log(err)
+    return request.data;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -31,12 +28,9 @@ export const getTickets = async () => {
       },
     });
 
-    if (request.status === 200) {
-      return request.data;
-    }
-
-    return false;
-  } catch {
+    return request.data;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -50,12 +44,9 @@ export const getTicketsByWorkflow = async (workflow) => {
       },
     });
 
-    if (request.status === 200) {
-      return request.data;
-    }
-    return [];
+    return request.data;
   } catch (err) {
-    console.log(err.request.status);
+    showToast(err);
     return [];
   }
 };
@@ -81,12 +72,10 @@ export const addTicket = async (data, imgUrl) => {
       },
     });
 
-    if (request.status === 201) {
-      return true;
-    }
-
-    return false;
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -100,12 +89,10 @@ export const deleteTicket = async (id) => {
       },
     });
 
-    if (request.status === 204) {
-      return true;
-    }
-
-    return false;
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };

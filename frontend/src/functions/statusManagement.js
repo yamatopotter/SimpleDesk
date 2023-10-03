@@ -12,19 +12,16 @@ export const getStatuses = async () => {
       },
     });
 
-    if (request.status === 200) {
-      return request.data;
-    }
-
-    return false;
-  } catch {
+    return request.data;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
 
 export const addStatus = async (data) => {
   const newStatus = {
-    sname: data.name.trim(),
+    name: data.name.trim(),
     workflow: { id: data.workflow },
   };
 
@@ -53,10 +50,9 @@ export const getStatus = async (id) => {
       },
     });
 
-    if (request.status === 200) {
-      return request.data;
-    }
-  } catch {
+    return request.data;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -70,10 +66,10 @@ export const deleteStatus = async (id) => {
       },
     });
 
-    if (request.status === 204) {
-      return true;
-    }
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };
@@ -93,10 +89,10 @@ export const updateStatus = async (data) => {
       },
     });
 
-    if (request.status === 200) {
-      return true;
-    }
-  } catch {
+    showToast(request);
+    return true;
+  } catch (err) {
+    showToast(err);
     return false;
   }
 };

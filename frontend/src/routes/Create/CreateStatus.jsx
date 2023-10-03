@@ -12,7 +12,6 @@ export const CreateStatus = () => {
   useEffect(() => {
     async function getData() {
       const workflowData = await getWorkflow();
-      console.log(workflowData);
 
       if (workflowData) {
         setWorkflow(transformToWorkflowOptions(workflowData));
