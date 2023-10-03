@@ -2,6 +2,7 @@ package simpledesk.app.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +16,9 @@ import simpledesk.app.domain.dto.user.UserInfoDTOMapper;
 import simpledesk.app.domain.entity.User;
 import simpledesk.app.infra.security.JwtService;
 import simpledesk.app.repository.IUserRepository;
+import simpledesk.app.service.exceptions.DataIntegratyViolationException;
+import simpledesk.app.service.exceptions.EmptyAttributeException;
+import simpledesk.app.service.exceptions.ObjectNotFoundException;
 
 import java.util.Optional;
 
@@ -28,9 +32,10 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     @Transactional
-    public AuthenticationResponse register(RegisterRequest request) throws Exception {
-        var email = request.getEmail();
-        if(repository.findByEmail(email).isPresent()) throw new Exception("E-mail já cadastrado");
+    public AuthenticationResponse register(RegisterRequest request) {
+        userAlreadyRegistered(request);
+        emptyAttribute(request);
+
         var user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
@@ -48,14 +53,16 @@ public class AuthenticationService {
 
     @Transactional
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        var user = repository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new BadCredentialsException("Credenciais incorretas."));
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()
                 )
         );
-        var user = repository.findByEmail(request.getEmail())
-                .orElseThrow();
+
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -63,14 +70,32 @@ public class AuthenticationService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<UserInfoDTO> infoUser(){
+    public Optional<UserInfoDTO> infoUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
         String user = (String) principal;
-        User userEntity = repository.findByEmail(user).get();
+
+        User userEntity = repository.findByEmail(user)
+                .orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado."));
 
         return Optional.of(userInfoDTOMapper.apply(userEntity));
     }
 
+    @Transactional(readOnly = true)
+    public void userAlreadyRegistered(RegisterRequest data) {
+        Optional<User> userName = repository.findByName(data.getName());
+        Optional<User> userEmail = repository.findByEmail(data.getEmail());
+
+        if (userName.isPresent())
+            throw new DataIntegratyViolationException("Usuário com o nome: " + userName.get().getName() + " já cadastrado.");
+        if (userEmail.isPresent())
+            throw new DataIntegratyViolationException("Usuário com o e-mail: " + userEmail.get().getEmail() + " já cadastrado.");
+    }
+
+    public void emptyAttribute(RegisterRequest data) {
+        if (data.getName() == null || data.getName().isEmpty() || data.getEmail() == null || data.getEmail().isEmpty()
+                || data.getPassword() == null || data.getPassword().isEmpty())
+            throw new EmptyAttributeException("Todos os atríbutos são necessários");
+    }
 
 
 }

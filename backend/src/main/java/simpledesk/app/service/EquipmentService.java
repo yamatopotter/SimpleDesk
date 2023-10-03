@@ -62,7 +62,8 @@ public class EquipmentService {
 
     @Transactional
     public Optional<EquipmentDTO> updateEquipment(EquipmentDTO equipmentDTO) {
-        emptyAttribute(equipmentDTO);
+        emptyAttributeUpdate(equipmentDTO);
+        equipmentExists(equipmentDTO);
 
         Sector sectorToEquipment = sectorRepository.findById(equipmentDTO.sector().id())
                 .orElseThrow(() -> new ObjectNotFoundException("Setor de ID: " + equipmentDTO.sector().id() + " não foi encontrado."));
@@ -85,6 +86,14 @@ public class EquipmentService {
         return false;
     }
 
+
+    @Transactional(readOnly = true)
+    public void equipmentExists(EquipmentDTO equipmentDTO) {
+        Optional<Equipment> equipment = repository.findById(equipmentDTO.id());
+        if (equipment.isEmpty())
+            throw new ObjectNotFoundException("O equipment de ID: " + equipmentDTO.id() + " não existe.");
+    }
+
     @Transactional(readOnly = true)
     public void validatingTheIntegrityOfTheRelationship(Long id) {
         Equipment equipment = repository.findById(id)
@@ -101,6 +110,13 @@ public class EquipmentService {
     public void emptyAttribute(EquipmentDTO equipmentDTO) {
         if (equipmentDTO.name().isEmpty() || equipmentDTO.sector() == null || equipmentDTO.sector().id() == null ||
                 equipmentDTO.equipment_type() == null || equipmentDTO.equipment_type().id() == null)
+            throw new EmptyAttributeException("Todos os atríbutos são necessários");
+    }
+
+    public void emptyAttributeUpdate(EquipmentDTO equipmentDTO) {
+        if (equipmentDTO.id() == null || equipmentDTO.name().isEmpty() || equipmentDTO.sector() == null ||
+                equipmentDTO.sector().id() == null || equipmentDTO.equipment_type() == null ||
+                equipmentDTO.equipment_type().id() == null)
             throw new EmptyAttributeException("Todos os atríbutos são necessários");
     }
 

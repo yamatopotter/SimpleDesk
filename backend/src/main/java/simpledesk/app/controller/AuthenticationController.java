@@ -6,8 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +23,11 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/authentication")
 @Tag(description = "Registro e Login na aplicação", name = "Autenticação")
-@RequiredArgsConstructor
+@Slf4j
 public class AuthenticationController {
 
-    final static Logger log = Logger.getLogger(String.valueOf(AuthenticationController.class));
-    private final IUserRepository repository;
+    @Autowired
+    private IUserRepository repository;
     @Autowired
     private AuthenticationService service;
 
@@ -37,12 +36,11 @@ public class AuthenticationController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = RegisterRequest.class))
     })
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) throws Exception {
-        if (repository.findByEmail(request.getEmail()).isPresent()){
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } else {
-            return new ResponseEntity<>(service.register(request), HttpStatus.CREATED);
-        }
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
+        log.info("Adicionando um novo usuário");
+
+        AuthenticationResponse newUser = service.register(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
     @Operation(summary = "Entrar no sistema")
@@ -50,7 +48,9 @@ public class AuthenticationController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = AuthenticationRequest.class))
     })
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> authentication(@RequestBody AuthenticationRequest request) throws Exception {
+    public ResponseEntity<AuthenticationResponse> authentication(@RequestBody AuthenticationRequest request) {
+        log.info("Entrando no sistema");
+
         return ResponseEntity.ok(service.authenticate(request));
     }
 
@@ -60,13 +60,8 @@ public class AuthenticationController {
     })
     @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping
-    public ResponseEntity<Optional<UserInfoDTO>> infoUser(){
-        try {
-            log.info("Buscando os dados do usuário logado");
-            return ResponseEntity.ok(service.infoUser());
-        } catch (Exception e){
-            log.error("Não foi possível buscar os dados do usuário");
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<Optional<UserInfoDTO>> infoUser() {
+
+        return ResponseEntity.ok(service.infoUser());
     }
 }

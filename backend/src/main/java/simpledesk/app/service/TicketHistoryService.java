@@ -50,11 +50,12 @@ public class TicketHistoryService {
 
     @Transactional
     public Optional<TicketHistoryDTO> addTicketHistory(TicketHistoryDTO ticketHistoryDTO) {
+        emptyAttribute(ticketHistoryDTO);
+
         Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
         String user = (String) principal;
         User userEntity = userRepository.findByEmail(user).orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado."));
 
-        emptyAttribute(ticketHistoryDTO);
 
         Ticket ticketToTicketHistory = ticketRepository.findById(ticketHistoryDTO.ticket().id())
                 .orElseThrow(() -> new ObjectNotFoundException("Ticket de ID: " + ticketHistoryDTO.ticket().id() + " não foi encontrado."));
@@ -69,11 +70,13 @@ public class TicketHistoryService {
 
     @Transactional
     public Optional<TicketHistoryDTO> updateTicketHistory(TicketHistoryDTO ticketHistoryDTO) {
+        emptyAttributeUpdate(ticketHistoryDTO);
+        ticketHistoryExists(ticketHistoryDTO);
+
         Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
         String user = (String) principal;
         User userEntity = userRepository.findByEmail(user).orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado."));
 
-        emptyAttribute(ticketHistoryDTO);
 
         Ticket ticketToTicketHistory = ticketRepository.findById(ticketHistoryDTO.ticket().id())
                 .orElseThrow(() -> new ObjectNotFoundException("Ticket de ID: " + ticketHistoryDTO.ticket().id() + " não foi encontrado."));
@@ -95,8 +98,23 @@ public class TicketHistoryService {
         return false;
     }
 
+
+    @Transactional(readOnly = true)
+    public void ticketHistoryExists(TicketHistoryDTO ticketHistoryDTO) {
+        Optional<TicketHistory> ticketHistory = repository.findById(ticketHistoryDTO.id());
+        if (ticketHistory.isEmpty())
+            throw new ObjectNotFoundException("O ticketHistory de ID: " + ticketHistoryDTO.id() + " não existe.");
+    }
+
     public void emptyAttribute(TicketHistoryDTO ticketHistoryDTO) {
         if (ticketHistoryDTO.description().isEmpty() ||
+                ticketHistoryDTO.ticket() == null || ticketHistoryDTO.ticket().id() == null ||
+                ticketHistoryDTO.status() == null || ticketHistoryDTO.status().id() == null)
+            throw new EmptyAttributeException("Todos os atríbutos são necessários");
+    }
+
+    public void emptyAttributeUpdate(TicketHistoryDTO ticketHistoryDTO) {
+        if (ticketHistoryDTO.id() == null || ticketHistoryDTO.description().isEmpty() ||
                 ticketHistoryDTO.ticket() == null || ticketHistoryDTO.ticket().id() == null ||
                 ticketHistoryDTO.status() == null || ticketHistoryDTO.status().id() == null)
             throw new EmptyAttributeException("Todos os atríbutos são necessários");

@@ -14,5 +14,7 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     @Transactional(readOnly = true)
     Optional<User> findByEmail(String email);
     @Transactional(readOnly = true)
+    Optional<User> findByName(String name);
+    @Transactional(readOnly = true)
     List<User> findByRole(Role role);
 }

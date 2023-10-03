@@ -50,7 +50,8 @@ public class EquipmentTypeService {
 
     @Transactional
     public Optional<EquipmentTypeDTO> updateEquipmentType(EquipmentTypeDTO equipmentTypeDTO) {
-        emptyAttribute(equipmentTypeDTO);
+        emptyAttributeUpdate(equipmentTypeDTO);
+        equipmentTypeExists(equipmentTypeDTO);
         findByName(equipmentTypeDTO);
 
         EquipmentType newEquipmentType = new EquipmentType(equipmentTypeDTO.id(), equipmentTypeDTO.name());
@@ -65,6 +66,13 @@ public class EquipmentTypeService {
             return true;
         }
         return false;
+    }
+
+    @Transactional(readOnly = true)
+    public void equipmentTypeExists(EquipmentTypeDTO equipmentTypeDTO) {
+        Optional<EquipmentType> equipmentType = repository.findById(equipmentTypeDTO.id());
+        if (equipmentType.isEmpty())
+            throw new ObjectNotFoundException("O equipmentType de ID: " + equipmentTypeDTO.id() + " não existe.");
     }
 
     @Transactional(readOnly = true)
@@ -90,6 +98,11 @@ public class EquipmentTypeService {
 
     public void emptyAttribute(EquipmentTypeDTO equipmentTypeDTO) {
         if (equipmentTypeDTO.name().isEmpty())
+            throw new EmptyAttributeException("Todos os atríbutos são necessários");
+    }
+
+    public void emptyAttributeUpdate(EquipmentTypeDTO equipmentTypeDTO) {
+        if (equipmentTypeDTO.id() == null || equipmentTypeDTO.name().isEmpty())
             throw new EmptyAttributeException("Todos os atríbutos são necessários");
     }
 

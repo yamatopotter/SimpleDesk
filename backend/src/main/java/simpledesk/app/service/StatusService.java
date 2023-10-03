@@ -5,7 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import simpledesk.app.domain.dto.status.StatusDTO;
 import simpledesk.app.domain.dto.status.StatusDTOMapper;
-import simpledesk.app.domain.entity.*;
+import simpledesk.app.domain.entity.Status;
+import simpledesk.app.domain.entity.Ticket;
+import simpledesk.app.domain.entity.TicketHistory;
+import simpledesk.app.domain.entity.Workflow;
 import simpledesk.app.repository.IStatusRepository;
 import simpledesk.app.repository.ITicketHistoryRepository;
 import simpledesk.app.repository.ITicketRepository;
@@ -54,7 +57,8 @@ public class StatusService {
 
     @Transactional
     public Optional<StatusDTO> updateStatus(StatusDTO status) {
-        emptyAttribute(status);
+        emptyAttributeUpdate(status);
+        statusExists(status);
         findByName(status);
 
         Workflow workflowToStatus;
@@ -96,6 +100,12 @@ public class StatusService {
 
     }
 
+    @Transactional(readOnly = true)
+    public void statusExists(StatusDTO statusDTO) {
+        Optional<Status> status = repository.findById(statusDTO.id());
+        if (status.isEmpty())
+            throw new ObjectNotFoundException("O status de ID: " + statusDTO.id() + " não existe.");
+    }
 
     @Transactional(readOnly = true)
     public void findByName(StatusDTO statusDTO) {
@@ -107,6 +117,11 @@ public class StatusService {
 
     public void emptyAttribute(StatusDTO statusDTO) {
         if (statusDTO.name().isEmpty() || statusDTO.workflow() == null || statusDTO.workflow().id() == null)
+            throw new EmptyAttributeException("Todos os atríbutos são necessários");
+    }
+
+    public void emptyAttributeUpdate(StatusDTO statusDTO) {
+        if (statusDTO.id() == null || statusDTO.name().isEmpty() || statusDTO.workflow() == null || statusDTO.workflow().id() == null)
             throw new EmptyAttributeException("Todos os atríbutos são necessários");
     }
 

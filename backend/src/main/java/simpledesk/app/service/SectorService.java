@@ -49,7 +49,8 @@ public class SectorService {
 
     @Transactional
     public Optional<SectorDTO> updateSector(SectorDTO sector) {
-        emptyAttribute(sector);
+        emptyAttributeUpdate(sector);
+        sectorExists(sector);
         findByName(sector);
 
         Sector sectorUpdate = new Sector(sector.id(), sector.name());
@@ -66,6 +67,12 @@ public class SectorService {
         return false;
     }
 
+    @Transactional(readOnly = true)
+    public void sectorExists(SectorDTO sectorDTO) {
+        Optional<Sector> sector = repository.findById(sectorDTO.id());
+        if (sector.isEmpty())
+            throw new ObjectNotFoundException("O sector de ID: " + sectorDTO.id() + " não existe.");
+    }
 
     @Transactional(readOnly = true)
     public void findByName(SectorDTO sectorDTO) {
@@ -90,6 +97,10 @@ public class SectorService {
 
     public void emptyAttribute(SectorDTO sectorDTO) {
         if (sectorDTO.name().isEmpty())
+            throw new EmptyAttributeException("Todos os atríbutos são necessários");
+    }
+    public void emptyAttributeUpdate(SectorDTO sectorDTO) {
+        if (sectorDTO.id() == null || sectorDTO.name().isEmpty())
             throw new EmptyAttributeException("Todos os atríbutos são necessários");
     }
 }
