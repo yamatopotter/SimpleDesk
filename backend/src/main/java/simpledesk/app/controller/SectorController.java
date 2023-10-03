@@ -4,20 +4,20 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import simpledesk.app.DTO.sector.SectorDTO;
+import simpledesk.app.domain.dto.sector.SectorDTO;
 import simpledesk.app.service.SectorService;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/sector")
 @Tag(description = "Setores da aplicação", name = "Setor")
 @Slf4j
@@ -31,6 +31,7 @@ public class SectorController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping
     public ResponseEntity<List<SectorDTO>> findAll() {
         try {
@@ -47,6 +48,7 @@ public class SectorController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/{id}")
     public ResponseEntity<SectorDTO> findById(@PathVariable Long id) {
         log.info("Buscando o setor pelo ID: " + id);
@@ -60,6 +62,7 @@ public class SectorController {
     @ApiResponse(responseCode = "201", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping
     public ResponseEntity<SectorDTO> addSector(@RequestBody SectorDTO sector) {
         log.info("Adicionando um novo setor");
@@ -73,6 +76,7 @@ public class SectorController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping
     public ResponseEntity<SectorDTO> updateSector(@RequestBody SectorDTO sector) {
         log.info("Editando o setor de ID: " + sector.id());
@@ -86,6 +90,7 @@ public class SectorController {
     @ApiResponse(responseCode = "204", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<SectorDTO>> hardDeleteSector(@PathVariable Long id) {
         log.info("Deletando o setor de ID: " + id);

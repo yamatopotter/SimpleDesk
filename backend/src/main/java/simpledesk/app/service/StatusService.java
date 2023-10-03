@@ -3,11 +3,12 @@ package simpledesk.app.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import simpledesk.app.DTO.status.StatusDTO;
-import simpledesk.app.DTO.status.StatusDTOMapper;
-import simpledesk.app.entity.Status;
-import simpledesk.app.entity.Workflow;
+import simpledesk.app.domain.dto.status.StatusDTO;
+import simpledesk.app.domain.dto.status.StatusDTOMapper;
+import simpledesk.app.domain.entity.*;
 import simpledesk.app.repository.IStatusRepository;
+import simpledesk.app.repository.ITicketHistoryRepository;
+import simpledesk.app.repository.ITicketRepository;
 import simpledesk.app.repository.IWorkflowRepository;
 import simpledesk.app.service.exceptions.DataIntegratyViolationException;
 import simpledesk.app.service.exceptions.EmptyAttributeException;
@@ -24,6 +25,8 @@ public class StatusService {
     private final StatusDTOMapper mapper;
     private final IStatusRepository repository;
     private final IWorkflowRepository workflowRepository;
+    private final ITicketRepository ticketRepository;
+    private final ITicketHistoryRepository ticketHistoryRepository;
 
     @Transactional(readOnly = true)
     public List<StatusDTO> findAll() {
@@ -64,11 +67,33 @@ public class StatusService {
 
     @Transactional
     public Boolean hardDeleteStatus(Long id) {
+        validatingTheIntegrityOfTheRelationship(id);
         if (repository.findById(id).isPresent()) {
             repository.deleteById(id);
             return true;
         }
         return false;
+    }
+
+    @Transactional(readOnly = true)
+    public void validatingTheIntegrityOfTheRelationship(Long id) {
+        Status status = repository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Status de ID: " + id + " não encontrado."));
+
+        List<TicketHistory> ticketHistories = ticketHistoryRepository.findByStatus(status);
+
+        for (TicketHistory history : ticketHistories) {
+            if (history.getStatus().getId().equals(status.getId()))
+                throw new DataIntegratyViolationException("O status está vinculado a um ticket history.");
+        }
+
+        List<Ticket> tickets = ticketRepository.findByStatus(status);
+
+        for (Ticket ticket : tickets) {
+            if (ticket.getStatus().getId().equals(status.getId()))
+                throw new DataIntegratyViolationException("O status está vinculado a um ticket.");
+        }
+
     }
 
 

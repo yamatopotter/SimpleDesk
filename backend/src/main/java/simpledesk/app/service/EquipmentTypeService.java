@@ -3,9 +3,11 @@ package simpledesk.app.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import simpledesk.app.DTO.equipmentType.EquipmentTypeDTO;
-import simpledesk.app.DTO.equipmentType.EquipmentTypeDTOMapper;
-import simpledesk.app.entity.EquipmentType;
+import simpledesk.app.domain.dto.equipmentType.EquipmentTypeDTO;
+import simpledesk.app.domain.dto.equipmentType.EquipmentTypeDTOMapper;
+import simpledesk.app.domain.entity.Equipment;
+import simpledesk.app.domain.entity.EquipmentType;
+import simpledesk.app.repository.IEquipmentRepositoy;
 import simpledesk.app.repository.IEquipmentTypeRepository;
 import simpledesk.app.service.exceptions.DataIntegratyViolationException;
 import simpledesk.app.service.exceptions.EmptyAttributeException;
@@ -21,6 +23,7 @@ public class EquipmentTypeService {
 
     private final EquipmentTypeDTOMapper mapper;
     private final IEquipmentTypeRepository repository;
+    private final IEquipmentRepositoy equipmentRepositoy;
 
     @Transactional(readOnly = true)
     public List<EquipmentTypeDTO> findAll() {
@@ -56,6 +59,7 @@ public class EquipmentTypeService {
 
     @Transactional
     public Boolean hardDeleteEquipmentType(Long id) {
+        validatingTheIntegrityOfTheRelationship(id);
         if (repository.findById(id).isPresent()) {
             repository.deleteById(id);
             return true;
@@ -68,6 +72,19 @@ public class EquipmentTypeService {
         Optional<EquipmentType> equipmentType = repository.findByName(equipmentTypeDTO.name());
         if (equipmentType.isPresent() && !equipmentType.get().getId().equals(equipmentTypeDTO.id()))
             throw new DataIntegratyViolationException("Tipo de equipamento já cadastrado.");
+    }
+
+    @Transactional(readOnly = true)
+    public void validatingTheIntegrityOfTheRelationship(Long id) {
+        EquipmentType equipmentType = repository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("EquipmentType de ID: " + id + " não foi encontrado."));
+
+        List<Equipment> equipmentList = equipmentRepositoy.findByEquipmentType(equipmentType);
+
+        for (Equipment equipment : equipmentList) {
+            if (equipment.getEquipmentType().getId().equals(equipmentType.getId()))
+                throw new DataIntegratyViolationException("O equipmentType está vinculado a um equipment");
+        }
     }
 
 

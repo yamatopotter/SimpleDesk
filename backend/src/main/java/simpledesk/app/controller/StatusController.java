@@ -4,20 +4,20 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import simpledesk.app.DTO.status.StatusDTO;
+import simpledesk.app.domain.dto.status.StatusDTO;
 import simpledesk.app.service.StatusService;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/status")
 @Tag(description = "Status da aplicação", name = "Status")
 @Slf4j
@@ -30,6 +30,7 @@ public class StatusController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = StatusDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping
     public ResponseEntity<List<StatusDTO>> findAll() {
         try {
@@ -46,6 +47,7 @@ public class StatusController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = StatusDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/{id}")
     public ResponseEntity<StatusDTO> findById(@PathVariable Long id) {
         log.info("Buscando o status pelo ID: " + id);
@@ -58,6 +60,7 @@ public class StatusController {
     @ApiResponse(responseCode = "201", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = StatusDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping
     public ResponseEntity<StatusDTO> addStatus(@RequestBody StatusDTO status) {
         log.info("Adicionando um novo status");
@@ -71,6 +74,7 @@ public class StatusController {
     @ApiResponse(responseCode = "200", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = StatusDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping
     public ResponseEntity<StatusDTO> updateStatus(@RequestBody StatusDTO status) {
         log.info("Editando o status de ID: " + status.id());
@@ -84,6 +88,7 @@ public class StatusController {
     @ApiResponse(responseCode = "204", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = StatusDTO.class))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<StatusDTO>> hardDeleteStatus(@PathVariable Long id) {
         log.info("Deletando o status de ID: " + id);

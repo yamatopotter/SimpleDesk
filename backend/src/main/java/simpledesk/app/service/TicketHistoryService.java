@@ -3,12 +3,13 @@ package simpledesk.app.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import simpledesk.app.DTO.ticketHistory.TicketHistoryDTO;
-import simpledesk.app.DTO.ticketHistory.TicketHistoryDTOMapper;
-import simpledesk.app.entity.Status;
-import simpledesk.app.entity.Ticket;
-import simpledesk.app.entity.TicketHistory;
-import simpledesk.app.entity.User;
+import org.springframework.transaction.annotation.Transactional;
+import simpledesk.app.domain.dto.ticketHistory.TicketHistoryDTO;
+import simpledesk.app.domain.dto.ticketHistory.TicketHistoryDTOMapper;
+import simpledesk.app.domain.entity.Status;
+import simpledesk.app.domain.entity.Ticket;
+import simpledesk.app.domain.entity.TicketHistory;
+import simpledesk.app.domain.entity.User;
 import simpledesk.app.repository.IStatusRepository;
 import simpledesk.app.repository.ITicketHistoryRepository;
 import simpledesk.app.repository.ITicketRepository;
@@ -30,20 +31,24 @@ public class TicketHistoryService {
     private final ITicketRepository ticketRepository;
     private final IStatusRepository statusRepository;
 
+    @Transactional(readOnly = true)
     public List<TicketHistoryDTO> findAll() {
         return repository.findAll().stream().map(mapper).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public Optional<TicketHistoryDTO> findById(Long id) {
         return Optional.of(repository.findById(id)
                 .map(mapper)
                 .orElseThrow(() -> new ObjectNotFoundException("Ticket History de ID: " + id + " não encontrado.")));
     }
 
+    @Transactional(readOnly = true)
     public List<TicketHistoryDTO> findByTicket(Ticket ticket) {
         return repository.findByTicket(ticket).stream().map(mapper).collect(Collectors.toList());
     }
 
+    @Transactional
     public Optional<TicketHistoryDTO> addTicketHistory(TicketHistoryDTO ticketHistoryDTO) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
         String user = (String) principal;
@@ -62,6 +67,7 @@ public class TicketHistoryService {
 
     }
 
+    @Transactional
     public Optional<TicketHistoryDTO> updateTicketHistory(TicketHistoryDTO ticketHistoryDTO) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getName();
         String user = (String) principal;
@@ -80,6 +86,7 @@ public class TicketHistoryService {
         return Optional.of(mapper.apply(ticketHistory));
     }
 
+    @Transactional
     public Boolean hardDeleteTicketHistory(Long id) {
         if (repository.findById(id).isPresent()) {
             repository.deleteById(id);
