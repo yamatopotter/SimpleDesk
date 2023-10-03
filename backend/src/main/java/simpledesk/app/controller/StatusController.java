@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import simpledesk.app.domain.dto.status.StatusDTO;
 import simpledesk.app.service.StatusService;
@@ -31,6 +32,7 @@ public class StatusController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = StatusDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<StatusDTO>> findAll() {
         try {
@@ -48,6 +50,7 @@ public class StatusController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = StatusDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<StatusDTO> findById(@PathVariable Long id) {
         log.info("Buscando o status pelo ID: " + id);
@@ -61,6 +64,7 @@ public class StatusController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = StatusDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<StatusDTO> addStatus(@RequestBody StatusDTO status) {
         log.info("Adicionando um novo status");
@@ -75,6 +79,7 @@ public class StatusController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = StatusDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<StatusDTO> updateStatus(@RequestBody StatusDTO status) {
         log.info("Editando o status de ID: " + status.id());
@@ -89,6 +94,7 @@ public class StatusController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = StatusDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<StatusDTO>> hardDeleteStatus(@PathVariable Long id) {
         log.info("Deletando o status de ID: " + id);

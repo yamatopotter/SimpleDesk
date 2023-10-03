@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import simpledesk.app.domain.dto.workflow.WorkflowDTO;
 import simpledesk.app.service.WorkflowService;
@@ -31,6 +32,7 @@ public class WorkflowController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = WorkflowDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<WorkflowDTO>> findAll() {
         try {
@@ -48,6 +50,7 @@ public class WorkflowController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = WorkflowDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<WorkflowDTO> findById(@PathVariable Long id) {
         log.info("Buscando o workflow pelo ID: " + id);
@@ -56,6 +59,7 @@ public class WorkflowController {
     }
 
     @Operation(summary = "Criar workflow")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiResponse(responseCode = "201", description = "Sucesso", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = WorkflowDTO.class))
     })
@@ -73,6 +77,7 @@ public class WorkflowController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = WorkflowDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<WorkflowDTO> updateWorkflow(@RequestBody WorkflowDTO workflow) {
         log.info("Editando o workflow de ID: " + workflow.id());
@@ -86,6 +91,7 @@ public class WorkflowController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = WorkflowDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<WorkflowDTO>> hardDeleteWorkflow(@PathVariable Long id) {
         log.info("Deletando o workflow de ID: " + id);

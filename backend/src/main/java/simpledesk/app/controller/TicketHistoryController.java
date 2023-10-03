@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import simpledesk.app.domain.dto.ticketHistory.TicketHistoryDTO;
 import simpledesk.app.domain.entity.Ticket;
@@ -35,6 +36,7 @@ public class TicketHistoryController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<TicketHistoryDTO>> findAll() {
         try {
@@ -52,6 +54,7 @@ public class TicketHistoryController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<TicketHistoryDTO> findById(@PathVariable Long id) {
         log.info("Buscando o ticketHistory pelo ID: " + id);
@@ -65,6 +68,7 @@ public class TicketHistoryController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("ticket/{id}")
     public ResponseEntity<List<TicketHistoryDTO>> findByTicketId(@PathVariable Long id) {
         try {
@@ -83,6 +87,7 @@ public class TicketHistoryController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<TicketHistoryDTO> addTicketHistory(@RequestBody TicketHistoryDTO ticket) {
         log.info("Adicionando um novo ticketHistory");
@@ -97,6 +102,7 @@ public class TicketHistoryController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<TicketHistoryDTO> updateTicketHistory(@RequestBody TicketHistoryDTO ticketDTO) {
         log.info("Editando o ticketHistory de ID: " + ticketDTO.id());
@@ -111,6 +117,7 @@ public class TicketHistoryController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketHistoryDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<TicketHistoryDTO>> hardDeleteTicket(@PathVariable Long id) {
         log.info("Deletando o ticketHistory de ID: " + id);

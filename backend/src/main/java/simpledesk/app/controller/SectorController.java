@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import simpledesk.app.domain.dto.sector.SectorDTO;
 import simpledesk.app.service.SectorService;
@@ -32,6 +33,7 @@ public class SectorController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<SectorDTO>> findAll() {
         try {
@@ -49,6 +51,7 @@ public class SectorController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<SectorDTO> findById(@PathVariable Long id) {
         log.info("Buscando o setor pelo ID: " + id);
@@ -63,6 +66,7 @@ public class SectorController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<SectorDTO> addSector(@RequestBody SectorDTO sector) {
         log.info("Adicionando um novo setor");
@@ -77,6 +81,7 @@ public class SectorController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<SectorDTO> updateSector(@RequestBody SectorDTO sector) {
         log.info("Editando o setor de ID: " + sector.id());
@@ -91,6 +96,7 @@ public class SectorController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SectorDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<SectorDTO>> hardDeleteSector(@PathVariable Long id) {
         log.info("Deletando o setor de ID: " + id);

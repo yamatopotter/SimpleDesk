@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import simpledesk.app.domain.dto.equipment.EquipmentDTO;
 import simpledesk.app.service.EquipmentService;
@@ -31,6 +32,7 @@ public class EquipmentController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<EquipmentDTO>> findAll() {
         try {
@@ -48,6 +50,7 @@ public class EquipmentController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<EquipmentDTO> findById(@PathVariable Long id) {
         log.info("Buscando o equipamento pelo ID: " + id);
@@ -62,6 +65,7 @@ public class EquipmentController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<EquipmentDTO> addEquipment(@RequestBody EquipmentDTO equipment) {
         log.info("Adicionando um novo equipamento");
@@ -76,6 +80,7 @@ public class EquipmentController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<EquipmentDTO> updateEquipment(@RequestBody EquipmentDTO equipment) {
         log.info("Editando o equipamento de ID: " + equipment.id());
@@ -90,6 +95,7 @@ public class EquipmentController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<EquipmentDTO>> hardDeleteEquipment(@PathVariable Long id) {
         log.info("Deletando o equipamento de ID: " + id);
