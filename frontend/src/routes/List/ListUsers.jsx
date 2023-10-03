@@ -4,6 +4,7 @@ import { deleteUser, getUsers } from "../../functions/userManagement";
 import { ViewUsers } from "../../pages/Read/ViewUsers";
 import { toast } from "react-toastify";
 import { Container } from "../../components/Container";
+import { useNavigate } from "react-router-dom";
 
 export const ListUsers = () => {
   const [listUsers, setListUsers] = useState([]);
