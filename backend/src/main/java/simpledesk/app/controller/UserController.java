@@ -34,7 +34,7 @@ public class UserController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = UserInfoDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<UserInfoDTO>> findAll() {
         try {

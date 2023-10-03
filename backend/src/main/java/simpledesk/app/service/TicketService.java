@@ -98,7 +98,7 @@ public class TicketService {
         Equipment equipmentToTicket = equipmentRepositoy.findById(ticketDTO.equipment().id())
                 .orElseThrow(() -> new ObjectNotFoundException("Equipamento de ID: " + ticketDTO.equipment().id() + " não foi encontrado."));
         Status statusToTicket = statusRepository.findById(ticketDTO.status().id())
-                .orElseThrow(() -> new ObjectNotFoundException("Satus de ID: " + ticketDTO.status().id() + " não foi encontrado."));
+                .orElseThrow(() -> new ObjectNotFoundException("Status de ID: " + ticketDTO.status().id() + " não foi encontrado."));
 
 
         Ticket ticket = repository.save(new Ticket(ticketDTO.id(), ticketDTO.title(), ticketDTO.description(),

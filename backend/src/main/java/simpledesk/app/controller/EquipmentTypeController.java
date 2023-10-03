@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import simpledesk.app.domain.dto.equipmentType.EquipmentTypeDTO;
 import simpledesk.app.service.EquipmentTypeService;
@@ -32,6 +33,7 @@ public class EquipmentTypeController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<EquipmentTypeDTO>> findAll() {
         try {
@@ -49,6 +51,7 @@ public class EquipmentTypeController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<EquipmentTypeDTO> findById(@PathVariable Long id) {
         log.info("Buscando o tipo de equipamento pelo ID: " + id);
@@ -62,6 +65,7 @@ public class EquipmentTypeController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<EquipmentTypeDTO> addEquipmentType(@RequestBody EquipmentTypeDTO equipmentType) {
         log.info("Adicionando um novo tipo de equipamento");
@@ -76,6 +80,7 @@ public class EquipmentTypeController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<EquipmentTypeDTO> updateEquipmentType(@RequestBody EquipmentTypeDTO equipmentType) {
         log.info("Editando o tipo de equipamento de ID: " + equipmentType.id());
@@ -90,6 +95,7 @@ public class EquipmentTypeController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = EquipmentTypeDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<EquipmentTypeDTO>> hardDeleteEquipmentType(@PathVariable Long id) {
         log.info("Deletando o tipo de equipamento de ID: " + id);

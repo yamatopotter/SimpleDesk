@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import simpledesk.app.domain.dto.ticket.TicketDTO;
 import simpledesk.app.domain.dto.ticket.TicketDataDTO;
@@ -31,6 +32,7 @@ public class TicketController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<TicketDataDTO>> findAll() {
         try {
@@ -48,6 +50,7 @@ public class TicketController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/type/{equipmentTypeName}")
     public ResponseEntity<List<TicketDataDTO>> getTicketsByEquipmentTypeName(@PathVariable String equipmentTypeName) {
         log.info("Buscando todos os tickets por tipo de equipamento por: " + equipmentTypeName);
@@ -61,6 +64,7 @@ public class TicketController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/workflow/{workflow}")
     public ResponseEntity<List<TicketDataDTO>> getTicketsByWorkflow(@PathVariable String workflow) {
         log.info("Buscando todos os tickets por workflow: " + workflow);
@@ -74,6 +78,7 @@ public class TicketController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<TicketDataDTO> findById(@PathVariable Long id) {
         log.info("Buscando o ticket pelo ID: " + id);
@@ -87,6 +92,7 @@ public class TicketController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<TicketDataDTO> addTicket(@RequestBody TicketDTO ticket) {
         log.info("Adicionando um novo ticket");
@@ -101,6 +107,7 @@ public class TicketController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<TicketDataDTO> updateTicket(@RequestBody TicketDTO ticket) {
         log.info("Editando o ticket de ID: " + ticket.id());
@@ -115,6 +122,7 @@ public class TicketController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TicketDTO.class))
     })
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<TicketDTO>> hardDeleteTicket(@PathVariable Long id) {
         log.info("Deletando o ticket de ID: " + id);
