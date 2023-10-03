@@ -5,7 +5,7 @@ CREATE TABLE user (
     password VARCHAR(64) NOT NULL,
     phone VARCHAR(20) NOT NULL,
     role ENUM('USER', 'ADMIN') NOT NULL,
-    created_at DATETIME
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE equipment_type (
@@ -47,10 +47,10 @@ CREATE TABLE ticket (
     title VARCHAR(50) NOT NULL,
     description TEXT,
     url_photo VARCHAR(150),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fk_id_user BIGINT,
     fk_id_equipment BIGINT,
     fk_id_status BIGINT,
-    created_at DATETIME,
     FOREIGN KEY (fk_id_user)
         REFERENCES user(id),
     FOREIGN KEY (fk_id_equipment)
@@ -62,7 +62,7 @@ CREATE TABLE ticket (
 CREATE TABLE ticket_history (
     id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     description VARCHAR(150) NOT NULL,
-    created_at DATETIME,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     url_photo VARCHAR(150),
     fk_id_user BIGINT NOT NULL,
     fk_id_ticket BIGINT NOT NULL,
@@ -77,42 +77,17 @@ CREATE TABLE ticket_history (
 
 -- Triggers Ticket_History
 
-CREATE TRIGGER trg_before_update_ticket_history
-AFTER INSERT ON simple_desk.ticket_history
-FOR EACH ROW
-BEGIN
-	IF NEW.fk_id_ticket = (SELECT id FROM ticket WHERE id = NEW.fk_id_ticket)
-THEN
-		UPDATE simple_desk.ticket
-		SET ticket.fk_id_status = NEW.fk_id_status
-		WHERE ticket.id = NEW.fk_id_ticket;
-    END IF;
-END;
-
-CREATE TRIGGER trg_before_insert_ticket_history
-BEFORE INSERT ON simple_desk.ticket_history
-FOR EACH ROW
-BEGIN
-    SET NEW.created_at = NOW();
-END;
-
--- Triggers User
-
-CREATE TRIGGER trg_before_insert_user
-BEFORE INSERT ON simple_desk.user
-FOR EACH ROW
-BEGIN
-    SET NEW.created_at = NOW();
-END;
-
--- Triggers Ticket
-
-CREATE TRIGGER trg_before_insert_ticket
-BEFORE INSERT ON simple_desk.ticket
-FOR EACH ROW
-BEGIN
-    SET NEW.created_at = NOW();
-END;
+create trigger trg_before_update_ticket_history
+after insert on simple_desk.ticket_history
+for each row
+begin
+	if NEW.fk_id_ticket = (select id from ticket where id = NEW.fk_id_ticket)
+then
+		update simple_desk.ticket
+		set ticket.fk_id_status = NEW.fk_id_status
+		where ticket.id = NEW.fk_id_ticket;
+    end if;
+end;
 
 insert into equipment_type (name) values ("Computador");
 insert into equipment_type (name) values ("Impressora");

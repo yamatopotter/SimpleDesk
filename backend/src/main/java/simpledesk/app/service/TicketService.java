@@ -13,6 +13,7 @@ import simpledesk.app.service.exceptions.DataIntegratyViolationException;
 import simpledesk.app.service.exceptions.EmptyAttributeException;
 import simpledesk.app.service.exceptions.ObjectNotFoundException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -78,9 +79,9 @@ public class TicketService {
 
 
         Ticket ticket = repository.save(new Ticket(null, ticketDTO.title(), ticketDTO.description(),
-                ticketDTO.urlPhoto(), userEntity, equipmentToTicket, statusToTicket, null));
+                ticketDTO.urlPhoto(), userEntity, equipmentToTicket, statusToTicket, LocalDateTime.now()));
 
-        ticketHistoryRepository.save(new TicketHistory(null, userEntity, ticket, statusToTicket, ticketDTO.description(), ticketDTO.urlPhoto(), null));
+        ticketHistoryRepository.save(new TicketHistory(null, userEntity, ticket, statusToTicket, ticketDTO.description(), ticketDTO.urlPhoto(), LocalDateTime.now()));
         return Optional.of(mapper.apply(ticket));
     }
 
@@ -94,15 +95,19 @@ public class TicketService {
         String user = (String) principal;
         User userEntity = userRepository.findByEmail(user).orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado."));
 
+        Ticket existingTicket = repository.findById(ticketDTO.id())
+                .orElseThrow(() -> new ObjectNotFoundException("Ticket de ID: " + ticketDTO.id() + " não existe."));
 
         Equipment equipmentToTicket = equipmentRepositoy.findById(ticketDTO.equipment().id())
                 .orElseThrow(() -> new ObjectNotFoundException("Equipamento de ID: " + ticketDTO.equipment().id() + " não foi encontrado."));
+
         Status statusToTicket = statusRepository.findById(ticketDTO.status().id())
                 .orElseThrow(() -> new ObjectNotFoundException("Status de ID: " + ticketDTO.status().id() + " não foi encontrado."));
 
 
+
         Ticket ticket = repository.save(new Ticket(ticketDTO.id(), ticketDTO.title(), ticketDTO.description(),
-                ticketDTO.urlPhoto(), userEntity, equipmentToTicket, statusToTicket, ticketDTO.created_at()));
+                ticketDTO.urlPhoto(), userEntity, equipmentToTicket, statusToTicket, existingTicket.getCreated_at()));
         return Optional.of(mapper.apply(ticket));
     }
 

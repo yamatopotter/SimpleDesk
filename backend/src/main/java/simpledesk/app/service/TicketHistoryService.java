@@ -17,6 +17,7 @@ import simpledesk.app.repository.IUserRepository;
 import simpledesk.app.service.exceptions.EmptyAttributeException;
 import simpledesk.app.service.exceptions.ObjectNotFoundException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -62,8 +63,8 @@ public class TicketHistoryService {
         Status statusToTicketHistory = statusRepository.findById(ticketHistoryDTO.status().id())
                 .orElseThrow(() -> new ObjectNotFoundException("Status de ID: " + ticketHistoryDTO.status().id() + " não foi encontrado."));
 
-        TicketHistory ticketHistory = repository.saveAndFlush(new TicketHistory(null, userEntity, ticketToTicketHistory,
-                statusToTicketHistory, ticketHistoryDTO.description(), ticketHistoryDTO.urlPhoto(), null));
+        TicketHistory ticketHistory = repository.save(new TicketHistory(null, userEntity, ticketToTicketHistory,
+                statusToTicketHistory, ticketHistoryDTO.description(), ticketHistoryDTO.urlPhoto(), LocalDateTime.now()));
         return Optional.of(mapper.apply(ticketHistory));
 
     }
@@ -77,6 +78,8 @@ public class TicketHistoryService {
         String user = (String) principal;
         User userEntity = userRepository.findByEmail(user).orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado."));
 
+        TicketHistory existingTicketHistory = repository.findById(ticketHistoryDTO.id())
+                .orElseThrow(() -> new ObjectNotFoundException("TicketHistory de ID: " + ticketHistoryDTO.id() + " não existe."));
 
         Ticket ticketToTicketHistory = ticketRepository.findById(ticketHistoryDTO.ticket().id())
                 .orElseThrow(() -> new ObjectNotFoundException("Ticket de ID: " + ticketHistoryDTO.ticket().id() + " não foi encontrado."));
@@ -84,8 +87,8 @@ public class TicketHistoryService {
                 .orElseThrow(() -> new ObjectNotFoundException("Status de ID: " + ticketHistoryDTO.status().id() + " não foi encontrado."));
 
 
-        TicketHistory ticketHistory = repository.saveAndFlush(new TicketHistory(ticketHistoryDTO.id(), userEntity, ticketToTicketHistory,
-                statusToTicketHistory, ticketHistoryDTO.description(), ticketHistoryDTO.urlPhoto(), null));
+        TicketHistory ticketHistory = repository.save(new TicketHistory(ticketHistoryDTO.id(), userEntity, ticketToTicketHistory,
+                statusToTicketHistory, ticketHistoryDTO.description(), ticketHistoryDTO.urlPhoto(), existingTicketHistory.getCreated_at()));
         return Optional.of(mapper.apply(ticketHistory));
     }
 
