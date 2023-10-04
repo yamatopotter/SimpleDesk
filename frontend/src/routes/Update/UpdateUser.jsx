@@ -44,12 +44,11 @@ export const UpdateUser = () => {
 
   const updateData = async (data) => {
     const response = await updateUser(data);
-    console.log(response);
     if (response) {
       if (id) {
         setTimeout(navigate("/user"), 1000);
       } else {
-        console.log(response);
+  
         updateLiveUserData(response, setUserData);
         setTimeout(navigate("/about"), 1000);
       }

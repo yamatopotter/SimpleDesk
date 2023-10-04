@@ -23,7 +23,7 @@ export const UpdUser = ({ user, updateUser }) => {
   const validatePhoneNumber = (value) => {
     const phoneNumber = parsePhoneNumberFromString(value);
     if (!phoneNumber || !phoneNumber.isValid()) {
-      return "Invalid phone number";
+      return "Número inválido. Inseriu o código do país ou selecionou ao lado o país?";
     }
     return true;
   };
@@ -107,38 +107,41 @@ export const UpdUser = ({ user, updateUser }) => {
           )}
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label htmlFor="in_role">Nível de acesso</label>
-          <Select
-            className="basic-single shadow-md"
-            classNamePrefix="select"
-            isMulti={false}
-            isSearchable={false}
-            name="in_role"
-            {...register("role")}
-            onChange={(option) => setValue("role", option?.value || "")}
-            defaultValue={
-              user.role === "USER"
-                ? { value: "USER", label: "Usuário" }
-                : {
-                    value: "ADMIN",
-                    label: "Administrador",
-                  }
-            }
-            options={[
-              { value: "USER", label: "Usuário" },
-              {
-                value: "ADMIN",
-                label: "Administrador",
-              },
-            ]}
-          />
-          {errors?.role?.message && (
-            <p className="text-red-500 text-right text-sm">
-              {errors.role?.message}
-            </p>
-          )}
-        </div>
+        {user.role === "ADMIN" && (
+          <div className="flex flex-col gap-2">
+            <label htmlFor="in_role">Nível de acesso</label>
+            <Select
+              className="basic-single shadow-md"
+              classNamePrefix="select"
+              isMulti={false}
+              isSearchable={false}
+              name="in_role"
+              {...register("role")}
+              onChange={(option) => setValue("role", option?.value || "")}
+              defaultValue={
+                user.role === "USER"
+                  ? { value: "USER", label: "Usuário" }
+                  : {
+                      value: "ADMIN",
+                      label: "Administrador",
+                    }
+              }
+              options={[
+                { value: "USER", label: "Usuário" },
+                {
+                  value: "ADMIN",
+                  label: "Administrador",
+                },
+              ]}
+            />
+
+            {errors?.role?.message && (
+              <p className="text-red-500 text-right text-sm">
+                {errors.role?.message}
+              </p>
+            )}
+          </div>
+        )}
 
         <CommonButton
           icon={<User size={24} />}

@@ -44,8 +44,13 @@ export const deleteUser = async (id) => {
       },
     });
 
+    if (request.status === 204) {
+      showToast(request);
+      return true;
+    }
+
     showToast(request);
-    return true;
+    return false;
   } catch (err) {
     showToast(err);
     return false;

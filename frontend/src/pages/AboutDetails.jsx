@@ -57,7 +57,7 @@ export const AboutDetails = () => {
           content="Alterar minha senha"
           id="btn_updateMyPassword"
           onClick={() => {
-            navigate("/user/update");
+            navigate("/user/password");
           }}
         />
         <CommonButton

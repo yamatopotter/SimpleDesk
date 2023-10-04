@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { LoadingComponent } from "../../components/LoadingComponent/LoadingComponent";
 import { deleteUser, getUsers } from "../../functions/userManagement";
 import { ViewUsers } from "../../pages/Read/ViewUsers";
-import { toast } from "react-toastify";
 import { Container } from "../../components/Container";
 import { useNavigate } from "react-router-dom";
 
@@ -30,7 +29,7 @@ export const ListUsers = () => {
 
   const deleteData = async (id) => {
     const newList = listUsers.filter((user) => user.id !== id);
-    const request = deleteUser(id);
+    const request = await deleteUser(id);
     if (request) {
       setListUsers(newList);
     }

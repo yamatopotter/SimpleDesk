@@ -30,7 +30,7 @@ export const ViewStatuses = ({ listStatus, handleRemove }) => {
               <span className="font-bold">#{status.id}</span>
               <h2>{status.name}</h2>
               <p
-                className={`p-1 text-white w-20 text-center ${
+                className={`p-1 text-white w-20 text-center rounded-md ${
                   status.workflow.id === 1
                     ? "bg-red-500"
                     : status.workflow.id === 2
@@ -48,8 +48,10 @@ export const ViewStatuses = ({ listStatus, handleRemove }) => {
                 <CommonButton
                   id="btnEditStatus"
                   name="btnEditStatus"
-                  content="Editar staus"
+                  content="Editar status"
                   warn={true}
+                  full={true}
+                  showTextOnMobile={false}
                   icon={<PencilSimpleLine size={24} />}
                   onClick={() => navigate(`/status/update/${status.id}`)}
                 />
@@ -57,8 +59,10 @@ export const ViewStatuses = ({ listStatus, handleRemove }) => {
                 <CommonButton
                   id="btnDeleteStatus"
                   name="btnDeleteStatus"
-                  content="Excluir staus"
+                  content="Excluir status"
                   danger={true}
+                  full={true}
+                  showTextOnMobile={false}
                   icon={<TrashSimple size={24} />}
                   onClick={() =>
                     setIsVisible({

@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import validator from "validator";
 import { CommonInput } from "../../components/CommonInput/CommonInput";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
-import { Key } from "@phosphor-icons/react";
-import { useEffect } from "react";
+import { Eye, EyeClosed, Key } from "@phosphor-icons/react";
+import { useEffect, useState } from "react";
 
 export const UpdPassword = ({ updatePassword, user }) => {
   const {
@@ -15,9 +15,11 @@ export const UpdPassword = ({ updatePassword, user }) => {
     formState: { errors },
   } = useForm();
 
-  useEffect(()=>{
-    setValue("id", user)
-  }, [])
+  const [visiblePassword, setVisiblePassword] = useState(false);
+
+  useEffect(() => {
+    setValue("id", user);
+  }, []);
 
   const validatePasswordRule = (value) => {
     if (
@@ -35,6 +37,9 @@ export const UpdPassword = ({ updatePassword, user }) => {
     }
   };
 
+  const changeVisibility = () => {
+    setVisiblePassword(!visiblePassword);
+  };
 
   return (
     <div className="flex flex-col gap-5 w-full">
@@ -46,22 +51,34 @@ export const UpdPassword = ({ updatePassword, user }) => {
       >
         <div className="flex flex-col gap-2">
           <label htmlFor="passwordUser">Senha</label>
-          <CommonInput
-            id="passwordUser"
-            name="passwordUser"
-            type="password"
-            extra={{
-              ...register("password", {
-                required: "A senha não pode ser vazia",
-                validate: validatePasswordRule,
-                minLength: {
-                  value: 8,
-                  message: "A senha deve conter no mínimo 8 caracteres",
-                },
-              }),
-            }}
-            className={errors?.password?.message ? "border-red-500" : ""}
-          />
+          <div className="flex gap-4">
+            <CommonInput
+              id="passwordUser"
+              name="passwordUser"
+              type={visiblePassword ? "text" : "password"}
+              extra={{
+                ...register("password", {
+                  required: "A senha não pode ser vazia",
+                  validate: validatePasswordRule,
+                  minLength: {
+                    value: 8,
+                    message: "A senha deve conter no mínimo 8 caracteres",
+                  },
+                }),
+              }}
+              className={`w-full ${
+                errors?.password?.message ? "border-red-500" : ""
+              }`}
+            />
+
+            <span
+              onClick={(event) => changeVisibility(event)}
+              className="flex gap-2 justify-center p-2 rounded-md shadow-md transition-all ease-in-out duration-300 hover:shadow-lg border border-violet-700 text-violet-700"
+            >
+              {visiblePassword ? <Eye size={24} /> : <EyeClosed size={24} />}
+            </span>
+          </div>
+
           {errors?.password?.message && (
             <p className="text-red-500 text-right text-sm">
               {errors.password?.message}
