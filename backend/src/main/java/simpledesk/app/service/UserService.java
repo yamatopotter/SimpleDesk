@@ -5,11 +5,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import simpledesk.app.domain.dto.auth.RegisterRequest;
 import simpledesk.app.domain.dto.user.UserInfoDTO;
 import simpledesk.app.domain.dto.user.UserInfoDTOMapper;
 import simpledesk.app.domain.dto.user.UserUpdateWithPasswordDTO;
 import simpledesk.app.domain.dto.user.UserUpdateWithoutPasswordDTO;
+import simpledesk.app.domain.entity.Role;
 import simpledesk.app.domain.entity.Ticket;
 import simpledesk.app.domain.entity.TicketHistory;
 import simpledesk.app.domain.entity.User;
@@ -85,7 +85,7 @@ public class UserService {
                 user.email(),
                 userEntity.getPassword(),
                 user.phone(),
-                user.role()
+                userEntity.getRole().equals(Role.ADMIN) ? user.role() : userEntity.getRole()
         );
         if (user.role() == null) userToUpdate.setRole(userEntity.getRole());
 
