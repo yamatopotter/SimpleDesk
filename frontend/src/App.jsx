@@ -1,78 +1,43 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { lazyLoad } from "./lazyLoad";
-const Login = lazyLoad("./routes/Login", "Login");
-const Home = lazyLoad("./routes/Home", "Home");
-const Header = lazyLoad("./components/Header/Header", "Header");
-const About = lazyLoad("./routes/About", "About");
-const ListSectors = lazyLoad("./routes/List/ListSectors", "ListSectors");
-const ListUsers = lazyLoad("./routes/List/ListUsers", "ListUsers");
-const ListEquipments = lazyLoad(
-  "./routes/List/ListEquipments",
-  "ListEquipments"
-);
-const ListEquipmentsType = lazyLoad(
-  "./routes/List/ListEquipmentsType",
-  "ListEquipmentsType"
-);
-
-const ListTickets = lazyLoad("./routes/List/ListTickets", "ListTickets");
-const ListStatuses = lazyLoad("./routes/List/ListStatuses", "ListStatuses");
-const CreateTicket = lazyLoad("./routes/Create/CreateTicket", "CreateTicket");
-const CreateSector = lazyLoad("./routes/Create/CreateSector", "CreateSector");
-const CreateStatus = lazyLoad("./routes/Create/CreateStatus", "CreateStatus");
-const CreateEquipment = lazyLoad(
-  "./routes/Create/CreateEquipment",
-  "CreateEquipment"
-);
-const CreateUser = lazyLoad("./routes/Create/CreateUser", "CreateUser");
-const CreateEquipmentType = lazyLoad(
-  "./routes/Create/CreateEquipmentType",
-  "CreateEquipmentType"
-);
-const CreateTicketHistory = lazyLoad(
-  "./routes/Create/CreateTicketHistory",
-  "CreateTicketHistory"
-);
-const DetailTicket = lazyLoad("./routes/Detail/DetailTicket", "DetailTicket");
-const DetailEquipment = lazyLoad(
-  "./routes/Detail/DetailEquipment",
-  "DetailEquipment"
-);
-const DetailUser = lazyLoad("./routes/Detail/DetailUser", "DetailUser");
-const DetailEquipmentType = lazyLoad(
-  "./routes/Detail/DetailEquipmentType",
-  "DetailEquipmentType"
-);
-const DetailStatus = lazyLoad("./routes/Detail/DetailStatus", "DetailStatus");
-const UpdateSector = lazyLoad("./routes/Update/UpdateSector", "UpdateSector");
-const UpdateStatus = lazyLoad("./routes/Update/UpdateStatus", "UpdateStatus");
-const UpdateEquipment = lazyLoad(
-  "./routes/Update/UpdateEquipment",
-  "UpdateEquipment"
-);
-const UpdateEquipmentType = lazyLoad(
-  "./routes/Update/UpdateEquipmentType",
-  "UpdateEquipmentType"
-);
-const UpdateUser = lazyLoad("./routes/Update/UpdateUser", "UpdateUser");
-const UpdatePassword = lazyLoad(
-  "./routes/Update/UpdatePassword",
-  "UpdatePassword"
-);
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthenticationProvider } from "./provider/AuthenticationProvider";
-
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
-import { Suspense } from "react";
-const AboutSystem = lazyLoad("./pages/AboutSystem", "AboutSystem");
+import { Header } from "./components/Header/Header";
+import { Login } from "./routes/Login";
+import { Home } from "./routes/Home";
+import { About } from "./routes/About";
+import { AboutSystem } from "./pages/AboutSystem";
+import { ListTickets } from "./routes/List/ListTickets";
+import { CreateTicket } from "./routes/Create/CreateTicket";
+import { DetailTicket } from "./routes/Detail/DetailTicket";
+import { CreateTicketHistory } from "./routes/Create/CreateTicketHistory";
+import { CreateSector } from "./routes/Create/CreateSector";
+import { ListSectors } from "./routes/List/ListSectors";
+import { UpdateSector } from "./routes/Update/UpdateSector";
+import { CreateStatus } from "./routes/Create/CreateStatus";
+import { DetailStatus } from "./routes/Detail/DetailStatus";
+import { UpdateStatus } from "./routes/Update/UpdateStatus";
+import { ListStatuses } from "./routes/List/ListStatuses";
+import { CreateEquipment } from "./routes/Create/CreateEquipment";
+import { DetailEquipment } from "./routes/Detail/DetailEquipment";
+import { UpdateEquipment } from "./routes/Update/UpdateEquipment";
+import { ListEquipments } from "./routes/List/ListEquipments";
+import { ListUsers } from "./routes/List/ListUsers";
+import { DetailUser } from "./routes/Detail/DetailUser";
+import { UpdateUser } from "./routes/Update/UpdateUser";
+import { CreateUser } from "./routes/Create/CreateUser";
+import { UpdatePassword } from "./routes/Update/UpdatePassword";
+import { ListEquipmentsType } from "./routes/List/ListEquipmentsType";
+import { DetailEquipmentType } from "./routes/Detail/DetailEquipmentType";
+import { CreateEquipmentType } from "./routes/Create/CreateEquipmentType";
+import { UpdateEquipmentType } from "./routes/Update/UpdateEquipmentType";
 
 function App() {
   return (
     <AuthenticationProvider>
       <div className="flex flex-col h-screen overflow-hidden">
         <ToastContainer />
-        <Suspense>
           <BrowserRouter>
             <Routes>
               <Route path="" element={<Header />}>
@@ -251,7 +216,6 @@ function App() {
               </Route>
             </Routes>
           </BrowserRouter>
-        </Suspense>
       </div>
     </AuthenticationProvider>
   );

@@ -1,0 +1,51 @@
+# SimpleDesk
+
+## The simplest helpdesk system to setup and use
+
+Have you ever wondered a simple way to make your clients open support tickets and you track and show them?
+
+This is the software that I think would help you.
+
+### Setup
+
+First of all, you'll need:
+- DB Server - For free tier use PlanetScale with MySQL
+- Frontend - Since we use react, Vercell is the way to go
+- Backend - We developed the backend with Springboot, so, railway.app has a free tier (we're looking and preparing a free tier tutorial, so you will be able to use on a small scale)
+- Image Host - Cloudnary has a nice free tier (5GB), so you can use it, but we're looking to add more hosts like AWS s3 and others.
+
+### Documentation
+- Diagram UML - https://drive.google.com/file/d/1wmtiI8FecAXDKXtU702Ve3rqzHUxZ-bF/view?usp=sharing
+
+### Instructions
+
+#### Frontend
+- First, install the dependencies with **npm i**
+- Create a **.env** file from the example (**.env.example**) and set the values required.
+- Run the build - npm run build
+- After the build, your SimpleDesk frontend is ready
+- Upload the content on **dist** folder to your webserver
+	- If you are using **Apache** you need to:
+	
+	- Create or use the **000-default.conf** and put this config there:
+		`<VirtualHost *:80>
+		    ServerAdmin webmaster@localhost
+		    DocumentRoot /var/www/html
+
+		    <Directory "/var/www/html">
+				Options +FollowSymlinks
+				AllowOverride All
+				Require all granted
+			</Directory>
+		</VirtualHost>`
+	
+	- Activate the rewrite module
+	- add a .htaccess file on the root folder and put this config:
+	`Options -MultiViews
+		    RewriteEngine On
+		    RewriteCond %{REQUEST_FILENAME} !-f
+		    RewriteCond %{REQUEST_FILENAME} !-d
+		    RewriteRule ^ index.html [QSA,L]
+		    RewriteCond %{REQUEST_URI} index.html$1`
+
+	
