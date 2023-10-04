@@ -36,6 +36,7 @@ export const ViewEquipmentsType = ({ equipmentsType, deleteEquipmentType }) => {
                   content="Editar"
                   warn={true}
                   full={true}
+                  showTextOnMobile={false}
                   icon={<PencilSimpleLine size={24} />}
                   onClick={() =>
                     navigate(`/equipment_type/update/${equipmentType.id}`)
@@ -48,6 +49,7 @@ export const ViewEquipmentsType = ({ equipmentsType, deleteEquipmentType }) => {
                   content="Excluir"
                   danger={true}
                   full={true}
+                  showTextOnMobile={false}
                   icon={<TrashSimple size={24} />}
                   onClick={() =>
                     setIsVisible({

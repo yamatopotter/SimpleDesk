@@ -11,14 +11,16 @@ export const ViewAllTickets = ({ ticketsData }) => {
       <ul>
         {ticketsData.reverse().map((ticket) => {
           return (
-            <li className="py-3 flex flex-col gap-3">
+            <li className="py-3 flex flex-col gap-3" key={ticket.id}>
               <span className="font-bold">#{ticket.id}</span>
               <h2>{ticket.title}</h2>
               <p
-                className={`p-2 text-white w-fit ${
+                className={`p-2 text-white w-fit rounded-md ${
                   ticket.status.workflow.id == 1
                     ? "bg-red-500"
-                    : ticket.status.workflow.id == 2 ? "bg-yellow-500" : "bg-green-500"
+                    : ticket.status.workflow.id == 2
+                    ? "bg-yellow-500"
+                    : "bg-green-500"
                 }`}
               >
                 Ultimo Status: {ticket.status.name}
@@ -27,6 +29,7 @@ export const ViewAllTickets = ({ ticketsData }) => {
                 id="ticketHistory"
                 name="ticketHistory"
                 content="Ver chamado"
+                showTextOnMobile={false}
                 icon={<Eye size={24} />}
                 onClick={() => navigate(`/ticket/${ticket.id}`)}
               />

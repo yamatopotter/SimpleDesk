@@ -1,11 +1,16 @@
-import { Circuitry } from "@phosphor-icons/react";
+import { DesktopTower } from "@phosphor-icons/react";
 import { CommonInput } from "../../components/CommonInput/CommonInput";
 import Select from "react-select";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 
-export const UpdEquipment = ({equipment, listSector, listEquipmentsType, updateEquipment}) => {
+export const UpdEquipment = ({
+  equipment,
+  listSector,
+  listEquipmentsType,
+  updateEquipment,
+}) => {
   const {
     register,
     setValue,
@@ -13,17 +18,16 @@ export const UpdEquipment = ({equipment, listSector, listEquipmentsType, updateE
     formState: { errors },
   } = useForm();
 
-  useEffect(()=>{
+  useEffect(() => {
     setValue("id", equipment.id);
     setValue("name", equipment.name);
     setValue("idEquipmentType", equipment.equipment_type.id);
     setValue("idSector", equipment.sector.id);
-  }, [])
+  }, []);
 
   function transformToDefaultOption(value, label) {
     return { value: value, label: label };
   }
-
 
   return (
     <div className="flex flex-col gap-5 w-full">
@@ -83,7 +87,7 @@ export const UpdEquipment = ({equipment, listSector, listEquipmentsType, updateE
         <CommonButton
           id="btn_updateEquipment"
           name="btn_updateEquipment"
-          icon={<Circuitry size={24} />}
+          icon={<DesktopTower size={24} />}
           content="Atualizar equipamento"
         />
       </form>

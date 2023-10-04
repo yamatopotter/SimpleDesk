@@ -47,7 +47,7 @@ export const Footer = () => {
         <ButtonBottomNav
           active={location.pathname == "/ticket" ? true : false}
           icon={<NotePencil size={24} />}
-          text="Adicionar registro"
+          text="Chamados"
           onClick={() => navigate("/ticket")}
         />
 

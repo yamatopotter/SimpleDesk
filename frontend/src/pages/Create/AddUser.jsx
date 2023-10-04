@@ -11,7 +11,6 @@ import "react-phone-number-input/style.css";
 
 // Password Validation
 import validator from "validator";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 export const AddUser = () => {
@@ -50,7 +49,7 @@ export const AddUser = () => {
   const validatePhoneNumber = (value) => {
     const phoneNumber = parsePhoneNumberFromString(value);
     if (!phoneNumber || !phoneNumber.isValid()) {
-      return "Invalid phone number";
+      return "Número inválido. Inseriu o código do país ou selecionou ao lado o país?";
     }
     return true;
   };

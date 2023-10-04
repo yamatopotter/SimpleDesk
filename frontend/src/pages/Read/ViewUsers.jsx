@@ -1,4 +1,9 @@
-import { Key, PencilSimpleLine, Plus, TrashSimple } from "@phosphor-icons/react";
+import {
+  Key,
+  PencilSimpleLine,
+  Plus,
+  TrashSimple,
+} from "@phosphor-icons/react";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { useNavigate } from "react-router-dom";
 import { ModalDelete } from "../../components/ModalDelete";
@@ -26,7 +31,7 @@ export const ViewUsers = ({ listUsers, deleteUser }) => {
       <ul className="flex flex-col gap-4">
         {listUsers.map((user) => {
           return (
-            <>
+            <div key={user.id}>
               <li className="py-3 flex flex-col gap-2">
                 <span className="font-bold">#{user.id}</span>
                 <h2>{user.name}</h2>
@@ -74,7 +79,7 @@ export const ViewUsers = ({ listUsers, deleteUser }) => {
                 </div>
               </li>
               <hr></hr>
-            </>
+            </div>
           );
         })}
       </ul>
