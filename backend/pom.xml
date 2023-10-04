@@ -9,8 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>simpledesk</groupId>
-	<artifactId>app</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>simpledesk-backend</artifactId>
+	<version>1.0</version>
 	<name>Simple Desk</name>
 	<description>The simplest helpdesk system</description>
 	<properties>
@@ -100,6 +100,7 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<finalName>simpledesk_backend</finalName>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 
 export const showToast = (responseServer) => {
-  if (responseServer.status) {
+  if (responseServer.status || responseServer.response) {
     if (responseServer.status == 200) {
       return toast.success("Dados atualizados com sucesso.", {
         position: "top-right",
