@@ -1,14 +1,13 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CommonInput } from "../../components/CommonInput/CommonInput";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { FlowArrow } from "@phosphor-icons/react";
 import { updateStatus } from "../../functions/statusManagement";
 import Select from "react-select";
-import { toast } from "react-toastify";
 
-export const UpdStatus = ({ status, workflow }) => {
+export const UpdStatus = ({ status, workflow, navigate }) => {
+  const [onLoadState, setOnLoadState] = useState(false);
   const {
     register,
     setValue,
@@ -22,13 +21,16 @@ export const UpdStatus = ({ status, workflow }) => {
     setValue("workflow", status.workflow.id);
   }, []);
 
-  const navigate = useNavigate();
-
   async function handleUpdateStatus(data) {
+    setOnLoadState(true);
+
     const response = await updateStatus(data);
     if (response) {
       setTimeout(() => navigate("/status"), 1000);
+      return;
     }
+
+    setOnLoadState(false);
   }
 
   return (
@@ -97,6 +99,7 @@ export const UpdStatus = ({ status, workflow }) => {
         <CommonButton
           icon={<FlowArrow size={24} />}
           content="Atualizar status"
+          onLoadState={onLoadState}
         />
       </form>
     </div>

@@ -3,14 +3,16 @@ import { CommonInput } from "../../components/CommonInput/CommonInput";
 import Select from "react-select";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { updateEquipment } from "../../functions/equipmentManagement";
 
 export const UpdEquipment = ({
   equipment,
   listSector,
   listEquipmentsType,
-  updateEquipment,
+  navigate,
 }) => {
+  const [onLoadState, setOnLoadState] = useState(false);
   const {
     register,
     setValue,
@@ -29,13 +31,25 @@ export const UpdEquipment = ({
     return { value: value, label: label };
   }
 
+  const updateData = async (data) => {
+    setOnLoadState(true);
+
+    const response = await updateEquipment(data);
+    if (response) {
+      setTimeout(navigate("/equipment"), 1000);
+      return;
+    }
+
+    setOnLoadState(false);
+  };
+
   return (
     <div className="flex flex-col gap-5 w-full">
       <h1 className="text-xl">Atualização do Equipamento</h1>
 
       <form
         className="flex flex-col gap-5"
-        onSubmit={handleSubmit(updateEquipment)}
+        onSubmit={handleSubmit(updateData)}
       >
         <div className="flex flex-col gap-1">
           <label htmlFor="nameEquipment">Nome</label>
@@ -89,6 +103,7 @@ export const UpdEquipment = ({
           name="btn_updateEquipment"
           icon={<DesktopTower size={24} />}
           content="Atualizar equipamento"
+          onLoadState={onLoadState}
         />
       </form>
     </div>

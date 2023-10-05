@@ -10,6 +10,7 @@ import { uploadPicture } from "../../service/cloudnaryService";
 import { addTicketHistory } from "../../functions/ticketHistoryManagement";
 
 export const AddTicketHistory = ({ statuses, ticket }) => {
+  const [onLoadState, setOnLoadState] = useState(false);
   const FACING_MODE_USER = "user";
   const FACING_MODE_ENVIRONMENT = "environment";
 
@@ -49,20 +50,25 @@ export const AddTicketHistory = ({ statuses, ticket }) => {
 
   const saveData = async (data) => {
     if (picture) {
+      setOnLoadState(true)
       const imageData = await uploadPicture(picture);
 
       if (imageData) {
         const response = await addTicketHistory(data, imageData.url);
         if (response) {
           setTimeout(() => navigate("/home"), 1000);
+          return;
         }
       }
     } else {
       const response = await addTicketHistory(data, null);
       if (response) {
         setTimeout(() => navigate("/home"), 1000);
+        return;
       }
     }
+
+    setOnLoadState(false);
   };
 
   return (
@@ -156,6 +162,7 @@ export const AddTicketHistory = ({ statuses, ticket }) => {
           name="btnOpenTicket"
           icon={<Siren size={24} />}
           content="Atualizar chamado"
+          onLoadState={onLoadState}
         />
       </form>
     </div>

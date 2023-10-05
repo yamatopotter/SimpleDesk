@@ -3,7 +3,7 @@ import { Container } from "../../components/Container";
 import { LoadingComponent } from "../../components/LoadingComponent/LoadingComponent";
 import { UpdSector } from "../../pages/Update/UpdSector";
 import { useEffect, useState } from "react";
-import { getSector, updateSector } from "../../functions/sectorManagement";
+import { getSector } from "../../functions/sectorManagement";
 
 export const UpdateSector = () => {
   const navigate = useNavigate();
@@ -27,17 +27,10 @@ export const UpdateSector = () => {
     getData();
   }, []);
 
-  const updateData = async (data) => {
-    const response = await updateSector(data);
-    if (response) {
-      setTimeout(navigate("/sector"), 1000);
-    }
-  };
-
   return (
     <LoadingComponent isLoading={isLoading}>
       <Container>
-        <UpdSector sector={sector} updateSector={updateData} />
+        <UpdSector sector={sector} navigate={navigate} />
       </Container>
     </LoadingComponent>
   );

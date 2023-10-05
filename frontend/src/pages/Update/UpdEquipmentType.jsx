@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CommonInput } from "../../components/CommonInput/CommonInput";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { UsersFour } from "@phosphor-icons/react";
+import { updateEquipmentType } from "../../functions/equipmentTypeManagement";
 
-export const UpdEquipmentType = ({equipmentType, updateEquipmentType}) => {
+export const UpdEquipmentType = ({ equipmentType, navigate }) => {
+  const [onLoadState, setOnLoadState] = useState(false);
   const {
     register,
     setValue,
@@ -13,9 +15,21 @@ export const UpdEquipmentType = ({equipmentType, updateEquipmentType}) => {
   } = useForm();
 
   useEffect(() => {
-      setValue("name", `${equipmentType.name}`);
-      setValue("id", `${equipmentType.id}`);
+    setValue("name", `${equipmentType.name}`);
+    setValue("id", `${equipmentType.id}`);
   }, []);
+
+  const updateData = async (data) => {
+    setOnLoadState(true);
+
+    const response = await updateEquipmentType(data);
+    if (response) {
+      setTimeout(navigate("/equipment_type"), 1000);
+      return;
+    }
+
+    setOnLoadState(false);
+  };
 
   return (
     <div className="flex flex-col gap-5 w-full">
@@ -23,7 +37,7 @@ export const UpdEquipmentType = ({equipmentType, updateEquipmentType}) => {
 
       <form
         className="flex flex-col gap-5"
-        onSubmit={handleSubmit(updateEquipmentType)}
+        onSubmit={handleSubmit(updateData)}
       >
         <div className="flex flex-col gap-5">
           <label htmlFor="equipmentTypeName">Nome</label>
@@ -49,6 +63,7 @@ export const UpdEquipmentType = ({equipmentType, updateEquipmentType}) => {
         <CommonButton
           icon={<UsersFour size={24} />}
           content="Atualizar tipo de equipamento"
+          onLoadState={onLoadState}
         />
       </form>
     </div>

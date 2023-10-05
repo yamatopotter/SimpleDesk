@@ -14,6 +14,7 @@ import validator from "validator";
 import { useNavigate } from "react-router-dom";
 
 export const AddUser = () => {
+  const [onLoadState, setOnLoadState] = useState(false);
   const {
     register,
     handleSubmit,
@@ -40,10 +41,15 @@ export const AddUser = () => {
   };
 
   const saveData = async (data) => {
+    setOnLoadState(true);
     const response = await registerUser(data);
+
     if (response) {
       setTimeout(navigate("/user"), 1000);
+      return;
     }
+
+    setOnLoadState(false);
   };
 
   const validatePhoneNumber = (value) => {
@@ -180,6 +186,7 @@ export const AddUser = () => {
           id="btnAddUser"
           name="btnAddUser"
           content="Adicionar Usuário"
+          onLoadStateChange={onLoadState}
         />
       </form>
     </div>

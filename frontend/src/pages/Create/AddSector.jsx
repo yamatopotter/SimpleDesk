@@ -4,9 +4,10 @@ import { CommonInput } from "../../components/CommonInput/CommonInput";
 import { useForm } from "react-hook-form";
 import { addSector } from "../../functions/sectorManagement";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useState } from "react";
 
 export const AddSector = () => {
+  const [onLoadState, setOnLoadState] = useState(false);
   const {
     register,
     handleSubmit,
@@ -15,10 +16,14 @@ export const AddSector = () => {
   const navigate = useNavigate();
 
   const handleAddSector = async (data) => {
+    setOnLoadState(true);
     const response = await addSector(data);
     if (response) {
       setTimeout(() => navigate("/sector"), 1000);
+      return;
     }
+
+    setOnLoadState(false);
   };
 
   return (
@@ -51,6 +56,7 @@ export const AddSector = () => {
           id="btn_addSector"
           name="btn_addSector"
           content="Salvar setor"
+          onLoadState={onLoadState}
         />
       </form>
     </div>

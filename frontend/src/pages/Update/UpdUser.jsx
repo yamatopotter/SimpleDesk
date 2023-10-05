@@ -5,13 +5,15 @@ import { parsePhoneNumberFromString } from "libphonenumber-js";
 import "react-phone-number-input/style.css";
 
 // Password Validation
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { CommonInput } from "../../components/CommonInput/CommonInput";
 import Select from "react-select";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { User } from "@phosphor-icons/react";
+import { updateUser } from "../../functions/userManagement";
 
-export const UpdUser = ({ user, updateUser }) => {
+export const UpdUser = ({ user }) => {
+  const [onLoadState, setOnLoadState] = useState(false);
   const {
     register,
     handleSubmit,
@@ -36,11 +38,29 @@ export const UpdUser = ({ user, updateUser }) => {
     setValue("role", user.role);
   }, []);
 
+  const updateData = async (data) => {
+    setOnLoadState(true);
+
+    const response = await updateUser(data);
+    if (response) {
+      if (id) {
+        setTimeout(navigate("/user"), 1000);
+        return;
+      } else {
+        updateLiveUserData(response, setUserData);
+        setTimeout(navigate("/about"), 1000);
+        return;
+      }
+    }
+
+    setOnLoadState(false);
+  };
+
   return (
     <div className="flex flex-col gap-5 w-full">
       <h1 className="text-xl">Modificar usuário</h1>
 
-      <form className="flex flex-col gap-5" onSubmit={handleSubmit(updateUser)}>
+      <form className="flex flex-col gap-5" onSubmit={handleSubmit(updateData)}>
         <div className="flex flex-col gap-2">
           <label htmlFor="in_name">Nome</label>
           <CommonInput

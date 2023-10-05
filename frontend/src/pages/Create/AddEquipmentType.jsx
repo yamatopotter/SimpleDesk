@@ -4,9 +4,10 @@ import { CommonInput } from "../../components/CommonInput/CommonInput";
 import { useForm } from "react-hook-form";
 import { addEquipementType } from "../../functions/equipmentTypeManagement";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useState } from "react";
 
 export const AddEquipmentType = () => {
+  const [onLoadState, setOnLoadState] = useState(false);
   const {
     register,
     handleSubmit,
@@ -15,11 +16,14 @@ export const AddEquipmentType = () => {
   const navigate = useNavigate();
 
   const saveData = async (data) => {
+    setOnLoadState(true);
     const response = await addEquipementType(data);
     if (response) {
-
       setTimeout(navigate("/equipment_type"), 1000);
-    } 
+      return;
+    }
+
+    setOnLoadState(false);
   };
 
   return (
@@ -49,6 +53,7 @@ export const AddEquipmentType = () => {
           id="btn_addEquipmentType"
           name="btn_addEquipmentType"
           content="Salvar tipo de equipamento"
+          onLoadState={onLoadState}
         />
       </form>
     </div>

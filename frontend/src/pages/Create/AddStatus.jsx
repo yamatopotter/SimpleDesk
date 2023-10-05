@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { addStatus } from "../../functions/statusManagement";
 import Select from "react-select";
-import { toast } from "react-toastify";
+import { useState } from "react";
 
 export const AddStatus = ({ workflow }) => {
+  const [onLoadState, setOnLoadState] = useState(false);
   const {
     register,
     handleSubmit,
@@ -17,10 +18,15 @@ export const AddStatus = ({ workflow }) => {
   const navigate = useNavigate();
 
   const handleAddStatus = async (data) => {
+    setOnLoadState(true);
     const response = await addStatus(data);
+
     if (response) {
       setTimeout(() => navigate("/status"), 1000);
+      return;
     }
+
+    setOnLoadState(false);
   };
 
   return (
@@ -63,6 +69,7 @@ export const AddStatus = ({ workflow }) => {
           id="btnAddStatus"
           name="btnAddStatus"
           content="Salvar status"
+          onLoadState={onLoadState}
         />
       </form>
     </div>
