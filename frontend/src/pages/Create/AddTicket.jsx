@@ -11,6 +11,7 @@ import { uploadPicture } from "../../service/cloudnaryService";
 import { addTicket } from "../../functions/ticketManagement";
 
 export const AddTicket = ({ equipmentList }) => {
+  const [onLoadState, setOnLoadState] = useState(false);
   const FACING_MODE_USER = "user";
   const FACING_MODE_ENVIRONMENT = "environment";
 
@@ -47,19 +48,24 @@ export const AddTicket = ({ equipmentList }) => {
   }
 
   const saveData = async (data) => {
+    setOnLoadState(true)
     if (picture) {
       const imageData = await uploadPicture(picture);
 
       if (imageData) {
         if (await addTicket(data, imageData.url)) {
           setTimeout(() => navigate("/home"), 1000);
+          return;
         }
       }
     } else {
       if (await addTicket(data, null)) {
         setTimeout(() => navigate("/home"), 1000);
+        return;
       }
     }
+
+    setOnLoadState(false)
   };
 
   return (
@@ -164,6 +170,7 @@ export const AddTicket = ({ equipmentList }) => {
           name="btnOpenTicket"
           icon={<Siren size={24} />}
           content="Abrir chamado"
+          onLoadState={onLoadState}
         />
       </form>
     </div>

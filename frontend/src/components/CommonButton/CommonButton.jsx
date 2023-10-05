@@ -1,3 +1,5 @@
+import { Spinner } from "@phosphor-icons/react";
+
 export const CommonButton = ({
   content,
   id,
@@ -8,7 +10,8 @@ export const CommonButton = ({
   warn = false,
   danger = false,
   full = false,
-  showTextOnMobile = true
+  showTextOnMobile = true,
+  onLoadState = false,
 }) => {
   return (
     <button
@@ -24,9 +27,18 @@ export const CommonButton = ({
           : "border border-violet-700 text-violet-700 hover:bg-violet-900 hover:text-white"
       } ${full ? "w-full" : ""}`}
       onClick={onClick ? onClick : null}
+      disabled={onLoadState}
     >
       {icon ? icon : ""}
-      {content ? <span className={showTextOnMobile ? "" : "hidden md:block"}>{content}</span> : null}
+      {content ? (
+        onLoadState ? (
+          <Spinner />
+        ) : (
+          <span className={showTextOnMobile ? "" : "hidden md:block"}>
+            {content}
+          </span>
+        )
+      ) : null}
     </button>
   );
 };

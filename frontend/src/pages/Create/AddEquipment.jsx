@@ -5,9 +5,10 @@ import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { addEquipment } from "../../functions/equipmentManagement";
-import { toast } from "react-toastify";
+import { useState } from "react";
 
 export const AddEquipment = ({ equipmentType, sector }) => {
+  const [onLoadState, setOnLoadState] = useState(false);
   const {
     register,
     handleSubmit,
@@ -18,10 +19,13 @@ export const AddEquipment = ({ equipmentType, sector }) => {
   const navigate = useNavigate();
 
   const saveData = async (data) => {
+    setOnLoadState(true);
     const response = await addEquipment(data);
     if (response) {
       setTimeout(navigate("/equipment"), 1000);
+      return;
     }
+    setOnLoadState(false);
   };
 
   return (
@@ -80,6 +84,7 @@ export const AddEquipment = ({ equipmentType, sector }) => {
           name="btn_saveEquipment"
           icon={<Circuitry size={24} />}
           content="Adicionar equipamento"
+          onLoadState={onLoadState}
         />
       </form>
     </div>

@@ -4,10 +4,11 @@ import { CommonInput } from "../CommonInput/CommonInput";
 import { authUser } from "../../functions/auth";
 import { useNavigate } from "react-router-dom";
 import { AuthenticationContext } from "../../provider/AuthenticationProvider";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { showToast } from "../../functions/message";
 
 export const LoginForm = () => {
+  const [onLoadState, setOnLoadState] = useState(false);
   const {
     register,
     handleSubmit,
@@ -21,13 +22,14 @@ export const LoginForm = () => {
   const navigate = useNavigate();
 
   async function authenticateUser(data) {
+    setOnLoadState(true);
     const response = await authUser(data, setIsAuthenticated, setUserData);
     if (response) {
       navigate("/home");
       return;
     }
-
-    showToast(response)
+    setOnLoadState(false);
+    showToast(response);
   }
 
   useEffect(() => {
@@ -89,7 +91,12 @@ export const LoginForm = () => {
           )}
         </div>
 
-        <CommonButton id="btnLogin" name="btnLogin" content="Entrar" />
+        <CommonButton
+          id="btnLogin"
+          name="btnLogin"
+          content="Entrar"
+          onLoadState={onLoadState}
+        />
       </form>
     </div>
   );
