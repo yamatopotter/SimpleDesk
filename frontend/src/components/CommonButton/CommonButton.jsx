@@ -29,7 +29,7 @@ export const CommonButton = ({
       onClick={onClick ? onClick : null}
       disabled={onLoadState}
     >
-      {icon ? icon : ""}
+      {icon ? onLoadState ? "" : icon : ""}
       {content ? (
         onLoadState ? (
           <Spinner />
