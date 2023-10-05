@@ -133,19 +133,19 @@ public class TicketService {
     public void ticketExists(TicketDTO ticketDTO) {
         Optional<Ticket> ticket = repository.findById(ticketDTO.id());
         if (ticket.isEmpty())
-            throw new ObjectNotFoundException("O ticket de ID: " + ticketDTO.id() + " não existe.");
+            throw new ObjectNotFoundException("Ticket de ID: " + ticketDTO.id() + " não existe.");
     }
 
     @Transactional(readOnly = true)
     public void validatingTheIntegrityOfTheRelationship(Long id) {
         Ticket ticket = repository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("O ticket de ID: " + id + " não existe."));
+                .orElseThrow(() -> new ObjectNotFoundException("Ticket de ID: " + id + " não existe."));
 
         List<TicketHistory> ticketHistories = ticketHistoryRepository.findByTicket(ticket);
 
         for (TicketHistory history : ticketHistories) {
             if (history.getTicket().getId().equals(ticket.getId()))
-                throw new DataIntegratyViolationException("O ticket está vinculado a um ticket history.");
+                throw new DataIntegratyViolationException("Ticket está vinculado a um histórico de ticket.");
         }
 
     }

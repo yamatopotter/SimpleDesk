@@ -72,7 +72,7 @@ public class EquipmentTypeService {
     public void equipmentTypeExists(EquipmentTypeDTO equipmentTypeDTO) {
         Optional<EquipmentType> equipmentType = repository.findById(equipmentTypeDTO.id());
         if (equipmentType.isEmpty())
-            throw new ObjectNotFoundException("O equipmentType de ID: " + equipmentTypeDTO.id() + " não existe.");
+            throw new ObjectNotFoundException("Tipo de equipamento de ID: " + equipmentTypeDTO.id() + " não existe.");
     }
 
     @Transactional(readOnly = true)
@@ -85,13 +85,13 @@ public class EquipmentTypeService {
     @Transactional(readOnly = true)
     public void validatingTheIntegrityOfTheRelationship(Long id) {
         EquipmentType equipmentType = repository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("EquipmentType de ID: " + id + " não foi encontrado."));
+                .orElseThrow(() -> new ObjectNotFoundException("Tipo de equipamento de ID: " + id + " não foi encontrado."));
 
         List<Equipment> equipmentList = equipmentRepositoy.findByEquipmentType(equipmentType);
 
         for (Equipment equipment : equipmentList) {
             if (equipment.getEquipmentType().getId().equals(equipmentType.getId()))
-                throw new DataIntegratyViolationException("O equipmentType está vinculado a um equipment");
+                throw new DataIntegratyViolationException("Tipo de equipamento está vinculado a um equipamento");
         }
     }
 

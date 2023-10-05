@@ -41,7 +41,7 @@ public class TicketHistoryService {
     public Optional<TicketHistoryDTO> findById(Long id) {
         return Optional.of(repository.findById(id)
                 .map(mapper)
-                .orElseThrow(() -> new ObjectNotFoundException("Ticket History de ID: " + id + " não encontrado.")));
+                .orElseThrow(() -> new ObjectNotFoundException("Histórico de Ticket de ID: " + id + " não encontrado.")));
     }
 
     @Transactional(readOnly = true)
@@ -65,6 +65,8 @@ public class TicketHistoryService {
 
         TicketHistory ticketHistory = repository.save(new TicketHistory(null, userEntity, ticketToTicketHistory,
                 statusToTicketHistory, ticketHistoryDTO.description(), ticketHistoryDTO.urlPhoto(), LocalDateTime.now()));
+
+        ticketToTicketHistory.setStatus(ticketHistory.getStatus());
         return Optional.of(mapper.apply(ticketHistory));
 
     }
@@ -79,7 +81,7 @@ public class TicketHistoryService {
         User userEntity = userRepository.findByEmail(user).orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado."));
 
         TicketHistory existingTicketHistory = repository.findById(ticketHistoryDTO.id())
-                .orElseThrow(() -> new ObjectNotFoundException("TicketHistory de ID: " + ticketHistoryDTO.id() + " não existe."));
+                .orElseThrow(() -> new ObjectNotFoundException("Histórico de Ticket de ID: " + ticketHistoryDTO.id() + " não existe."));
 
         Ticket ticketToTicketHistory = ticketRepository.findById(ticketHistoryDTO.ticket().id())
                 .orElseThrow(() -> new ObjectNotFoundException("Ticket de ID: " + ticketHistoryDTO.ticket().id() + " não foi encontrado."));
@@ -89,6 +91,8 @@ public class TicketHistoryService {
 
         TicketHistory ticketHistory = repository.save(new TicketHistory(ticketHistoryDTO.id(), userEntity, ticketToTicketHistory,
                 statusToTicketHistory, ticketHistoryDTO.description(), ticketHistoryDTO.urlPhoto(), existingTicketHistory.getCreated_at()));
+
+        ticketToTicketHistory.setStatus(ticketHistory.getStatus());
         return Optional.of(mapper.apply(ticketHistory));
     }
 
@@ -106,7 +110,7 @@ public class TicketHistoryService {
     public void ticketHistoryExists(TicketHistoryDTO ticketHistoryDTO) {
         Optional<TicketHistory> ticketHistory = repository.findById(ticketHistoryDTO.id());
         if (ticketHistory.isEmpty())
-            throw new ObjectNotFoundException("O ticketHistory de ID: " + ticketHistoryDTO.id() + " não existe.");
+            throw new ObjectNotFoundException("Histórico de Ticket de ID: " + ticketHistoryDTO.id() + " não existe.");
     }
 
     public void emptyAttribute(TicketHistoryDTO ticketHistoryDTO) {

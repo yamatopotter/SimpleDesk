@@ -71,7 +71,7 @@ public class SectorService {
     public void sectorExists(SectorDTO sectorDTO) {
         Optional<Sector> sector = repository.findById(sectorDTO.id());
         if (sector.isEmpty())
-            throw new ObjectNotFoundException("O sector de ID: " + sectorDTO.id() + " não existe.");
+            throw new ObjectNotFoundException("Setor de ID: " + sectorDTO.id() + " não existe.");
     }
 
     @Transactional(readOnly = true)
@@ -84,13 +84,13 @@ public class SectorService {
     @Transactional(readOnly = true)
     public void validatingTheIntegrityOfTheRelationship(Long id) {
         Sector sector = repository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Sector de ID: " + id + " não foi encontrado."));
+                .orElseThrow(() -> new ObjectNotFoundException("Setor de ID: " + id + " não foi encontrado."));
 
         List<Equipment> equipmentList = equipmentRepositoy.findBySector(sector);
 
         for (Equipment equipment : equipmentList) {
             if (equipment.getEquipmentType().getId().equals(sector.getId()))
-                throw new DataIntegratyViolationException("O sector está vinculado a um equipment");
+                throw new DataIntegratyViolationException("Setor está vinculado a um equipamento");
         }
     }
 

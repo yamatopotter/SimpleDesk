@@ -27,8 +27,7 @@ CREATE TABLE status (
     id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL,
     fk_id_workflow BIGINT,
-    FOREIGN KEY (fk_id_workflow)
-        REFERENCES workflow(id)
+    KEY fk_id_workflow_idx (fk_id_workflow)
 );
 
 CREATE TABLE equipment (
@@ -36,10 +35,8 @@ CREATE TABLE equipment (
     name VARCHAR(30),
     fk_id_sector BIGINT,
     fk_id_equipment_type BIGINT,
-    FOREIGN KEY (fk_id_sector)
-        REFERENCES sector(id),
-    FOREIGN KEY (fk_id_equipment_type)
-        REFERENCES equipment_type(id)
+    KEY fk_id_sector_idx (fk_id_sector),
+    KEY fk_id_equipment_type_idx (fk_id_equipment_type)
 );
 
 CREATE TABLE ticket (
@@ -51,12 +48,9 @@ CREATE TABLE ticket (
     fk_id_user BIGINT,
     fk_id_equipment BIGINT,
     fk_id_status BIGINT,
-    FOREIGN KEY (fk_id_user)
-        REFERENCES user(id),
-    FOREIGN KEY (fk_id_equipment)
-        REFERENCES equipment(id),
-    FOREIGN KEY (fk_id_status)
-            REFERENCES status(id)
+    KEY fk_id_user_idx (fk_id_user),
+    KEY fk_id_equipment_idx (fk_id_equipment),
+    KEY fk_id_status_idx (fk_id_status)
 );
 
 CREATE TABLE ticket_history (
@@ -67,27 +61,10 @@ CREATE TABLE ticket_history (
     fk_id_user BIGINT NOT NULL,
     fk_id_ticket BIGINT NOT NULL,
     fk_id_status BIGINT NOT NULL,
-    FOREIGN KEY (fk_id_user)
-            REFERENCES user(id),
-    FOREIGN KEY (fk_id_ticket)
-        REFERENCES ticket(id),
-    FOREIGN KEY (fk_id_status)
-        REFERENCES status(id)
+    KEY fk_id_user_idx (fk_id_user),
+    KEY fk_id_ticket_idx (fk_id_ticket),
+    KEY fk_id_status_idx (fk_id_status)
 );
-
--- Triggers Ticket_History
-
-create trigger trg_before_update_ticket_history
-after insert on simple_desk.ticket_history
-for each row
-begin
-	if NEW.fk_id_ticket = (select id from ticket where id = NEW.fk_id_ticket)
-then
-		update simple_desk.ticket
-		set ticket.fk_id_status = NEW.fk_id_status
-		where ticket.id = NEW.fk_id_ticket;
-    end if;
-end;
 
 insert into equipment_type (name) values ("Computador");
 insert into equipment_type (name) values ("Impressora");
