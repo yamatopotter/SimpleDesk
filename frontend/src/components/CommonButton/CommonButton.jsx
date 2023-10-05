@@ -1,4 +1,4 @@
-import { Spinner } from "@phosphor-icons/react";
+import { Spinner } from "../Spinner/Spinner";
 
 export const CommonButton = ({
   content,

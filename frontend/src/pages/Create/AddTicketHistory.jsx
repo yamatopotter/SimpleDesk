@@ -1,8 +1,8 @@
-import { Camera, Siren } from "@phosphor-icons/react";
+import { Camera, CameraRotate, Siren } from "@phosphor-icons/react";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { CommonTextarea } from "../../components/CommonTextarea/CommonTextarea";
 import Webcam from "react-webcam";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +20,9 @@ export const AddTicketHistory = ({ statuses, ticket }) => {
   const webcamRef = useRef(null);
 
   const videoConstraints = {
+    width: { min: 1024 },
+    height: { min: 600 },
+    aspectRatio: 0.66667,
     facingMode: FACING_MODE_ENVIRONMENT,
   };
 
@@ -42,15 +45,16 @@ export const AddTicketHistory = ({ statuses, ticket }) => {
   function savePicture(e) {
     e.preventDefault();
 
-    setPicture(webcamRef.current.getScreenshot());
+    setPicture(webcamRef.current.getScreenshot({ width: 1024, height: 600 }));
     setTakePicture(false);
   }
 
   useEffect(() => setValue("idTicket", ticket), []);
 
   const saveData = async (data) => {
+    setOnLoadState(true);
+
     if (picture) {
-      setOnLoadState(true)
       const imageData = await uploadPicture(picture);
 
       if (imageData) {
@@ -94,7 +98,7 @@ export const AddTicketHistory = ({ statuses, ticket }) => {
           )}
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 relative">
           {picture ? <img src={picture} alt="Foto do chamado" /> : ""}
           {takePicture ? (
             <>
@@ -102,10 +106,9 @@ export const AddTicketHistory = ({ statuses, ticket }) => {
                 ref={webcamRef}
                 audio={false}
                 screenshotFormat="image/jpeg"
-                videoConstraints={{
-                  ...videoConstraints,
-                  facingMode,
-                }}
+                width={1024}
+                height={600}
+                videoConstraints={{ ...videoConstraints, facingMode }}
               />
               <span
                 onClick={changeCamera}

@@ -21,6 +21,9 @@ export const AddTicket = ({ equipmentList }) => {
   const webcamRef = useRef(null);
 
   const videoConstraints = {
+    width: { min: 1024 },
+    height: { min: 600 },
+    aspectRatio: 0.66667,
     facingMode: FACING_MODE_ENVIRONMENT,
   };
 
@@ -43,12 +46,12 @@ export const AddTicket = ({ equipmentList }) => {
   function savePicture(e) {
     e.preventDefault();
 
-    setPicture(webcamRef.current.getScreenshot());
+    setPicture(webcamRef.current.getScreenshot({ width: 1024, height: 600 }));
     setTakePicture(false);
   }
 
   const saveData = async (data) => {
-    setOnLoadState(true)
+    setOnLoadState(true);
     if (picture) {
       const imageData = await uploadPicture(picture);
 
@@ -65,7 +68,7 @@ export const AddTicket = ({ equipmentList }) => {
       }
     }
 
-    setOnLoadState(false)
+    setOnLoadState(false);
   };
 
   return (
@@ -109,12 +112,19 @@ export const AddTicket = ({ equipmentList }) => {
                 ref={webcamRef}
                 audio={false}
                 screenshotFormat="image/jpeg"
+                width={1024}
+                height={600}
                 videoConstraints={{
                   ...videoConstraints,
                   facingMode,
                 }}
               />
-              <span onClick={changeCamera} className="absolute top-2 right-2 rounded-full shadow-md hover:shadow-lg bg-purple-500 text-white p-2"><CameraRotate size={24} /></span>
+              <span
+                onClick={changeCamera}
+                className="absolute top-2 right-2 rounded-full shadow-md hover:shadow-lg bg-purple-500 text-white p-2"
+              >
+                <CameraRotate size={24} />
+              </span>
             </>
           ) : (
             ""
