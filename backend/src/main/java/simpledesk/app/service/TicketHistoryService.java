@@ -65,6 +65,8 @@ public class TicketHistoryService {
 
         TicketHistory ticketHistory = repository.save(new TicketHistory(null, userEntity, ticketToTicketHistory,
                 statusToTicketHistory, ticketHistoryDTO.description(), ticketHistoryDTO.urlPhoto(), LocalDateTime.now()));
+
+        ticketToTicketHistory.setStatus(ticketHistory.getStatus());
         return Optional.of(mapper.apply(ticketHistory));
 
     }
@@ -89,6 +91,8 @@ public class TicketHistoryService {
 
         TicketHistory ticketHistory = repository.save(new TicketHistory(ticketHistoryDTO.id(), userEntity, ticketToTicketHistory,
                 statusToTicketHistory, ticketHistoryDTO.description(), ticketHistoryDTO.urlPhoto(), existingTicketHistory.getCreated_at()));
+
+        ticketToTicketHistory.setStatus(ticketHistory.getStatus());
         return Optional.of(mapper.apply(ticketHistory));
     }
 
