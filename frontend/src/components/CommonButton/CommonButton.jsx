@@ -1,4 +1,4 @@
-import { Spinner } from "@phosphor-icons/react";
+import { Spinner } from "../Spinner/Spinner";
 
 export const CommonButton = ({
   content,
@@ -29,7 +29,7 @@ export const CommonButton = ({
       onClick={onClick ? onClick : null}
       disabled={onLoadState}
     >
-      {icon ? icon : ""}
+      {icon ? onLoadState ? "" : icon : ""}
       {content ? (
         onLoadState ? (
           <Spinner />
