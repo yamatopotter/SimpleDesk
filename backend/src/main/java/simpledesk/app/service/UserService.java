@@ -47,7 +47,7 @@ public class UserService {
     public Optional<UserInfoDTO> findById(Long id) {
         return Optional.of(userRepository.findById(id)
                 .map(userInfoDTOMapper)
-                .orElseThrow(() -> new ObjectNotFoundException("User ID: " + id + " não encontrado.")));
+                .orElseThrow(() -> new ObjectNotFoundException("Usuário ID: " + id + " não encontrado.")));
     }
 
     @Transactional
@@ -102,7 +102,7 @@ public class UserService {
                 orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado."));
 
         if (userEntity.getId().equals(id))
-            throw new DataIntegratyViolationException("O usuário não pode excluir a si mesmo.");
+            throw new DataIntegratyViolationException("Usuário não pode excluir a si mesmo.");
 
         if (userRepository.findById(id).isPresent()) {
             userRepository.deleteById(id);
@@ -132,14 +132,14 @@ public class UserService {
 
         for (TicketHistory history : ticketHistories) {
             if (history.getUser().getId().equals(user.getId()))
-                throw new DataIntegratyViolationException("O usuário está vinculado a um ticket history.");
+                throw new DataIntegratyViolationException("Usuário está vinculado a um histórico de ticket.");
         }
 
         List<Ticket> tickets = ticketRepository.findByUser(user);
 
         for (Ticket ticket : tickets) {
             if (ticket.getUser().getId().equals(user.getId()))
-                throw new DataIntegratyViolationException("O usuário está vinculado a um ticket.");
+                throw new DataIntegratyViolationException("Usuário está vinculado a um ticket.");
         }
 
     }

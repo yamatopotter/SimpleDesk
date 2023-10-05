@@ -73,7 +73,7 @@ public class WorkflowService {
     public void workflowExists(WorkflowDTO workflowDTO) {
         Optional<Workflow> workflow = repository.findById(workflowDTO.id());
         if (workflow.isEmpty())
-            throw new ObjectNotFoundException("O workflow de ID: " + workflowDTO.id() + " não existe.");
+            throw new ObjectNotFoundException("Workflow de ID: " + workflowDTO.id() + " não existe.");
     }
 
     @Transactional(readOnly = true)
@@ -85,13 +85,13 @@ public class WorkflowService {
     @Transactional(readOnly = true)
     public void validatingTheIntegrityOfTheRelationship(Long id) {
         Workflow workflow = repository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("O workflow de ID: " + id + " não foi encontrado."));
+                .orElseThrow(() -> new ObjectNotFoundException("Workflow de ID: " + id + " não foi encontrado."));
 
         List<Status> statusList = statusRepository.findByWorkflow(workflow);
 
         for (Status status : statusList) {
             if (status.getWorkflow().getId().equals(workflow.getId()))
-                throw new DataIntegratyViolationException("O workflow está vinculado a um status.");
+                throw new DataIntegratyViolationException("Workflow está vinculado a um status.");
         }
 
     }

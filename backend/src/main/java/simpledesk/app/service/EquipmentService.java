@@ -91,19 +91,19 @@ public class EquipmentService {
     public void equipmentExists(EquipmentDTO equipmentDTO) {
         Optional<Equipment> equipment = repository.findById(equipmentDTO.id());
         if (equipment.isEmpty())
-            throw new ObjectNotFoundException("O equipment de ID: " + equipmentDTO.id() + " não existe.");
+            throw new ObjectNotFoundException("Equipamento de ID: " + equipmentDTO.id() + " não existe.");
     }
 
     @Transactional(readOnly = true)
     public void validatingTheIntegrityOfTheRelationship(Long id) {
         Equipment equipment = repository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Equipment de ID: " + id + " não foi encontrado."));
+                .orElseThrow(() -> new ObjectNotFoundException("Equipamento de ID: " + id + " não foi encontrado."));
 
         List<Ticket> tickets = ticketRepository.findByEquipment(equipment);
 
         for (Ticket ticket : tickets) {
             if (ticket.getEquipment().getId().equals(equipment.getId()))
-                throw new DataIntegratyViolationException("O equipment está vinculado a um ticket.");
+                throw new DataIntegratyViolationException("Equipamento está vinculado a um ticket.");
         }
     }
 
