@@ -1,10 +1,16 @@
 import { Plus } from "@phosphor-icons/react";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { useNavigate } from "react-router-dom";
+import { ModalImage } from "../../components/ModalImage/ModalImage";
+import { useState } from "react";
 
 export const ViewTicket = ({ ticketData, ticketHistory }) => {
   const navigate = useNavigate();
-  
+  const [isVisible, setIsVisible] = useState({
+    visible: false,
+    image: "",
+  });
+
   return (
     <div className="flex flex-col gap-5 w-full">
       <div className="flex justify-between items-center">
@@ -24,9 +30,17 @@ export const ViewTicket = ({ ticketData, ticketHistory }) => {
         <li>
           Foto:
           {ticketData.urlPhoto ? (
-            <a href="" className="text-violet-700">
+            <span
+              className="text-violet-700 cursor-pointer"
+              onClick={() =>
+                setIsVisible({
+                  visible: true,
+                  image: ticketData.urlPhoto,
+                })
+              }
+            >
               Ver Imagem
-            </a>
+            </span>
           ) : (
             " Não há foto no chamado"
           )}
@@ -56,15 +70,29 @@ export const ViewTicket = ({ ticketData, ticketHistory }) => {
             {data.urlPhoto && (
               <li>
                 Foto:{" "}
-                <a href={data.urlPhoto} className="text-violet-700">
+                <span
+                  className="text-violet-700 cursor-pointer"
+                  onClick={() =>
+                    setIsVisible({
+                      visible: true,
+                      image: data.urlPhoto,
+                    })
+                  }
+                >
                   Ver Imagem
-                </a>
+                </span>
               </li>
             )}
             <li>Criado por: {data.user.name}</li>
           </ul>
         );
       })}
+
+      <ModalImage
+        isVisible={isVisible.visible}
+        setIsVisible={setIsVisible}
+        image={isVisible.image}
+      />
     </div>
   );
 };
