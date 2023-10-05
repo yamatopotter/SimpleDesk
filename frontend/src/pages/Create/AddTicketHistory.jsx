@@ -8,12 +8,27 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { uploadPicture } from "../../service/cloudnaryService";
 import { addTicketHistory } from "../../functions/ticketHistoryManagement";
-import { toast } from "react-toastify";
 
 export const AddTicketHistory = ({ statuses, ticket }) => {
+  const FACING_MODE_USER = "user";
+  const FACING_MODE_ENVIRONMENT = "environment";
+
   const [takePicture, setTakePicture] = useState(false);
   const [picture, setPicture] = useState(null);
+  const [facingMode, setFacingMode] = useState(FACING_MODE_ENVIRONMENT);
   const webcamRef = useRef(null);
+
+  const videoConstraints = {
+    facingMode: FACING_MODE_ENVIRONMENT,
+  };
+
+  const changeCamera = useCallback(() => {
+    setFacingMode((prevState) =>
+      prevState === FACING_MODE_USER
+        ? FACING_MODE_ENVIRONMENT
+        : FACING_MODE_USER
+    );
+  }, []);
 
   const {
     register,
@@ -61,14 +76,41 @@ export const AddTicketHistory = ({ statuses, ticket }) => {
             id="ticketDescription"
             name="ticketDescription"
             extra={{
-              ...register("description"),
+              ...register("description", {
+                required: "A comunicação requer uma descrição",
+              }),
             }}
           />
+          {errors?.description?.message && (
+            <p className="text-red-500 text-right text-sm">
+              {errors.description?.message}
+            </p>
+          )}
         </div>
 
         <div className="flex flex-col gap-3">
           {picture ? <img src={picture} alt="Foto do chamado" /> : ""}
-          {takePicture ? <Webcam ref={webcamRef} /> : ""}
+          {takePicture ? (
+            <>
+              <Webcam
+                ref={webcamRef}
+                audio={false}
+                screenshotFormat="image/jpeg"
+                videoConstraints={{
+                  ...videoConstraints,
+                  facingMode,
+                }}
+              />
+              <span
+                onClick={changeCamera}
+                className="absolute top-2 right-2 rounded-full shadow-md hover:shadow-lg bg-purple-500 text-white p-2"
+              >
+                <CameraRotate size={24} />
+              </span>
+            </>
+          ) : (
+            ""
+          )}
           {takePicture ? (
             <CommonButton
               id="takePicture"
