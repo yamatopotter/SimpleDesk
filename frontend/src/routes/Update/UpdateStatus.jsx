@@ -25,7 +25,7 @@ export const UpdateStatus = () => {
         setIsLoading(false);
         return;
       }
-      
+
       setIsLoading(false);
       navigate("/status");
     }
@@ -36,7 +36,11 @@ export const UpdateStatus = () => {
   return (
     <LoadingComponent isLoading={isLoading}>
       <Container>
-        <UpdStatus status={statusData} workflow={workflowData} />
+        <UpdStatus
+          status={statusData}
+          workflow={workflowData}
+          navigate={navigate}
+        />
       </Container>
     </LoadingComponent>
   );

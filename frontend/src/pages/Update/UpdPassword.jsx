@@ -6,8 +6,12 @@ import { CommonInput } from "../../components/CommonInput/CommonInput";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
 import { Eye, EyeClosed, Key } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { updateUserPassword } from "../../functions/userManagement";
 
-export const UpdPassword = ({ updatePassword, user }) => {
+export const UpdPassword = ({ user }) => {
+  const [onLoadState, setOnLoadState] = useState(false);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -20,6 +24,18 @@ export const UpdPassword = ({ updatePassword, user }) => {
   useEffect(() => {
     setValue("id", user);
   }, []);
+
+  const updatePassword = async (data) => {
+    setOnLoadState(true);
+    const response = await updateUserPassword(data);
+
+    if (response) {
+      setTimeout(navigate("/user"), 1000);
+      return;
+    }
+
+    setOnLoadState(false);
+  };
 
   const validatePasswordRule = (value) => {
     if (
@@ -91,6 +107,7 @@ export const UpdPassword = ({ updatePassword, user }) => {
           id="btn_updatePassword"
           name="btnAddbtn_updatePasswordUser"
           content="Atualizar senha"
+          onLoadState={onLoadState}
         />
       </form>
     </div>

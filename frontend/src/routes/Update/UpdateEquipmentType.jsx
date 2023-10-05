@@ -1,9 +1,6 @@
 import { Container } from "../../components/Container";
 import { LoadingComponent } from "../../components/LoadingComponent/LoadingComponent";
-import {
-  getEquipmentType,
-  updateEquipmentType,
-} from "../../functions/equipmentTypeManagement";
+import { getEquipmentType } from "../../functions/equipmentTypeManagement";
 import { UpdEquipmentType } from "../../pages/Update/UpdEquipmentType";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -31,19 +28,10 @@ export const UpdateEquipmentType = () => {
     getData();
   }, []);
 
-  const updateData = async (data) => {
-    const response = await updateEquipmentType(data);
-    if (response) {
-      setTimeout(navigate("/equipment_type"), 1000);
-    }
-  };
   return (
     <LoadingComponent isLoading={isLoading}>
       <Container>
-        <UpdEquipmentType
-          equipmentType={equipmentType}
-          updateEquipmentType={updateData}
-        />
+        <UpdEquipmentType equipmentType={equipmentType} navigate={navigate} />
       </Container>
     </LoadingComponent>
   );

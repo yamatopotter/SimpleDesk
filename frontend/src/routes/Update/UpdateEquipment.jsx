@@ -2,12 +2,8 @@ import { useEffect, useState } from "react";
 import { Container } from "../../components/Container";
 import { LoadingComponent } from "../../components/LoadingComponent/LoadingComponent";
 import { UpdEquipment } from "../../pages/Update/UpdEquipment";
-import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  getEquipment,
-  updateEquipment,
-} from "../../functions/equipmentManagement";
+import { getEquipment } from "../../functions/equipmentManagement";
 import { getEquipmentsType } from "../../functions/equipmentTypeManagement";
 import { getSectors } from "../../functions/sectorManagement";
 
@@ -48,12 +44,6 @@ export const UpdateEquipment = () => {
     getData();
   }, []);
 
-  const updateData = async (data) => {
-    const response = await updateEquipment(data);
-    if (response) {
-      setTimeout(navigate("/equipment"), 1000);
-    }
-  };
   return (
     <LoadingComponent isLoading={isLoading}>
       <Container>
@@ -61,7 +51,7 @@ export const UpdateEquipment = () => {
           equipment={equipment}
           listSector={sectorData}
           listEquipmentsType={equipmentTypeData}
-          updateEquipment={updateData}
+          navigate={navigate}
         />
       </Container>
     </LoadingComponent>
