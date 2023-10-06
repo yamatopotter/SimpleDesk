@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { api } from "../service/api";
 import { deleteToken, getToken, setToken } from "./localstorage";
 import { showToast } from "./message";
@@ -10,13 +11,33 @@ export const authUser = async (data, setIsAuthenticated, setUsetData) => {
   };
 
   try {
+    const limiteDeTempo = 7000;
+    const temporizador = setTimeout(() => {
+      toast.warn(
+        "Por favor, aguarde mais um pouco, nosso servidor está ligando...",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        }
+      );
+    }, limiteDeTempo);
+
     const response = await api.post(baseURI + "/login", loginData);
+
+    clearTimeout(temporizador);
 
     setToken(response.data.token);
     await getUserData(setIsAuthenticated, setUsetData);
 
     return true;
   } catch (e) {
+    clearTimeout(temporizador);
     showToast(e);
     return false;
   }
