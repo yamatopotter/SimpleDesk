@@ -1,19 +1,9 @@
-import {
-  Circuitry,
-  DesktopTower,
-  FlowArrow,
-  House,
-  Info,
-  MagnifyingGlass,
-  NotePencil,
-  Siren,
-  User,
-  UsersFour,
-} from "@phosphor-icons/react";
+import { Code, House, Info, NotePencil, Siren } from "@phosphor-icons/react";
 import { ButtonBottomNav } from "../ButtonBottomNav/ButtonBottomNav";
 import { useContext } from "react";
 import { AuthenticationContext } from "../../provider/AuthenticationProvider";
 import { useLocation, useNavigate } from "react-router-dom";
+import { AdminMenu } from "../AdminMenu/AdminMenu";
 
 export const Footer = () => {
   const { isAuthenticated, userData } = useContext(AuthenticationContext);
@@ -51,40 +41,7 @@ export const Footer = () => {
           onClick={() => navigate("/ticket")}
         />
 
-        {userData.role === "ADMIN" && (
-          <>
-            <ButtonBottomNav
-              active={checkUrl(location.pathname, "equipment")}
-              icon={<DesktopTower size={24} />}
-              text="Equipamentos"
-              onClick={() => navigate("/equipment")}
-            />
-            <ButtonBottomNav
-              active={checkUrl(location.pathname, "equipment_type")}
-              icon={<Circuitry size={24} />}
-              text="Tipo de Equipamento"
-              onClick={() => navigate("/equipment_type")}
-            />
-            <ButtonBottomNav
-              active={checkUrl(location.pathname, "sector")}
-              icon={<UsersFour size={24} />}
-              text="Setores"
-              onClick={() => navigate("/sector")}
-            />
-            <ButtonBottomNav
-              active={checkUrl(location.pathname, "user")}
-              icon={<User size={24} />}
-              text="Usuários"
-              onClick={() => navigate("/user")}
-            />
-            <ButtonBottomNav
-              active={checkUrl(location.pathname, "status")}
-              icon={<FlowArrow size={24} />}
-              text="Status"
-              onClick={() => navigate("/status")}
-            />
-          </>
-        )}
+        {userData.role === "ADMIN" && <AdminMenu checkUrl={checkUrl} />}
         <ButtonBottomNav
           active={location.pathname === "/about" ? true : false}
           icon={<Info size={24} />}
@@ -97,7 +54,14 @@ export const Footer = () => {
 
   return (
     <footer className="text-center bg-violet-700 text-white p-3">
-      Projeto desenvolvido por @yamatopotter e @dougsn
+      <Code size={24} /> por{" "}
+      <a href="https://github.com/yamatopotter" target="_blank">
+        Matheus
+      </a>{" "}
+      &{" "}
+      <a href="https://github.com/dougsn" target="_blank">
+        Douglas
+      </a>
     </footer>
   );
 };
