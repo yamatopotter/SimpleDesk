@@ -1,4 +1,4 @@
-import { Circuitry } from "@phosphor-icons/react";
+import { DesktopTower } from "@phosphor-icons/react";
 import { CommonInput } from "../../components/CommonInput/CommonInput";
 import Select from "react-select";
 import { CommonButton } from "../../components/CommonButton/CommonButton";
@@ -82,7 +82,7 @@ export const AddEquipment = ({ equipmentType, sector }) => {
         <CommonButton
           id="btn_saveEquipment"
           name="btn_saveEquipment"
-          icon={<Circuitry size={24} />}
+          icon={<DesktopTower size={24} />}
           content="Adicionar equipamento"
           onLoadState={onLoadState}
         />
