@@ -1,4 +1,4 @@
-import { Code, House, Info, NotePencil, Siren } from "@phosphor-icons/react";
+import { Code, Coffee, Heart, House, Info, NotePencil, Siren } from "@phosphor-icons/react";
 import { ButtonBottomNav } from "../ButtonBottomNav/ButtonBottomNav";
 import { useContext } from "react";
 import { AuthenticationContext } from "../../provider/AuthenticationProvider";
@@ -53,13 +53,13 @@ export const Footer = () => {
   }
 
   return (
-    <footer className="text-center bg-violet-700 text-white p-3">
-      <Code size={24} /> por{" "}
-      <a href="https://github.com/yamatopotter" target="_blank">
+    <footer className="flex gap-2 justify-center bg-violet-700 text-white p-3">
+      <Code size={24} /> com <Coffee size={24} /> por{" "}
+      <a href="https://github.com/yamatopotter" target="_blank" className="font-medium underline">
         Matheus
       </a>{" "}
       &{" "}
-      <a href="https://github.com/dougsn" target="_blank">
+      <a href="https://github.com/dougsn" target="_blank" className="font-medium underline">
         Douglas
       </a>
     </footer>
