@@ -44,6 +44,23 @@ export const authUser = async (data, setIsAuthenticated, setUsetData) => {
 };
 
 export async function getUserData(setIsAuthenticated, setUserData) {
+  const limiteDeTempo = 7000;
+  const temporizador = setTimeout(() => {
+    toast.warn(
+      "Por favor, aguarde mais um pouco, nosso servidor está ligando...",
+      {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      }
+    );
+  }, limiteDeTempo);
+
   const userToken = getToken();
 
   if (userToken) {
@@ -57,6 +74,7 @@ export async function getUserData(setIsAuthenticated, setUserData) {
         setIsAuthenticated(true);
       }
 
+      clearTimeout(temporizador);
       return true;
     } catch {
       deleteToken();
@@ -64,6 +82,7 @@ export async function getUserData(setIsAuthenticated, setUserData) {
       return false;
     }
   } else {
+    clearTimeout(temporizador);
     deleteToken();
     setIsAuthenticated(false);
     return false;
