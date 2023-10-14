@@ -18,7 +18,7 @@ export const DetailTicket = () => {
       const ticket = await getTicket(id);
       const ticketHistory = await getTicketHistoryByTicket(ticket.id);
 
-      if (ticket !== null || ticketHistory !== null) {
+      if (ticket && ticketHistory) {
         setTicketData(ticket);
         setTicketHistory(ticketHistory);
         setIsLoading(false);

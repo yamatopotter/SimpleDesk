@@ -32,7 +32,7 @@ export const CommonButton = ({
       {icon ? onLoadState ? "" : icon : ""}
       {content ? (
         onLoadState ? (
-          <Spinner />
+          <Spinner size="md" />
         ) : (
           <span className={showTextOnMobile ? "" : "hidden md:block"}>
             {content}
