@@ -1,4 +1,4 @@
-import { Code, Coffee, Heart, House, Info, NotePencil, Siren } from "@phosphor-icons/react";
+import { Code, Coffee, House, Info, NotePencil, Siren } from "@phosphor-icons/react";
 import { ButtonBottomNav } from "../ButtonBottomNav/ButtonBottomNav";
 import { useContext } from "react";
 import { AuthenticationContext } from "../../provider/AuthenticationProvider";
@@ -41,7 +41,7 @@ export const Footer = () => {
           onClick={() => navigate("/ticket")}
         />
 
-        {userData.role === "ADMIN" && <AdminMenu checkUrl={checkUrl} />}
+        {userData.role === "ADMIN" && <AdminMenu checkUrl={checkUrl} navigate={navigate} />}
         <ButtonBottomNav
           active={location.pathname === "/about" ? true : false}
           icon={<Info size={24} />}
