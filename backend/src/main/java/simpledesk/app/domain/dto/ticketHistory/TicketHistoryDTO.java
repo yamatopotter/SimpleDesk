@@ -15,9 +15,7 @@ public record TicketHistoryDTO(
         String description,
         @Schema(type = "string", example = "https://foto.com.br")
         String urlPhoto,
-        @JsonIgnore
         LocalDateTime created_at,
-        @JsonIgnore
         UserDTO user,
         @Schema(type = "string", example = "{id: 1}")
         TicketDataDTO ticket,

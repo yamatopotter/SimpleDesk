@@ -7,7 +7,7 @@ import {
 } from "@phosphor-icons/react";
 import { ButtonBottomNav } from "../ButtonBottomNav/ButtonBottomNav";
 
-export const AdminMenu = ({ checkUrl }) => {
+export const AdminMenu = ({ checkUrl, navigate }) => {
   return (
     <>
       <ButtonBottomNav
